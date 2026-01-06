@@ -1,0 +1,37 @@
+Checkbox Structure:
+1. Variant 1 (Circular - Basic without label)
+2. Variant 2 (Circular - With Label)  
+3. Size (Note: Checkboxes don't have size variants, so this will show the fixed 20px size)
+4. States (Default, Disabled)
+
+Radio Button Structure:
+1. Variant 1 (Basic without label)
+2. Variant 2 (With Label)
+3. Size (Note: Radio doesn't have size variants, so this will show the fixed 20px size)
+4. States (Default, Disabled)
+
+Dropdown/TextInput/TextArea Structure:
+1. Variant 1 (Basic - without label, without icon)
+2. Variant 2 (With Label - without icon)
+3. Size (sm, md)
+4. States (Required, Error, Disabled) - and with icon versions
+
+Actually, looking at the components:
+- Checkbox has variant prop for circular/rectangular - these are the 2 main variants
+- Radio Button doesn't have a variant prop - only 1 variant
+- Dropdown/TextInput/TextArea have 5 variants but also have icon/no-icon versions
+
+For Checkbox, since it has 2 shape variants (circular vs rectangular), maybe:
+Section 1: Circular Basic (without label)
+Section 2: Circular With Label
+Section 3: Rectangular Basic (without label)  
+Section 4: Rectangular With Label
+And then States showing both variants in disabled state?
+
+OR keep it simpler as user requested:
+Section 1: Basic (without label) - showing both circular and rectangular
+Section 2: With Label - showing both circular and rectangular
+Section 3: Size - showing the fixed size
+Section 4: States - showing disabled state for both variants
+
+I'll go with the simpler approach focusing on label/no-label as the main distinction.
