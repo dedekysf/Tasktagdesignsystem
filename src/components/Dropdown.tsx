@@ -7,10 +7,13 @@ export type DropdownOption = {
 };
 
 export type DropdownSize = 'sm' | 'md';
+export type DropdownVariant = 'default' | 'borderless';
 
 export interface DropdownProps {
   /** Dropdown size: sm or md */
   size?: DropdownSize;
+  /** Dropdown variant: default or borderless */
+  variant?: DropdownVariant;
   /** Custom className */
   className?: string;
   /** Array of dropdown options */
@@ -33,6 +36,7 @@ export interface DropdownProps {
 
 export function Dropdown({
   size = 'md',
+  variant = 'default',
   className = '',
   options,
   value,
@@ -143,7 +147,9 @@ export function Dropdown({
           justifyContent: 'space-between',
           padding: currentSize.padding,
           backgroundColor: disabled ? 'var(--grey-03)' : (isOpen ? 'var(--grey-02)' : 'var(--input-background)'),
-          border: disabled ? `1px solid var(--grey-04)` : (errorMessage ? `1px solid var(--alert-red)` : `1px solid var(--border)`),
+          border: variant === 'borderless' 
+            ? 'none' 
+            : (disabled ? `1px solid var(--grey-04)` : (errorMessage ? `1px solid var(--alert-red)` : `1px solid var(--border)`)),
           borderRadius: 'var(--radius-8)',
           cursor: disabled ? 'not-allowed' : 'pointer',
           transition: 'background-color 0.2s ease, border-color 0.2s ease',

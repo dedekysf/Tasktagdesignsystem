@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import svgPaths from '../imports/svg-spiw4faft4';
 
 export type CheckboxVariant = 'circular' | 'rectangular';
@@ -32,6 +32,11 @@ export function Checkbox({
   const [isChecked, setIsChecked] = useState(checked);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  // Sync internal state with prop changes
+  useEffect(() => {
+    setIsChecked(checked);
+  }, [checked]);
 
   const handleChange = () => {
     if (disabled) return;

@@ -280,7 +280,7 @@
 
     p {
       font-family: "Inter", sans-serif;
-      font-size: var(--text-base);
+      font-size: var(--text-label);
       font-weight: var(--font-weight-regular);
       line-height: 1.5;
     }
@@ -302,6 +302,20 @@
     input {
       font-family: "Inter", sans-serif;
       font-size: var(--text-base);
+      font-weight: var(--font-weight-regular);
+      line-height: 1.5;
+    }
+
+    ul, ol {
+      font-family: "Inter", sans-serif;
+      font-size: var(--text-label);
+      font-weight: var(--font-weight-regular);
+      line-height: 1.5;
+    }
+
+    li {
+      font-family: "Inter", sans-serif;
+      font-size: var(--text-label);
       font-weight: var(--font-weight-regular);
       line-height: 1.5;
     }
@@ -543,6 +557,19 @@ html {
     opacity: 0.5;
   }
 
+  .btn-blue {
+    background-color: var(--blue);
+    color: var(--white);
+  }
+
+  .btn-blue:not(:disabled):hover {
+    opacity: 0.7;
+  }
+
+  .btn-blue:not(:disabled):active {
+    opacity: 0.5;
+  }
+
   /* Outline variant modifier */
   .btn-outline.btn-primary {
     background-color: transparent;
@@ -589,6 +616,21 @@ html {
     opacity: 0.5;
   }
 
+  .btn-outline.btn-blue {
+    background-color: transparent;
+    color: var(--blue);
+    border: 1px solid var(--blue);
+  }
+
+  .btn-outline.btn-blue:not(:disabled):hover {
+    background-color: var(--light-sky);
+    opacity: 1;
+  }
+
+  .btn-outline.btn-blue:not(:disabled):active {
+    opacity: 0.5;
+  }
+
   /* Ghost variant modifier */
   .btn-ghost.btn-primary {
     background-color: transparent;
@@ -629,6 +671,20 @@ html {
   }
 
   .btn-ghost.btn-destructive:not(:disabled):active {
+    opacity: 0.5;
+  }
+
+  .btn-ghost.btn-blue {
+    background-color: transparent;
+    color: var(--blue);
+  }
+
+  .btn-ghost.btn-blue:not(:disabled):hover {
+    background-color: var(--light-sky);
+    opacity: 1;
+  }
+
+  .btn-ghost.btn-blue:not(:disabled):active {
     opacity: 0.5;
   }
 

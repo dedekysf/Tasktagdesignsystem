@@ -19,6 +19,9 @@ export { RadioButton } from './RadioButton';
 export { TextInput } from './TextInput';
 export { Textarea } from './Textarea';
 export { Dropdown } from './Dropdown';
+export { Datepicker } from './Datepicker';
+export { Modal } from './Modal';
+export { Tooltip } from './Tooltip';
 
 // Layout & Navigation Components
 export { Sidebar } from './Sidebar';

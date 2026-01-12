@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { SectionHeader } from './components/SectionHeader';
 import { ColorItem } from './components/ColorItem';
@@ -20,13 +20,27 @@ import { Datepicker } from './components/Datepicker';
 import { CodeExample } from './components/CodeExample';
 import { TabsContainer, TabPanel } from './components/TabsContainer';
 import { Tooltip } from './components/Tooltip';
+import { SuccessTooltipDemo } from './components/SuccessTooltipDemo';
 import { TabItem } from './components/TabItem';
 import { Modal } from './components/Modal';
-import { Palette, Type, Square, Box, MousePointerClick, TextCursor, LayoutGrid, User, Users, Image, Menu, X, CheckSquare, Circle, Sparkles, ExternalLink, ChevronDown, ChevronLeft, ChevronRight, Trash2, Info, Home, Settings, Search } from 'lucide-react';
+import { Toast } from './components/Toast';
+import { Calendar } from './components/Calendar';
+import { DateRangeCalendar } from './components/DateRangeCalendar';
+import { DiscardChangesModal } from './components/DiscardChangesModal';
+import { PriorityDropdown } from './components/PriorityDropdown';
+import { TaskSectionHeader } from './components/TaskSectionHeader';
+import { ProjectSelectModal } from './components/ProjectSelectModal';
+import { TaskSection } from './components/TaskSection';
+import { AssigneeModal } from './pages/my-task/AssigneeModal';
+import { TaskItem } from './pages/my-task/TaskItem';
+import { Palette, Type, Square, Box, MousePointerClick, TextCursor, LayoutGrid, User, Users, Image, Menu, X, CheckSquare, Circle, Sparkles, ExternalLink, ChevronDown, ChevronLeft, ChevronRight, Trash2, Info, Home, Settings, Search, CircleCheckBig, Bell, CalendarDays, CalendarRange, AlertTriangle, ChevronUp as ChevronUpIcon, FolderOpen, UserPlus, List } from 'lucide-react';
 import svgPaths from './imports/svg-92e1ovrkrf';
 import AppIconAndroid from './imports/AppIconAndroid-43-971';
 import AppIconIOs from './imports/AppIconIOs-43-942';
 import TaskTagLogo from './imports/TaskTagLogo';
+import teamCollaborationImage from 'figma:asset/231f46d29d335b70c14e6a1c3a239decf66583f3.png';
+import MyTaskPage from './pages/MyTaskPage';
+import TaskPanelPage from './pages/TaskPanelPage';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('colors');
@@ -34,6 +48,22 @@ export default function App() {
   const [textareaValue, setTextareaValue] = useState('');
   const [textareaValue2, setTextareaValue2] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
+  // Prevent window scrolling for My Task and Task Panel pages
+  useEffect(() => {
+    if (activeSection === 'my-task' || activeSection === 'task-panel') {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [activeSection]);
   const [selectedRadio, setSelectedRadio] = useState('option2');
   const [selectedRadioNoLabel, setSelectedRadioNoLabel] = useState('option2');
   const [selectedDropdown, setSelectedDropdown] = useState('');
@@ -58,6 +88,7 @@ export default function App() {
   const [dropdownBasicTab, setDropdownBasicTab] = useState('preview');
   const [dropdownLabelTab, setDropdownLabelTab] = useState('preview');
   const [dropdownSizeTab, setDropdownSizeTab] = useState('preview');
+  const [dropdownVariantTab, setDropdownVariantTab] = useState('preview');
   const [dropdownStatesTab, setDropdownStatesTab] = useState('preview');
   const [textInputBasicTab, setTextInputBasicTab] = useState('preview');
   const [dropdownWithoutLabelTab, setDropdownWithoutLabelTab] = useState('preview');
@@ -82,6 +113,7 @@ export default function App() {
   const [tooltipVariantTab, setTooltipVariantTab] = useState('preview');
   const [tooltipAvatarExamplesTab, setTooltipAvatarExamplesTab] = useState('preview');
   const [tooltipAvatarGroupTab, setTooltipAvatarGroupTab] = useState('preview');
+  const [tooltipSuccessTab, setTooltipSuccessTab] = useState('preview');
   const [tabsItemTab, setTabsItemTab] = useState('preview');
   const [tabBasicMdTab, setTabBasicMdTab] = useState('preview');
   const [tabBasicSmTab, setTabBasicSmTab] = useState('preview');
@@ -89,20 +121,56 @@ export default function App() {
   const [tabIconSmTab, setTabIconSmTab] = useState('preview');
   const [tabDisabledTab, setTabDisabledTab] = useState('preview');
   const [iconsTab, setIconsTab] = useState('preview');
+  const [imagesTab, setImagesTab] = useState('preview');
   const [modalTwoActionTab, setModalTwoActionTab] = useState('preview');
   const [modalOneActionTab, setModalOneActionTab] = useState('preview');
   const [datepickerBasicTab, setDatepickerBasicTab] = useState('preview');
   const [datepickerLabelTab, setDatepickerLabelTab] = useState('preview');
   const [datepickerSizeTab, setDatepickerSizeTab] = useState('preview');
   const [datepickerStatesTab, setDatepickerStatesTab] = useState('preview');
+  
+  // New MyTask component tabs
+  const [toastTab, setToastTab] = useState('preview');
+  const [toastTab1, setToastTab1] = useState('preview');
+  const [toastTab2, setToastTab2] = useState('preview');
+  const [toastTab3, setToastTab3] = useState('preview');
+  const [toastTab4, setToastTab4] = useState('preview');
+  const [calendarTab, setCalendarTab] = useState('preview');
+  const [dateRangeCalendarTab, setDateRangeCalendarTab] = useState('preview');
+  const [discardChangesModalTab, setDiscardChangesModalTab] = useState('preview');
+  const [priorityDropdownTab, setPriorityDropdownTab] = useState('preview');
+  const [taskSectionHeaderTab, setTaskSectionHeaderTab] = useState('preview');
+  const [projectSelectModalTab, setProjectSelectModalTab] = useState('preview');
+  const [assigneeModalTab, setAssigneeModalTab] = useState('preview');
+  const [taskItemTab, setTaskItemTab] = useState('preview');
+  const [taskSectionTab, setTaskSectionTab] = useState('preview');
 
   // Modal visibility states
   const [isTwoActionModalOpen, setIsTwoActionModalOpen] = useState(false);
   const [isOneActionModalOpen, setIsOneActionModalOpen] = useState(false);
+  const [isDiscardModalOpen, setIsDiscardModalOpen] = useState(false);
+  const [isProjectSelectModalOpen, setIsProjectSelectModalOpen] = useState(false);
+  const [isAssigneeModalOpen, setIsAssigneeModalOpen] = useState(false);
 
   // Datepicker states
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedDateWithLabel, setSelectedDateWithLabel] = useState<Date | null>(null);
+  
+  // Calendar states
+  const [calendarSelectedDate, setCalendarSelectedDate] = useState<Date | null>(null);
+  const [showCalendar, setShowCalendar] = useState(false);
+  
+  // Date Range Calendar states
+  const [dateRangeStart, setDateRangeStart] = useState<Date | null>(null);
+  const [dateRangeEnd, setDateRangeEnd] = useState<Date | null>(null);
+  const [showDateRangeCalendar, setShowDateRangeCalendar] = useState(false);
+  
+  // Priority Dropdown state
+  const [showPriorityDropdown, setShowPriorityDropdown] = useState(false);
+  const [selectedPriority, setSelectedPriority] = useState<"high" | "medium" | "low">("medium");
+  
+  // Task Section Header state
+  const [isSectionExpanded, setIsSectionExpanded] = useState(true);
 
   // Tab Item interactive states
   const [activeTabSm, setActiveTabSm] = useState('tab1');
@@ -282,8 +350,8 @@ export default function App() {
       <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       {/* Main Content */}
-      <main className="flex-1 w-full min-[1080px]:w-auto h-screen overflow-y-auto max-[1080px]:pt-16">
-        <div className="p-4 md:p-8 pb-16 min-[1080px]:pt-8">
+      <main className={`flex-1 w-full min-[1080px]:w-auto h-screen max-[1080px]:pt-16 ${activeSection === 'my-task' || activeSection === 'task-panel' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+        <div className={activeSection === 'my-task' || activeSection === 'task-panel' ? 'h-full' : 'p-4 md:p-8 pb-16 min-[1080px]:pt-8'}>
           {/* Colors Section */}
           {activeSection === 'colors' && (
             <section>
@@ -680,6 +748,7 @@ export default function App() {
                               <Button variant="fill" className="btn-primary">Primary</Button>
                               <Button variant="fill" className="btn-secondary">Black</Button>
                               <Button variant="fill" className="btn-destructive">Destructive</Button>
+                              <Button variant="fill" className="btn-blue">Blue</Button>
                               <Button variant="fill" disabled>Disabled</Button>
                             </div>
                           </div>
@@ -691,6 +760,7 @@ export default function App() {
                               <Button variant="outline" className="btn-primary">Primary</Button>
                               <Button variant="outline" className="btn-secondary">Black</Button>
                               <Button variant="outline" className="btn-destructive">Destructive</Button>
+                              <Button variant="outline" className="btn-blue">Blue</Button>
                               <Button variant="outline" disabled>Disabled</Button>
                             </div>
                           </div>
@@ -702,6 +772,7 @@ export default function App() {
                               <Button variant="ghost" className="btn-primary">Primary</Button>
                               <Button variant="ghost" className="btn-secondary">Black</Button>
                               <Button variant="ghost" className="btn-destructive">Destructive</Button>
+                              <Button variant="ghost" className="btn-blue">Blue</Button>
                               <Button variant="ghost" disabled>Disabled</Button>
                             </div>
                           </div>
@@ -717,18 +788,21 @@ export default function App() {
 <Button variant="fill" className="btn-primary">Primary</Button>
 <Button variant="fill" className="btn-secondary">Black</Button>
 <Button variant="fill" className="btn-destructive">Destructive</Button>
+<Button variant="fill" className="btn-blue">Blue</Button>
 <Button variant="fill" disabled>Disabled</Button>
 
 // OUTLINE VARIANT - Transparent with border
 <Button variant="outline" className="btn-primary">Primary</Button>
 <Button variant="outline" className="btn-secondary">Black</Button>
 <Button variant="outline" className="btn-destructive">Destructive</Button>
+<Button variant="outline" className="btn-blue">Blue</Button>
 <Button variant="outline" disabled>Disabled</Button>
 
 // GHOST VARIANT - Transparent without border
 <Button variant="ghost" className="btn-primary">Primary</Button>
 <Button variant="ghost" className="btn-secondary">Black</Button>
 <Button variant="ghost" className="btn-destructive">Destructive</Button>
+<Button variant="ghost" className="btn-blue">Blue</Button>
 <Button variant="ghost" disabled>Disabled</Button>`}
                       />
                     </TabPanel>
@@ -2273,7 +2347,47 @@ const options: DropdownOption[] = [
                   </TabsContainer>
                 </div>
 
-                {/* Section 3: Sizes */}
+                {/* Section 3: Borderless */}
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <h3 style={{ fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-8)' }}>Borderless</h3>
+                  <TabsContainer
+                    activeTab={dropdownVariantTab}
+                    onTabChange={setDropdownVariantTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]
+                  }>
+                    <TabPanel value="preview" activeTab={dropdownVariantTab}>
+                      <div className="component-card">
+                        <Dropdown
+                          size="md"
+                          variant="borderless"
+                          label="Label"
+                          options={dropdownOptions}
+                          placeholder="Select an option"
+                        />
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={dropdownVariantTab}>
+                      <CodeExample
+                        title="Borderless Dropdown"
+                        code={`import { Dropdown } from './components';
+
+// Borderless variant (no border)
+<Dropdown
+  size="md"
+  variant="borderless"
+  label="Label"
+  options={options}
+  placeholder="Select an option"
+/>`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+
+                {/* Section 4: Sizes */}
                 <div style={{ marginBottom: 'var(--spacing-56)' }}>
                   <h3 style={{ fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-8)' }}>Sizes</h3>
                   <TabsContainer
@@ -2333,7 +2447,7 @@ const options: DropdownOption[] = [
                   </TabsContainer>
                 </div>
 
-                {/* Section 4: States */}
+                {/* Section 5: States */}
                 <div style={{ marginBottom: 'var(--spacing-56)' }}>
                   <h3 style={{ fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-8)' }}>States</h3>
                   <TabsContainer
@@ -3658,7 +3772,7 @@ export default function Example() {
                               content={
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                   <Avatar size="xs" variant="image" imageUrl="https://i.pravatar.cc/150?img=1" />
-                                  <span>Alex Turner</span>
+                                  <span style={{ color: 'var(--white)' }}>Alex Turner</span>
                                 </div>
                               } 
                               size="sm"
@@ -3673,7 +3787,7 @@ export default function Example() {
                               content={
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                   <Avatar size="xs" variant="image" imageUrl="https://i.pravatar.cc/150?img=2" />
-                                  <span>Jessica Lee</span>
+                                  <span style={{ color: 'var(--white)' }}>Jessica Lee</span>
                                 </div>
                               } 
                               size="sm"
@@ -3688,7 +3802,7 @@ export default function Example() {
                               content={
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                   <Avatar size="xs" variant="initials" initials="DK" />
-                                  <span>David Kim</span>
+                                  <span style={{ color: 'var(--white)' }}>David Kim</span>
                                 </div>
                               } 
                               size="sm"
@@ -3704,15 +3818,15 @@ export default function Example() {
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                     <Avatar size="xs" variant="image" imageUrl="https://i.pravatar.cc/150?img=3" />
-                                    <span>Maria Garcia</span>
+                                    <span style={{ color: 'var(--white)' }}>Maria Garcia</span>
                                   </div>
                                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                     <Avatar size="xs" variant="image" imageUrl="https://i.pravatar.cc/150?img=4" />
-                                    <span>James Wilson</span>
+                                    <span style={{ color: 'var(--white)' }}>James Wilson</span>
                                   </div>
                                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                     <Avatar size="xs" variant="image" imageUrl="https://i.pravatar.cc/150?img=5" />
-                                    <span>Sarah Chen</span>
+                                    <span style={{ color: 'var(--white)' }}>Sarah Chen</span>
                                   </div>
                                 </div>
                               } 
@@ -3722,14 +3836,14 @@ export default function Example() {
                                 width: '40px', 
                                 height: '40px', 
                                 borderRadius: '50%', 
-                                backgroundColor: 'var(--black)', 
+                                backgroundColor: 'var(--grey-02)', 
                                 display: 'flex', 
                                 alignItems: 'center', 
                                 justifyContent: 'center',
-                                color: 'var(--white)',
+                                color: 'var(--text-secondary)',
                                 position: 'relative',
                                 zIndex: 2,
-                                border: '2px solid var(--white)',
+                                border: '2px solid var(--grey-03)',
                                 cursor: 'pointer',
                                 fontWeight: 'var(--font-weight-semibold)',
                                 fontSize: '14px'
@@ -3838,6 +3952,61 @@ export default function Example() {
         </div>
       </Tooltip>
     </div>
+  );
+}`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+
+                {/* Section 4: Success Tooltip Style */}
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <h3 style={{ fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-8)' }}>Success Tooltip (Link Copied)</h3>
+                  <TabsContainer
+                    activeTab={tooltipSuccessTab}
+                    onTabChange={setTooltipSuccessTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={tooltipSuccessTab}>
+                      <div className="component-card">
+                        <div style={{ display: 'flex', gap: 'var(--spacing-24)', alignItems: 'center', justifyContent: 'center', padding: 'var(--spacing-32)' }}>
+                          {/* Success tooltip example with click interaction */}
+                          <SuccessTooltipDemo />
+                        </div>
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={tooltipSuccessTab}>
+                      <CodeExample 
+                        code={`import { useState } from 'react';
+import { Tooltip } from './components/Tooltip';
+import { Button } from './components/Button';
+import { SuccessTooltip } from './components/SuccessTooltip';
+
+export default function Example() {
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const handleClick = () => {
+    setShowSuccess(true);
+    setTimeout(() => {
+      setShowSuccess(false);
+    }, 2000);
+  };
+
+  return (
+    <Tooltip 
+      variant="bottom-center"
+      forceShow={showSuccess}
+      content={showSuccess ? <SuccessTooltip message="Link copied!" /> : "Copy link"}
+      size="sm"
+      style={showSuccess ? "custom" : "default"}
+    >
+      <Button variant="fill" size="sm" className="btn-primary" onClick={handleClick}>
+        Click to copy
+      </Button>
+    </Tooltip>
   );
 }`}
                       />
@@ -4181,35 +4350,942 @@ export default function Example() {
         </section>
       )}
 
-          {/* My Task Page */}
-          {activeSection === 'my-task' && (
+          {/* Images Section */}
+          {activeSection === 'images' && (
             <section>
               <SectionHeader
-                icon={CheckSquare}
-                title="My Task"
-                description="Manage your tasks"
+                icon={Image}
+                title="Images"
+                description="Figma asset imports for your design system"
               />
 
-              <div className="space-y-6">
-                <div className="component-card">
-                  <h3 style={{ fontSize: 'var(--text-h3)', fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-16)' }}>
-                    Welcome to My Task Page
-                  </h3>
-                  <p style={{ fontSize: 'var(--text-base)', color: 'var(--text-secondary)', marginBottom: 'var(--spacing-24)' }}>
-                    This is a placeholder page for the My Task section. You can customize this page with your task management interface.
-                  </p>
-                  
-                  <div style={{ display: 'flex', gap: 'var(--spacing-12)' }}>
-                    <Button size="md" className="btn-primary">
-                      Create New Task
-                    </Button>
-                    <Button size="md" variant="outline" className="btn-secondary">
-                      View All Tasks
-                    </Button>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Team Collaboration */}
+                <LogoItem title="Team Collaboration">
+                  <img 
+                    src={teamCollaborationImage} 
+                    alt="Team Collaboration"
+                    style={{ 
+                      width: '100%',
+                      height: 'auto',
+                      maxWidth: '300px',
+                      objectFit: 'contain'
+                    }}
+                  />
+                </LogoItem>
+              </div>
+            </section>
+          )}
+
+          {/* Toast Component */}
+          {activeSection === 'toast' && (
+            <section>
+              <SectionHeader
+                icon={Bell}
+                title="Toast"
+                description="Total Variant: 4"
+              />
+
+              <div>
+                {/* Variant 1: Icon + Title */}
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <div style={{ 
+                    marginBottom: 'var(--spacing-16)',
+                    fontSize: 'var(--text-body)',
+                    fontWeight: 'var(--font-weight-semibold)',
+                    color: 'var(--text-primary)'
+                  }}>
+                    Icon + Title
                   </div>
+                  <TabsContainer
+                    activeTab={toastTab1}
+                    onTabChange={setToastTab1}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={toastTab1}>
+                      <div style={{ display: 'flex', justifyContent: 'center', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
+                        <Toast 
+                          variant="title-only" 
+                          type="success"
+                          title="Task Completed" 
+                        />
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={toastTab1}>
+                      <CodeExample 
+                        code={`import { Toast } from './components/Toast';
+import { toast } from 'sonner@2.0.3';
+
+toast.custom(() => (
+  <Toast 
+    variant="title-only"
+    type="success" 
+    title="Task Completed"
+    duration={3000}
+  />
+), {
+  duration: 3000,
+  position: 'bottom-center',
+});`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+
+                {/* Variant 2: Icon + Title + Caption */}
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <div style={{ 
+                    marginBottom: 'var(--spacing-16)',
+                    fontSize: 'var(--text-body)',
+                    fontWeight: 'var(--font-weight-semibold)',
+                    color: 'var(--text-primary)'
+                  }}>
+                    Icon + Title + Caption
+                  </div>
+                  <TabsContainer
+                    activeTab={toastTab2}
+                    onTabChange={setToastTab2}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={toastTab2}>
+                      <div style={{ display: 'flex', justifyContent: 'center', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
+                        <Toast 
+                          variant="title-caption" 
+                          type="success"
+                          title="Task Completed" 
+                          caption="Your task has been marked as complete" 
+                        />
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={toastTab2}>
+                      <CodeExample 
+                        code={`import { Toast } from './components/Toast';
+import { toast } from 'sonner@2.0.3';
+
+toast.custom(() => (
+  <Toast 
+    variant="title-caption"
+    type="success" 
+    title="Task Completed" 
+    caption="Your task has been marked as complete"
+    duration={3000}
+  />
+), {
+  duration: 3000,
+  position: 'bottom-center',
+});`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+
+                {/* Variant 3: Icon + Title + Arrow */}
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <div style={{ 
+                    marginBottom: 'var(--spacing-16)',
+                    fontSize: 'var(--text-body)',
+                    fontWeight: 'var(--font-weight-semibold)',
+                    color: 'var(--text-primary)'
+                  }}>
+                    Icon + Title + Arrow
+                  </div>
+                  <TabsContainer
+                    activeTab={toastTab3}
+                    onTabChange={setToastTab3}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={toastTab3}>
+                      <div style={{ display: 'flex', justifyContent: 'center', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
+                        <Toast 
+                          variant="title-arrow" 
+                          type="success"
+                          title="Task Completed" 
+                        />
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={toastTab3}>
+                      <CodeExample 
+                        code={`import { Toast } from './components/Toast';
+import { toast } from 'sonner@2.0.3';
+
+toast.custom(() => (
+  <Toast 
+    variant="title-arrow"
+    type="success" 
+    title="Task Completed"
+    duration={3000}
+  />
+), {
+  duration: 3000,
+  position: 'bottom-center',
+});`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+
+                {/* Variant 4: Icon + Title + Caption + Arrow */}
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <div style={{ 
+                    marginBottom: 'var(--spacing-16)',
+                    fontSize: 'var(--text-body)',
+                    fontWeight: 'var(--font-weight-semibold)',
+                    color: 'var(--text-primary)'
+                  }}>
+                    Icon + Title + Caption + Arrow
+                  </div>
+                  <TabsContainer
+                    activeTab={toastTab4}
+                    onTabChange={setToastTab4}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={toastTab4}>
+                      <div style={{ display: 'flex', justifyContent: 'center', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
+                        <Toast 
+                          variant="title-caption-arrow" 
+                          type="success"
+                          title="Task Completed" 
+                          caption="Your task has been marked as complete" 
+                        />
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={toastTab4}>
+                      <CodeExample 
+                        code={`import { Toast } from './components/Toast';
+import { toast } from 'sonner@2.0.3';
+
+toast.custom(() => (
+  <Toast 
+    variant="title-caption-arrow"
+    type="success" 
+    title="Task Completed" 
+    caption="Your task has been marked as complete"
+    duration={3000}
+  />
+), {
+  duration: 3000,
+  position: 'bottom-center',
+});`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
                 </div>
               </div>
             </section>
+          )}
+
+          {/* Calendar Component */}
+          {activeSection === 'calendar' && (
+            <section>
+              <SectionHeader
+                icon={CalendarDays}
+                title="Calendar"
+                description="Total Variant: 1"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={calendarTab}
+                    onTabChange={setCalendarTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={calendarTab}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
+                        <Button 
+                          variant="fill" 
+                          size="md"
+                          className="btn-secondary"
+                          style={{ width: '96px', height: '40px' }}
+                          onClick={() => setShowCalendar(!showCalendar)}
+                        >
+                          Calendar
+                        </Button>
+                        {showCalendar && (
+                          <div style={{ position: 'relative', display: 'inline-block' }}>
+                            <Calendar
+                              selectedDate={calendarSelectedDate}
+                              onSelect={(date) => {
+                                setCalendarSelectedDate(date);
+                                setShowCalendar(false);
+                              }}
+                              onClose={() => setShowCalendar(false)}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={calendarTab}>
+                      <CodeExample 
+                        code={`import { Calendar } from './components/Calendar';
+import { useState } from 'react';
+
+export default function Example() {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [showCalendar, setShowCalendar] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setShowCalendar(true)}>
+        {selectedDate ? selectedDate.toLocaleDateString() : 'Select Date'}
+      </button>
+      
+      {showCalendar && (
+        <Calendar
+          selectedDate={selectedDate}
+          onSelect={(date) => {
+            setSelectedDate(date);
+            setShowCalendar(false);
+          }}
+          onClose={() => setShowCalendar(false)}
+        />
+      )}
+    </>
+  );
+}`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Date Range Calendar Component */}
+          {activeSection === 'date-range-calendar' && (
+            <section>
+              <SectionHeader
+                icon={CalendarRange}
+                title="Date Range Calendar"
+                description="Total Variant: 1"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={dateRangeCalendarTab}
+                    onTabChange={setDateRangeCalendarTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={dateRangeCalendarTab}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
+                        <Button 
+                          variant="fill" 
+                          size="md"
+                          className="btn-secondary"
+                          style={{ width: '96px' }}
+                          onClick={() => setShowDateRangeCalendar(!showDateRangeCalendar)}
+                        >
+                          Date
+                        </Button>
+                        {showDateRangeCalendar && (
+                          <div style={{ position: 'relative', display: 'inline-block', width: '380px' }}>
+                            <DateRangeCalendar
+                              startDate={dateRangeStart}
+                              endDate={dateRangeEnd}
+                              onDatesChange={(start, end) => {
+                                setDateRangeStart(start);
+                                setDateRangeEnd(end);
+                              }}
+                              onClose={() => setShowDateRangeCalendar(false)}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={dateRangeCalendarTab}>
+                      <CodeExample 
+                        code={`import { DateRangeCalendar } from './components/DateRangeCalendar';
+import { useState } from 'react';
+
+export default function Example() {
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [showCalendar, setShowCalendar] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setShowCalendar(true)}>
+        Select Date Range
+      </button>
+      
+      {showCalendar && (
+        <DateRangeCalendar
+          startDate={startDate}
+          endDate={endDate}
+          onDatesChange={(start, end) => {
+            setStartDate(start);
+            setEndDate(end);
+          }}
+          onClose={() => setShowCalendar(false)}
+        />
+      )}
+    </>
+  );
+}`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Discard Changes Modal Component */}
+          {activeSection === 'discard-changes-modal' && (
+            <section>
+              <SectionHeader
+                icon={AlertTriangle}
+                title="Discard Changes Modal"
+                description="Total Variant: 1"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={discardChangesModalTab}
+                    onTabChange={setDiscardChangesModalTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={discardChangesModalTab}>
+                      <div style={{ padding: 'var(--spacing-24)' }}>
+                        <Button 
+                          variant="fill" 
+                          size="md"
+                          className="btn-secondary"
+                          style={{ width: '96px' }}
+                          onClick={() => setIsDiscardModalOpen(true)}
+                        >
+                          Discard
+                        </Button>
+                        <DiscardChangesModal
+                          isOpen={isDiscardModalOpen}
+                          onDiscard={() => {
+                            setIsDiscardModalOpen(false);
+                            alert('Changes discarded');
+                          }}
+                          onCancel={() => setIsDiscardModalOpen(false)}
+                        />
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={discardChangesModalTab}>
+                      <CodeExample 
+                        code={`import { DiscardChangesModal } from './components/DiscardChangesModal';
+import { useState } from 'react';
+
+export default function Example() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>
+        Discard Changes
+      </button>
+      
+      <DiscardChangesModal
+        isOpen={isOpen}
+        onDiscard={() => {
+          setIsOpen(false);
+          // Handle discard logic
+        }}
+        onCancel={() => setIsOpen(false)}
+        title="Discard changes?"
+        description="You have unsaved changes. Are you sure you want to discard them?"
+        actionButtonText="Discard"
+      />
+    </>
+  );
+}`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Priority Dropdown Component */}
+          {activeSection === 'priority-dropdown' && (
+            <section>
+              <SectionHeader
+                icon={ChevronUpIcon}
+                title="Priority Dropdown"
+                description="Total Variant: 1"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={priorityDropdownTab}
+                    onTabChange={setPriorityDropdownTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={priorityDropdownTab}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
+                        <div>
+                          <Button 
+                            variant="fill" 
+                            size="md"
+                            className="btn-secondary"
+                            style={{ width: '96px' }}
+                            onClick={() => setShowPriorityDropdown(!showPriorityDropdown)}
+                          >
+                            Priority
+                          </Button>
+                        </div>
+                        {showPriorityDropdown && (
+                          <div style={{ position: 'relative', display: 'inline-block', width: 'fit-content' }}>
+                            <PriorityDropdown
+                              onSelect={(priority) => {
+                                setSelectedPriority(priority);
+                                setShowPriorityDropdown(false);
+                              }}
+                              onClose={() => setShowPriorityDropdown(false)}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={priorityDropdownTab}>
+                      <CodeExample 
+                        code={`import { PriorityDropdown } from './components/PriorityDropdown';
+import { useState } from 'react';
+
+export default function Example() {
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [priority, setPriority] = useState<"high" | "medium" | "low">("medium");
+
+  return (
+    <>
+      <button onClick={() => setShowDropdown(true)}>
+        Priority: {priority}
+      </button>
+      
+      {showDropdown && (
+        <PriorityDropdown
+          onSelect={(priority) => {
+            setPriority(priority);
+            setShowDropdown(false);
+          }}
+          onClose={() => setShowDropdown(false)}
+        />
+      )}
+    </>
+  );
+}`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Task Section Header Component */}
+          {activeSection === 'task-section-header' && (
+            <section>
+              <SectionHeader
+                icon={ChevronDown}
+                title="Task Section Header"
+                description="Total Variant: 1"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={taskSectionHeaderTab}
+                    onTabChange={setTaskSectionHeaderTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={taskSectionHeaderTab}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
+                        <div style={{ backgroundColor: 'white', borderRadius: 'var(--radius-md)', border: '1px solid var(--grey-03)' }}>
+                          <TaskSectionHeader
+                            title="Current Tasks"
+                            count={12}
+                            isExpanded={isSectionExpanded}
+                            onToggle={() => setIsSectionExpanded(!isSectionExpanded)}
+                          />
+                        </div>
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={taskSectionHeaderTab}>
+                      <CodeExample 
+                        code={`import { TaskSectionHeader } from './components/TaskSectionHeader';
+import { useState } from 'react';
+
+export default function Example() {
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  return (
+    <TaskSectionHeader
+      title="Current Tasks"
+      count={12}
+      isExpanded={isExpanded}
+      onToggle={() => setIsExpanded(!isExpanded)}
+      showCount={true}
+    />
+  );
+}`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Project Select Modal Component */}
+          {activeSection === 'project-select-modal' && (
+            <section>
+              <SectionHeader
+                icon={FolderOpen}
+                title="Project Select Modal"
+                description="Total Variant: 1"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={projectSelectModalTab}
+                    onTabChange={setProjectSelectModalTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={projectSelectModalTab}>
+                      <div style={{ padding: 'var(--spacing-24)' }}>
+                        <Button 
+                          variant="fill" 
+                          size="md"
+                          className="btn-secondary"
+                          style={{ width: '96px' }}
+                          onClick={() => setIsProjectSelectModalOpen(true)}
+                        >
+                          Project
+                        </Button>
+                        <ProjectSelectModal
+                          isOpen={isProjectSelectModalOpen}
+                          onClose={() => setIsProjectSelectModalOpen(false)}
+                          onSelect={(project) => {
+                            alert(`Selected: ${project.name}`);
+                            setIsProjectSelectModalOpen(false);
+                          }}
+                        />
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={projectSelectModalTab}>
+                      <CodeExample 
+                        code={`import { ProjectSelectModal } from './components/ProjectSelectModal';
+import { useState } from 'react';
+
+export default function Example() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>
+        Select Project
+      </button>
+      
+      <ProjectSelectModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onSelect={(project) => {
+          console.log('Selected project:', project);
+          setIsOpen(false);
+        }}
+      />
+    </>
+  );
+}`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Assignee Modal Component */}
+          {activeSection === 'assignee-modal' && (
+            <section>
+              <SectionHeader
+                icon={UserPlus}
+                title="Assignee Modal"
+                description="Modal for selecting and managing task assignees with search, groups, and email invites"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={assigneeModalTab}
+                    onTabChange={setAssigneeModalTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={assigneeModalTab}>
+                      <div style={{ padding: 'var(--spacing-24)' }}>
+                        <Button 
+                          variant="fill" 
+                          size="md"
+                          className="btn-secondary"
+                          style={{ width: '96px' }}
+                          onClick={() => setIsAssigneeModalOpen(true)}
+                        >
+                          Assignee
+                        </Button>
+                        <AssigneeModal
+                          isOpen={isAssigneeModalOpen}
+                          onClose={() => setIsAssigneeModalOpen(false)}
+                          selectedAssignees={[
+                            { name: 'James Logan Smith', email: 'jameslogansmith@gmail.com', role: 'assignee' }
+                          ]}
+                          onAssign={(assignees) => {
+                            console.log('Assigned:', assignees);
+                            setIsAssigneeModalOpen(false);
+                          }}
+                        />
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={assigneeModalTab}>
+                      <CodeExample 
+                        code={`import { AssigneeModal } from './pages/my-task/AssigneeModal';
+import { useState } from 'react';
+
+export default function Example() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [assignees, setAssignees] = useState([]);
+
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>
+        Select Assignees
+      </button>
+      
+      <AssigneeModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        selectedAssignees={assignees}
+        onAssign={(newAssignees) => {
+          setAssignees(newAssignees);
+          setIsOpen(false);
+        }}
+      />
+    </>
+  );
+}
+
+// Features:
+// - User search and filtering
+// - Email invitation support
+// - Contact groups (collapsible)
+// - Role selection (Assignee/Viewer)
+// - Multi-user selection
+// - Copy link functionality`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Task Item Component */}
+          {activeSection === 'task-item' && (
+            <section>
+              <SectionHeader
+                icon={CheckSquare}
+                title="Task Item"
+                description="Total Variant: 1"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={taskItemTab}
+                    onTabChange={setTaskItemTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={taskItemTab}>
+                      <div style={{ padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
+                        <div style={{ backgroundColor: 'white', borderRadius: 'var(--radius-md)', border: '1px solid var(--grey-03)', padding: 'var(--spacing-12)' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-12)' }}>
+                            <Checkbox size="sm" />
+                            <span style={{ flex: 1 }}>Example task with drag-and-drop support</span>
+                          </div>
+                        </div>
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={taskItemTab}>
+                      <CodeExample 
+                        code={`import { TaskItem } from './pages/my-task/TaskItem';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
+export default function Example() {
+  const task = {
+    id: '1',
+    name: 'Task name',
+    completed: false,
+    priority: 'medium',
+    dueDate: new Date(),
+    assignees: [],
+    project: { id: '1', name: 'Project', color: '#3B82F6', icon: 'helmet' }
+  };
+
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <TaskItem
+        task={task}
+        index={0}
+        onToggleComplete={(id) => console.log('Toggle:', id)}
+        onUpdateTask={(id, updates) => console.log('Update:', updates)}
+        onDeleteTask={(id) => console.log('Delete:', id)}
+        sectionType="current"
+      />
+    </DndProvider>
+  );
+}
+
+// Features:
+// - Drag and drop with react-dnd
+// - Multi-select support (Cmd/Ctrl + click)
+// - Context menu (right-click)
+// - Inline editing for priority and due date
+// - Checkbox with animation
+// - Hover states with action buttons
+// - Project and checklist badges
+// - Assignee avatars`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Task Section Component */}
+          {activeSection === 'task-section' && (
+            <section>
+              <SectionHeader
+                icon={List}
+                title="Task Section"
+                description="Total Variant: 1"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={taskSectionTab}
+                    onTabChange={setTaskSectionTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={taskSectionTab}>
+                      <div style={{ padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
+                        <div style={{ backgroundColor: 'white', borderRadius: 'var(--radius-md)', border: '1px solid var(--grey-03)' }}>
+                          <TaskSectionHeader
+                            title="Current Tasks"
+                            count={5}
+                            isExpanded={true}
+                            onToggle={() => {}}
+                          />
+                        </div>
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={taskSectionTab}>
+                      <CodeExample 
+                        code={`import { TaskSection } from './components/TaskSection';
+import { TaskItem } from './pages/my-task/TaskItem';
+import { TaskSectionHeader } from './components/TaskSectionHeader';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
+export default function Example() {
+  const tasks = [
+    { id: '1', name: 'Task 1', completed: false, priority: 'high' },
+    { id: '2', name: 'Task 2', completed: false, priority: 'medium' }
+  ];
+
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <TaskSection
+        title="Current Tasks"
+        count={tasks.length}
+        tasks={tasks}
+        isExpanded={true}
+        onToggleExpand={() => {}}
+        sectionType="current"
+        onToggleComplete={(id) => console.log('Toggle:', id)}
+        onUpdateTask={(id, updates) => console.log('Update:', updates)}
+        onDeleteTask={(id) => console.log('Delete:', id)}
+        TaskItemComponent={TaskItem}
+        SectionHeaderComponent={TaskSectionHeader}
+      />
+    </DndProvider>
+  );
+}
+
+// Features:
+// - Collapsible section with header
+// - Virtual scrolling for performance
+// - Drag and drop task reordering
+// - Cross-section task moves
+// - Inline task creation
+// - Bulk assignee management
+// - Load more on scroll`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* My Task Page */}
+          {activeSection === 'my-task' && (
+            <MyTaskPage />
+          )}
+
+          {/* Task Panel Page */}
+          {activeSection === 'task-panel' && (
+            <TaskPanelPage />
           )}
         </div>
       </main>

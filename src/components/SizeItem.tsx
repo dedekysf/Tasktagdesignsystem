@@ -21,7 +21,12 @@ export function SizeItem({ name, cssVar }: SizeItemProps) {
         />
         {/* Text information */}
         <div className="flex-1">
-          <p style={{ fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-4)' }}>
+          <p style={{ 
+            fontSize: 'var(--text-label)',
+            fontWeight: 'var(--font-weight-semibold)',
+            lineHeight: 1.5,
+            marginBottom: 'var(--spacing-4)' 
+          }}>
             {name}
           </p>
           <p className="text-web-metadata-primary text-metadata">

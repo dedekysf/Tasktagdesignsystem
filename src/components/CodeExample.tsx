@@ -71,7 +71,12 @@ export function CodeExample({ code, title }: CodeExampleProps) {
             borderBottom: '1px solid var(--grey-03)'
           }}
         >
-          <p style={{ color: 'var(--text-secondary)' }}>{title}</p>
+          <p style={{ 
+            color: 'var(--text-secondary)',
+            fontSize: 'var(--text-label)',
+            fontWeight: 'var(--font-weight-regular)',
+            lineHeight: 1.5
+          }}>{title}</p>
         </div>
       )}
       

@@ -4,6 +4,7 @@ interface AvatarData {
   variant: AvatarVariant;
   imageUrl?: string;
   initials?: string;
+  backgroundColor?: string;
 }
 
 interface AvatarGroupProps {
@@ -43,6 +44,7 @@ export function AvatarGroup({ avatars, size = 'md', className = '', max, disable
           style={{
             marginLeft: index === 0 ? 0 : overlap,
             position: 'relative',
+            zIndex: displayAvatars.length - index,
             transition: 'opacity 0.2s ease'
           }}
         >
@@ -51,10 +53,10 @@ export function AvatarGroup({ avatars, size = 'md', className = '', max, disable
             variant={avatar.variant}
             imageUrl={avatar.imageUrl}
             initials={avatar.initials}
+            backgroundColor={avatar.backgroundColor}
             disabled={disabled}
             className="avatar-group-avatar"
             style={{
-              border: '2px solid var(--white)',
               boxShadow: 'var(--elevation-sm)'
             }}
           />
@@ -66,6 +68,7 @@ export function AvatarGroup({ avatars, size = 'md', className = '', max, disable
           style={{
             marginLeft: overlap,
             position: 'relative',
+            zIndex: 0,
             transition: 'opacity 0.2s ease'
           }}
         >
@@ -73,13 +76,13 @@ export function AvatarGroup({ avatars, size = 'md', className = '', max, disable
             size={size}
             variant="initials"
             initials={`+${remainingCount}`}
-            disabled={disabled}
+            disabled={false}
+            backgroundColor="var(--grey-02)"
             className="avatar-group-avatar"
             style={{
-              border: '2px solid var(--white)',
+              border: '2px solid var(--grey-03)',
               boxShadow: 'var(--elevation-sm)',
-              backgroundColor: disabled ? 'var(--grey-02)' : 'var(--black)',
-              color: disabled ? 'var(--grey-05)' : 'var(--white)'
+              color: 'var(--text-secondary)'
             }}
           />
         </div>

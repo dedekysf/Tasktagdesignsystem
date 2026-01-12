@@ -20,9 +20,11 @@ interface AvatarProps {
   disabled?: boolean;
   /** Icon color (for icon variant) */
   iconColor?: string;
+  /** Background color override */
+  backgroundColor?: string;
 }
 
-export function Avatar({ size = 'md', variant = 'icon', className = '', initials = "AZ", imageUrl = "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NjY0MDYyMjZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", style = {}, disabled = false, iconColor = 'var(--white)' }: AvatarProps) {
+export function Avatar({ size = 'md', variant = 'icon', className = '', initials = "AZ", imageUrl = "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NjY0MDYyMjZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", style = {}, disabled = false, iconColor = 'var(--text-secondary)', backgroundColor }: AvatarProps) {
   // Map size to CSS variables and proportional font/icon sizes
   const sizeMap = {
     'xs': { containerVar: '--size-xs', text: '10px', iconScale: 0.5 },
@@ -40,6 +42,16 @@ export function Avatar({ size = 'md', variant = 'icon', className = '', initials
     .trim();
   const iconSize = parseInt(containerSize) * config.iconScale;
 
+  // Extract color from style for text, and remove it from container style
+  const { color: textColor, ...containerStyle } = style;
+
+  // Check if background is gray-02 for special styling
+  const bgColor = disabled ? 'var(--grey-02)' : (backgroundColor || 'var(--light-mint)');
+  
+  // Apply border: white for normal, gray-05 for disabled
+  const borderColor = disabled ? 'var(--grey-05)' : 'var(--white)';
+  const effectiveIconColor = disabled ? 'var(--grey-05)' : iconColor;
+
   return (
     <div 
       className={`relative shrink-0 flex items-center justify-center overflow-hidden ${className}`}
@@ -47,10 +59,11 @@ export function Avatar({ size = 'md', variant = 'icon', className = '', initials
         width: `var(${config.containerVar})`, 
         height: `var(${config.containerVar})`,
         borderRadius: 'var(--radius-full)',
-        backgroundColor: disabled ? 'var(--grey-02)' : 'var(--secondary-green)',
+        backgroundColor: bgColor,
+        border: `2px solid ${borderColor}`,
         cursor: disabled ? 'not-allowed' : 'pointer',
         transition: 'opacity 0.2s ease',
-        ...style
+        ...containerStyle
       }}
       onMouseEnter={(e) => {
         if (!disabled) {
@@ -79,7 +92,7 @@ export function Avatar({ size = 'md', variant = 'icon', className = '', initials
           style={{ 
             fontSize: config.text,
             fontWeight: 'var(--font-weight-semibold)',
-            color: disabled ? 'var(--grey-05)' : 'var(--white)'
+            color: textColor || (disabled ? 'var(--grey-05)' : 'var(--text-primary)')
           }}
         >
           {initials}
@@ -88,7 +101,7 @@ export function Avatar({ size = 'md', variant = 'icon', className = '', initials
       
       {variant === 'icon' && (
         <User 
-          style={{ color: disabled ? 'var(--grey-05)' : iconColor }}
+          style={{ color: effectiveIconColor }}
           size={iconSize}
         />
       )}

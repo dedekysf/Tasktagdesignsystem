@@ -1,26 +1,53 @@
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 export type TooltipVariant = 'top-left' | 'top-center' | 'top-right' | 'left' | 'right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+export type TooltipSize = 'sm' | 'md' | 'lg';
+export type TooltipStyle = 'default' | 'success' | 'custom';
 
 interface TooltipProps {
-  /** Tooltip position variant: top-left, top-center, top-right, left, right, bottom-left, bottom-center, bottom-right */
+  /** Tooltip position variant: top-left, top-center, top-center, left, right, bottom-left, bottom-center, bottom-right */
   variant?: TooltipVariant;
+  /** Tooltip size: sm, md, lg */
+  size?: TooltipSize;
+  /** Tooltip style: default, success, custom (custom allows full styling control via content prop) */
+  style?: TooltipStyle;
   /** Custom className for additional styling */
   className?: string;
   /** The content to show in the tooltip */
   content: React.ReactNode;
   /** The trigger element */
   children: React.ReactNode;
+  /** Force tooltip to show (controlled mode) */
+  forceShow?: boolean;
 }
 
-export function Tooltip({ variant = 'top-center', className = '', content, children }: TooltipProps) {
+export function Tooltip({ variant = 'top-center', size = 'md', style: tooltipStyle = 'default', className = '', content, children, forceShow }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const triggerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
+  // Size mappings
+  const sizeMap = {
+    'sm': {
+      padding: 'var(--spacing-8) var(--spacing-12)',
+      fontSize: '12px'
+    },
+    'md': {
+      padding: 'var(--spacing-12) var(--spacing-16)',
+      fontSize: '14px'
+    },
+    'lg': {
+      padding: 'var(--spacing-16) var(--spacing-20)',
+      fontSize: '16px'
+    }
+  };
+
+  const sizeConfig = sizeMap[size];
+
   useEffect(() => {
-    if (isVisible && triggerRef.current && tooltipRef.current) {
+    if ((isVisible || forceShow) && triggerRef.current && tooltipRef.current) {
       const triggerRect = triggerRef.current.getBoundingClientRect();
       const tooltipRect = tooltipRef.current.getBoundingClientRect();
       
@@ -64,7 +91,7 @@ export function Tooltip({ variant = 'top-center', className = '', content, child
 
       setPosition({ top, left });
     }
-  }, [isVisible, variant]);
+  }, [isVisible, forceShow, variant]);
 
   return (
     <>
@@ -77,26 +104,39 @@ export function Tooltip({ variant = 'top-center', className = '', content, child
         {children}
       </div>
       
-      {isVisible && (
-        <div
-          ref={tooltipRef}
-          className={`fixed z-50 ${className}`}
-          style={{
-            top: position.top,
-            left: position.left,
-            padding: 'var(--spacing-8) var(--spacing-12)',
-            backgroundColor: 'var(--black)',
-            color: 'var(--white)',
-            borderRadius: 'var(--radius-8)',
-            pointerEvents: 'none',
-            whiteSpace: 'nowrap',
-            fontSize: '12px',
-            fontWeight: 'var(--font-weight-regular)',
-            lineHeight: '1.5'
-          }}
-        >
-          {content}
-        </div>
+      {(isVisible || forceShow) && (
+        createPortal(
+          <div
+            ref={tooltipRef}
+            className={`fixed z-[9999] ${className}`}
+            style={
+              tooltipStyle === 'custom' 
+                ? {
+                    top: position.top,
+                    left: position.left,
+                    pointerEvents: 'none'
+                  }
+                : {
+                    top: position.top,
+                    left: position.left,
+                    padding: sizeConfig.padding,
+                    backgroundColor: tooltipStyle === 'success' ? 'var(--secondary-green)' : 'var(--black)',
+                    color: 'var(--white)',
+                    borderRadius: 'var(--radius-8)',
+                    pointerEvents: 'none',
+                    maxWidth: '300px',
+                    whiteSpace: 'normal',
+                    wordWrap: 'break-word',
+                    fontSize: sizeConfig.fontSize,
+                    fontWeight: 'var(--font-weight-regular)',
+                    lineHeight: '1.5'
+                  }
+            }
+          >
+            {content}
+          </div>,
+          document.body
+        )
       )}
     </>
   );

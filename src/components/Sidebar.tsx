@@ -38,26 +38,38 @@ export function Sidebar({ activeSection, onSectionChange, isSidebarOpen, setIsSi
     { id: 'spacing', label: 'Space' },
     { id: 'sizes', label: 'Sizes' },
     { id: 'logos', label: 'Logos' },
-    { id: 'icons', label: 'Icons' }
+    { id: 'icons', label: 'Icons' },
+    { id: 'images', label: 'Images' }
   ];
 
   const componentItems = [
+    { id: 'assignee-modal', label: 'Assignee Modal' },
     { id: 'avatars', label: 'Avatars' },
     { id: 'buttons', label: 'Buttons' },
+    { id: 'calendar', label: 'Calendar' },
     { id: 'cards', label: 'Cards' },
     { id: 'checkbox', label: 'Checkbox' },
+    { id: 'date-range-calendar', label: 'Date Range Calendar' },
     { id: 'datepicker', label: 'Datepicker' },
+    { id: 'discard-changes-modal', label: 'Discard Changes Modal' },
     { id: 'dropdown', label: 'Dropdown' },
     { id: 'modal', label: 'Modal' },
+    { id: 'priority-dropdown', label: 'Priority Dropdown' },
+    { id: 'project-select-modal', label: 'Project Select Modal' },
     { id: 'radio-button', label: 'Radio Button' },
     { id: 'tabs-item', label: 'Tabs' },
+    { id: 'task-item', label: 'Task Item' },
+    { id: 'task-section', label: 'Task Section' },
+    { id: 'task-section-header', label: 'Task Section Header' },
     { id: 'text-input', label: 'Text Input' },
     { id: 'textarea', label: 'Text Area' },
+    { id: 'toast', label: 'Toast' },
     { id: 'tooltip', label: 'Tooltip' }
   ];
 
   const pagesItems = [
-    { id: 'my-task', label: 'My Task' }
+    { id: 'my-task', label: 'My Task' },
+    { id: 'task-panel', label: 'Task Panel' }
   ];
 
   const isSectionActive = (sectionId: string, items: Array<{ id: string }>) => {
