@@ -43,7 +43,7 @@ export function Modal({
         boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.06)",
         display: "flex",
         flexDirection: "column",
-        gap: "var(--spacing-24)",
+        gap: "var(--spacing-16)",
         minWidth: minWidth,
         width: "100%",
       }}

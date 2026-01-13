@@ -43,13 +43,13 @@ export function Avatar({ size = 'md', variant = 'icon', className = '', initials
   const iconSize = parseInt(containerSize) * config.iconScale;
 
   // Extract color from style for text, and remove it from container style
-  const { color: textColor, ...containerStyle } = style;
+  const { color: textColor, border: customBorder, ...containerStyle } = style;
 
   // Check if background is gray-02 for special styling
   const bgColor = disabled ? 'var(--grey-02)' : (backgroundColor || 'var(--light-mint)');
   
-  // Apply border: white for normal, gray-05 for disabled
-  const borderColor = disabled ? 'var(--grey-05)' : 'var(--white)';
+  // Apply border: grey-05 for disabled, white for normal, or custom from style prop
+  const borderColor = customBorder || (disabled ? '2px solid var(--grey-05)' : '2px solid var(--white)');
   const effectiveIconColor = disabled ? 'var(--grey-05)' : iconColor;
 
   return (
@@ -60,7 +60,7 @@ export function Avatar({ size = 'md', variant = 'icon', className = '', initials
         height: `var(${config.containerVar})`,
         borderRadius: 'var(--radius-full)',
         backgroundColor: bgColor,
-        border: `2px solid ${borderColor}`,
+        border: borderColor,
         cursor: disabled ? 'not-allowed' : 'pointer',
         transition: 'opacity 0.2s ease',
         ...containerStyle

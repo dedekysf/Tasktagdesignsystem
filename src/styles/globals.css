@@ -326,11 +326,30 @@
       font-weight: var(--font-weight-regular);
       line-height: 1.5;
     }
+
+    .body {
+      font-family: "Inter", sans-serif;
+      font-size: var(--text-label);
+      font-weight: var(--font-weight-regular);
+      line-height: 1.5;
+    }
   }
 }
 
 html {
   font-size: var(--font-size);
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+  overflow: hidden;
 }
 
 /* Reusable Component Styles */

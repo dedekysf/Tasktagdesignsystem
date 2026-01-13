@@ -9,6 +9,7 @@ interface AvatarData {
   backgroundColor?: string;
   iconColor?: string;
   tooltipContent?: React.ReactNode;
+  isEmailInvite?: boolean;
 }
 
 interface AvatarGroupWithTooltipProps {
@@ -67,11 +68,11 @@ export function AvatarGroupWithTooltip({
         >
           <AvatarWithTooltip
             size={size}
-            variant={avatar.variant}
+            variant={avatar.isEmailInvite ? 'icon' : avatar.variant}
             imageUrl={avatar.imageUrl}
             initials={avatar.initials}
-            backgroundColor={avatar.backgroundColor}
-            iconColor={avatar.iconColor}
+            backgroundColor={avatar.isEmailInvite ? 'var(--grey-02)' : avatar.backgroundColor}
+            iconColor={avatar.isEmailInvite ? 'var(--grey-05)' : avatar.iconColor}
             disabled={disabled}
             tooltipContent={avatar.tooltipContent}
             tooltipVariant={tooltipVariant}

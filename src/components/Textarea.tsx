@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 
 export type TextareaSize = 'sm' | 'md';
 
@@ -27,9 +27,15 @@ export interface TextareaProps {
   errorMessage?: string;
   /** Maximum character length */
   maxLength?: number;
+  /** Key down handler */
+  onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  /** Blur handler */
+  onBlur?: () => void;
+  /** Custom style */
+  style?: React.CSSProperties;
 }
 
-export function Textarea({
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({
   size = 'md',
   className = '',
   placeholder = 'Enter text',
@@ -42,10 +48,16 @@ export function Textarea({
   required = false,
   errorMessage,
   maxLength = 1000,
-}: TextareaProps) {
+  onKeyDown: customOnKeyDown,
+  onBlur: customOnBlur,
+  style: customStyle,
+}, ref) => {
   const [internalValue, setInternalValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  
+  // Expose textarea ref to parent
+  useImperativeHandle(ref, () => textareaRef.current!);
   
   const value = controlledValue !== undefined ? controlledValue : internalValue;
 
@@ -83,9 +95,25 @@ export function Textarea({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Call custom handler first if provided
+    if (customOnKeyDown) {
+      customOnKeyDown(e);
+      // If custom handler prevented default, don't run our logic
+      if (e.defaultPrevented) {
+        return;
+      }
+    }
+    
     // Allow Shift+Enter for new line, but Enter alone does nothing
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
+    }
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    if (customOnBlur) {
+      customOnBlur();
     }
   };
 
@@ -130,7 +158,7 @@ export function Textarea({
           placeholder={placeholder}
           disabled={disabled}
           onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
+          onBlur={handleBlur}
           id={id}
           className="w-full resize-none bg-transparent outline-none transition-all"
           style={{
@@ -143,6 +171,7 @@ export function Textarea({
             fontSize: currentSize.fontSize,
             fontWeight: 'var(--font-weight-regular)',
             color: disabled ? 'var(--grey-04)' : 'var(--text-primary)',
+            ...customStyle,
           }}
         />
         {maxLength && (
@@ -173,4 +202,4 @@ export function Textarea({
       )}
     </div>
   );
-}
+});

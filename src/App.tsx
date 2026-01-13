@@ -41,6 +41,8 @@ import TaskTagLogo from './imports/TaskTagLogo';
 import teamCollaborationImage from 'figma:asset/231f46d29d335b70c14e6a1c3a239decf66583f3.png';
 import MyTaskPage from './pages/MyTaskPage';
 import TaskPanelPage from './pages/TaskPanelPage';
+import ProjectDetailsPage from './pages/project-details/ProjectDetailsPage';
+import TeamDetailPage from './pages/team-detail/TeamDetailPage';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('colors');
@@ -49,9 +51,9 @@ export default function App() {
   const [textareaValue2, setTextareaValue2] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
-  // Prevent window scrolling for My Task and Task Panel pages
+  // Prevent window scrolling for My Task, Task Panel, Project Details, and Team Detail pages
   useEffect(() => {
-    if (activeSection === 'my-task' || activeSection === 'task-panel') {
+    if (activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-details' || activeSection === 'team-detail') {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
     } else {
@@ -327,7 +329,7 @@ export default function App() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-secondary">
+    <div className="flex h-screen bg-secondary overflow-hidden">
       {/* Mobile Header - Shows only on screens under 1080px */}
       <header className="max-[1080px]:flex hidden fixed top-0 left-0 right-0 h-16 bg-background items-center justify-center z-50 px-4" style={{ borderBottom: '1px solid var(--border)' }}>
         {/* Hamburger menu on the left */}
@@ -350,8 +352,8 @@ export default function App() {
       <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       {/* Main Content */}
-      <main className={`flex-1 w-full min-[1080px]:w-auto h-screen max-[1080px]:pt-16 ${activeSection === 'my-task' || activeSection === 'task-panel' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
-        <div className={activeSection === 'my-task' || activeSection === 'task-panel' ? 'h-full' : 'p-4 md:p-8 pb-16 min-[1080px]:pt-8'}>
+      <main className={`flex-1 w-full min-[1080px]:w-auto h-screen max-[1080px]:pt-16 ${activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-details' || activeSection === 'team-detail' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+        <div className={activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-details' || activeSection === 'team-detail' ? 'h-full' : 'p-4 md:p-8 pb-16 min-[1080px]:pt-8'}>
           {/* Colors Section */}
           {activeSection === 'colors' && (
             <section>
@@ -5286,6 +5288,16 @@ export default function Example() {
           {/* Task Panel Page */}
           {activeSection === 'task-panel' && (
             <TaskPanelPage />
+          )}
+
+          {/* Project Details Page */}
+          {activeSection === 'project-details' && (
+            <ProjectDetailsPage />
+          )}
+
+          {/* Team Detail Page */}
+          {activeSection === 'team-detail' && (
+            <TeamDetailPage />
           )}
         </div>
       </main>

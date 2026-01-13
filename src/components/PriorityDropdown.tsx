@@ -35,8 +35,14 @@ export function PriorityDropdown({ onSelect, onClose, className = "" }: Priority
       {priorities.map((priority) => (
         <button
           key={priority.value}
-          onClick={() => onSelect(priority.value)}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            console.log('PriorityDropdown button clicked:', priority.value);
+            onSelect(priority.value);
+          }}
           className="w-full flex items-center gap-3 px-4 py-2 hover:bg-secondary transition-colors cursor-pointer"
+          style={{ cursor: 'pointer' }}
         >
           {priority.icon}
           <span 

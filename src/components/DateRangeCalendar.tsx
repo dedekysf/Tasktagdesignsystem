@@ -1,6 +1,5 @@
-import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { TextInput } from "./TextInput";
+import { useState, useRef } from "react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 interface DateRangeCalendarProps {
   startDate: Date | null;
@@ -28,6 +27,10 @@ export function DateRangeCalendar({
   const [currentMonth, setCurrentMonth] = useState<Date>(
     startDate || new Date(),
   );
+  const [focusedInput, setFocusedInput] = useState<'start' | 'end' | null>(null);
+  
+  const startInputRef = useRef<HTMLInputElement>(null);
+  const endInputRef = useRef<HTMLInputElement>(null);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -158,21 +161,47 @@ export function DateRangeCalendar({
   };
 
   const handleDateClick = (date: Date) => {
-    if (!tempStartDate || (tempStartDate && tempEndDate)) {
+    // If focused on start input, set start date only (keep end date if exists)
+    if (focusedInput === 'start') {
       setTempStartDate(date);
-      setTempEndDate(null);
-    } else if (tempStartDate && !tempEndDate) {
-      if (date < tempStartDate) {
-        setTempEndDate(tempStartDate);
+      // Don't clear end date - keep it if it exists
+      // Auto shift to end input
+      setFocusedInput('end');
+      setTimeout(() => {
+        endInputRef.current?.focus();
+      }, 100);
+    } 
+    // If focused on end input, set end date only (keep start date if exists)
+    else if (focusedInput === 'end') {
+      setTempEndDate(date);
+      // Don't swap or clear start date - just set end date
+    }
+    // Default behavior when no input is focused (original logic)
+    else {
+      if (!tempStartDate || (tempStartDate && tempEndDate)) {
         setTempStartDate(date);
-      } else {
-        setTempEndDate(date);
+        setTempEndDate(null);
+      } else if (tempStartDate && !tempEndDate) {
+        if (date < tempStartDate) {
+          setTempEndDate(tempStartDate);
+          setTempStartDate(date);
+        } else {
+          setTempEndDate(date);
+        }
       }
     }
   };
 
   const handleConfirm = () => {
     onDatesChange(tempStartDate, tempEndDate);
+  };
+
+  const handleClearStartDate = () => {
+    setTempStartDate(null);
+  };
+
+  const handleClearEndDate = () => {
+    setTempEndDate(null);
   };
 
   const handleClear = () => {
@@ -251,24 +280,138 @@ export function DateRangeCalendar({
         style={{ borderBottom: "1px solid var(--grey-03)" }}
       >
         <div className="flex gap-4">
+          {/* Start Date Input */}
           <div style={{ flex: "1 1 0%", minWidth: 0 }}>
-            <TextInput
-              size="sm"
-              label="Start Date"
-              value={formatDate(tempStartDate)}
-              placeholder="MM / DD / YYYY"
-              showClearButton={false}
-            />
+            <label
+              style={{
+                display: 'block',
+                fontSize: 'var(--text-label)',
+                fontWeight: 'var(--font-weight-medium)',
+                color: 'var(--text-primary)',
+                marginBottom: 'var(--spacing-8)'
+              }}
+            >
+              Start Date
+            </label>
+            <div
+              className="relative flex items-center transition-all"
+              style={{
+                border: `1px solid ${focusedInput === 'start' ? 'var(--black)' : 'var(--border)'}`,
+                borderRadius: 'var(--radius-8)',
+                backgroundColor: 'var(--input-background)',
+                height: 'var(--size-sm)'
+              }}
+            >
+              <input
+                ref={startInputRef}
+                value={formatDate(tempStartDate)}
+                placeholder="MM / DD / YYYY"
+                readOnly
+                onFocus={() => setFocusedInput('start')}
+                onBlur={() => setFocusedInput(null)}
+                className="flex-1 bg-transparent outline-none cursor-pointer"
+                style={{
+                  padding: 'var(--spacing-8) var(--spacing-12)',
+                  paddingRight: tempStartDate ? 'var(--spacing-36)' : 'var(--spacing-12)',
+                  fontSize: 'var(--text-label)',
+                  fontWeight: 'var(--font-weight-regular)',
+                  color: 'var(--text-primary)',
+                }}
+              />
+              {/* Clear Button - inside input */}
+              {tempStartDate && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClearStartDate();
+                  }}
+                  className="absolute right-[var(--spacing-12)] flex items-center justify-center cursor-pointer"
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    padding: 0,
+                    color: 'var(--grey-05)',
+                    transition: 'color 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--text-primary)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--grey-05)';
+                  }}
+                >
+                  <X size={16} />
+                </button>
+              )}
+            </div>
           </div>
 
+          {/* End Date Input */}
           <div style={{ flex: "1 1 0%", minWidth: 0 }}>
-            <TextInput
-              size="sm"
-              label="End Date"
-              value={formatDate(tempEndDate)}
-              placeholder="MM / DD / YYYY"
-              showClearButton={false}
-            />
+            <label
+              style={{
+                display: 'block',
+                fontSize: 'var(--text-label)',
+                fontWeight: 'var(--font-weight-medium)',
+                color: 'var(--text-primary)',
+                marginBottom: 'var(--spacing-8)'
+              }}
+            >
+              End Date
+            </label>
+            <div
+              className="relative flex items-center transition-all"
+              style={{
+                border: `1px solid ${focusedInput === 'end' ? 'var(--black)' : 'var(--border)'}`,
+                borderRadius: 'var(--radius-8)',
+                backgroundColor: 'var(--input-background)',
+                height: 'var(--size-sm)'
+              }}
+            >
+              <input
+                ref={endInputRef}
+                value={formatDate(tempEndDate)}
+                placeholder="MM / DD / YYYY"
+                readOnly
+                onFocus={() => setFocusedInput('end')}
+                onBlur={() => setFocusedInput(null)}
+                className="flex-1 bg-transparent outline-none cursor-pointer"
+                style={{
+                  padding: 'var(--spacing-8) var(--spacing-12)',
+                  paddingRight: tempEndDate ? 'var(--spacing-36)' : 'var(--spacing-12)',
+                  fontSize: 'var(--text-label)',
+                  fontWeight: 'var(--font-weight-regular)',
+                  color: 'var(--text-primary)',
+                }}
+              />
+              {/* Clear Button - inside input */}
+              {tempEndDate && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClearEndDate();
+                  }}
+                  className="absolute right-[var(--spacing-12)] flex items-center justify-center cursor-pointer"
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    padding: 0,
+                    color: 'var(--grey-05)',
+                    transition: 'color 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--text-primary)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--grey-05)';
+                  }}
+                >
+                  <X size={16} />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -360,6 +503,10 @@ export function DateRangeCalendar({
                     )}
 
                     <button
+                      onMouseDown={(e) => {
+                        // Prevent blur on inputs
+                        e.preventDefault();
+                      }}
                       onClick={() =>
                         handleDateClick(day.fullDate)
                       }
@@ -432,31 +579,31 @@ export function DateRangeCalendar({
         </button>
         <button
           onClick={handleConfirm}
-          disabled={!tempStartDate || !tempEndDate}
+          disabled={!tempStartDate && !tempEndDate}
           className="px-4 py-2 text-[14px] rounded-lg transition-colors"
           style={{
             fontWeight: "var(--font-weight-semibold)",
             backgroundColor:
-              tempStartDate && tempEndDate
+              tempStartDate || tempEndDate
                 ? "var(--black)"
                 : "var(--grey-03)",
             color:
-              tempStartDate && tempEndDate
+              tempStartDate || tempEndDate
                 ? "var(--white)"
                 : "var(--grey-04)",
             cursor:
-              tempStartDate && tempEndDate
+              tempStartDate || tempEndDate
                 ? "pointer"
                 : "not-allowed",
           }}
           onMouseEnter={(e) => {
-            if (tempStartDate && tempEndDate) {
+            if (tempStartDate || tempEndDate) {
               e.currentTarget.style.backgroundColor =
                 "var(--text-secondary)";
             }
           }}
           onMouseLeave={(e) => {
-            if (tempStartDate && tempEndDate) {
+            if (tempStartDate || tempEndDate) {
               e.currentTarget.style.backgroundColor =
                 "var(--black)";
             }

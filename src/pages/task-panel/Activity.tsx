@@ -1,232 +1,306 @@
 import { useState } from 'react';
-import { ChevronDown, Folder, Hash } from 'lucide-react';
-import type { ActivityItem } from './types';
+import { Activity as ActivityIcon } from 'lucide-react';
+import { Avatar } from '../../components/AvatarComponent';
 
-interface ActivityProps {
-  activities?: ActivityItem[];
-}
-
-function ActivityIcon() {
+function ChevronDownIcon({ isOpen }: { isOpen: boolean }) {
   return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M2 3.5C2 2.67157 2.67157 2 3.5 2H16.5C17.3284 2 18 2.67157 18 3.5V16.5C18 17.3284 17.3284 18 16.5 18H3.5C2.67157 18 2 17.3284 2 16.5V3.5ZM3.5 3C3.22386 3 3 3.22386 3 3.5V16.5C3 16.7761 3.22386 17 3.5 17H16.5C16.7761 17 17 16.7761 17 16.5V3.5C17 3.22386 16.7761 3 16.5 3H3.5Z"
-        fill="var(--text-secondary)"
-      />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M6 7.5C6 7.22386 6.22386 7 6.5 7H13.5C13.7761 7 14 7.22386 14 7.5C14 7.77614 13.7761 8 13.5 8H6.5C6.22386 8 6 7.77614 6 7.5Z"
-        fill="var(--text-secondary)"
-      />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M6 10.5C6 10.2239 6.22386 10 6.5 10H13.5C13.7761 10 14 10.2239 14 10.5C14 10.7761 13.7761 11 13.5 11H6.5C6.22386 11 6 10.7761 6 10.5Z"
-        fill="var(--text-secondary)"
-      />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M6 13.5C6 13.2239 6.22386 13 6.5 13H9.5C9.77614 13 10 13.2239 10 13.5C10 13.7761 9.77614 14 9.5 14H6.5C6.22386 14 6 13.7761 6 13.5Z"
-        fill="var(--text-secondary)"
-      />
-    </svg>
-  );
-}
-
-function Avatar({ name, url }: { name: string; url?: string }) {
-  if (url) {
-    return (
-      <div className="w-6 h-6 rounded-full overflow-hidden shrink-0">
-        <img src={url} alt={name} className="w-full h-full object-cover" />
-      </div>
-    );
-  }
-
-  const initials = name.charAt(0).toUpperCase();
-  const defaultColors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#F7B731', '#5F27CD', '#00D2D3'];
-  const bgColor = defaultColors[name.charCodeAt(0) % defaultColors.length];
-
-  return (
-    <div 
-      className="w-6 h-6 rounded-full flex items-center justify-center text-white shrink-0"
-      style={{ 
-        backgroundColor: bgColor,
-        fontSize: 'var(--text-caption)',
-        fontWeight: 'var(--font-weight-semibold)',
-      }}
-    >
-      {initials}
+    <div className={`relative shrink-0 size-[20px] transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
+      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M6.29289 9.29289C6.68342 8.90237 7.31658 8.90237 7.70711 9.29289L12 13.5858L16.2929 9.29289C16.6834 8.90237 17.3166 8.90237 17.7071 9.29289C18.0976 9.68342 18.0976 10.3166 17.7071 10.7071L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L6.29289 10.7071C5.90237 10.3166 5.90237 9.68342 6.29289 9.29289Z"
+          fill="var(--text-primary)"
+        />
+      </svg>
     </div>
   );
 }
 
-export function Activity({ activities = [] }: ActivityProps) {
-  const [isOpen, setIsOpen] = useState(false);
+function FolderIcon() {
+  return (
+    <div className="relative shrink-0 size-[14.222px]">
+      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 15 15">
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M1.77782 2.66671C1.77782 2.42559 1.87365 2.19428 2.04368 2.02425C2.21372 1.85421 2.44502 1.75838 2.68615 1.75838H5.86504C6.10616 1.75838 6.33747 1.85421 6.5075 2.02425L7.41561 2.93236H12.3139C12.555 2.93236 12.7863 3.02819 12.9564 3.19822C13.1264 3.36826 13.2222 3.59957 13.2222 3.84069V12.3334C13.2222 12.5745 13.1264 12.8058 12.9564 12.9759C12.7863 13.1459 12.555 13.2417 12.3139 13.2417H2.68615C2.44502 13.2417 2.21372 13.1459 2.04368 12.9759C1.87365 12.8058 1.77782 12.5745 1.77782 12.3334V2.66671ZM6.22727 2.66671H2.68615V12.3334H12.3139V3.84069H7.05227L6.22727 2.66671Z"
+          fill="white"
+        />
+      </svg>
+    </div>
+  );
+}
 
-  // Default activities if none provided
-  const defaultActivities: ActivityItem[] = [
-    {
-      id: '1',
-      user: {
-        name: 'Melissa Smith',
-        avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop'
-      },
-      action: 'Added @Melissa Smith as Task Owner',
-      timestamp: 'Oct 15, 2025, 10:30 PM',
-      tags: [
-        { type: 'folder', label: 'Electrical Board Servi...', color: 'var(--secondary-green)' },
-        { type: 'hash', label: 'Electricity board fix an...', color: 'var(--black)' }
-      ]
-    },
-    {
-      id: '2',
-      user: {
-        name: 'Melissa Smith',
-        avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop'
-      },
-      action: 'Created this task',
-      timestamp: 'Oct 15, 2025, 10:30 PM',
-      tags: [
-        { type: 'folder', label: 'Electrical Board Servi...', color: 'var(--secondary-green)' },
-        { type: 'hash', label: 'Electricity board fix an...', color: 'var(--black)' }
-      ]
-    }
-  ];
+function HashIcon() {
+  return (
+    <div className="relative shrink-0 size-[14.222px]">
+      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 15 15">
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M5.85185 1.75C6.10295 1.75 6.30556 1.95261 6.30556 2.20371V4.62963H8.73148V2.20371C8.73148 1.95261 8.93409 1.75 9.18519 1.75C9.43629 1.75 9.63889 1.95261 9.63889 2.20371V4.62963H12.5185C12.7696 4.62963 12.9722 4.83224 12.9722 5.08333C12.9722 5.33443 12.7696 5.53704 12.5185 5.53704H9.63889V9.46296H12.5185C12.7696 9.46296 12.9722 9.66557 12.9722 9.91667C12.9722 10.1678 12.7696 10.3704 12.5185 10.3704H9.63889V12.7963C9.63889 13.0474 9.43629 13.25 9.18519 13.25C8.93409 13.25 8.73148 13.0474 8.73148 12.7963V10.3704H6.30556V12.7963C6.30556 13.0474 6.10295 13.25 5.85185 13.25C5.60076 13.25 5.39815 13.0474 5.39815 12.7963V10.3704H2.51852C2.26742 10.3704 2.06481 10.1678 2.06481 9.91667C2.06481 9.66557 2.26742 9.46296 2.51852 9.46296H5.39815V5.53704H2.51852C2.26742 5.53704 2.06481 5.33443 2.06481 5.08333C2.06481 4.83224 2.26742 4.62963 2.51852 4.62963H5.39815V2.20371C5.39815 1.95261 5.60076 1.75 5.85185 1.75ZM6.30556 5.53704V9.46296H8.73148V5.53704H6.30556Z"
+          fill="white"
+        />
+      </svg>
+    </div>
+  );
+}
 
-  const displayActivities = activities.length > 0 ? activities : defaultActivities;
+export function Activity() {
+  const [isOpen, setIsOpen] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  
+  // Get current month dates
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth();
+  
+  // Format date helper
+  const formatActivityDate = (daysAgo: number) => {
+    const date = new Date(currentYear, currentMonth, today.getDate() - daysAgo);
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = monthNames[date.getMonth()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12;
+    const displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    
+    return `${month} ${day}, ${year}, ${displayHours}:${displayMinutes} ${ampm}`;
+  };
+  
+  // Truncate helper - max 25 chars
+  const truncateText = (text: string, maxLength: number = 25) => {
+    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+  };
+  
+  const projectName = "Electrical Board Service Project";
+  const taskName = "Electricity board fix and reconfiguration";
+  
+  const truncatedProjectName = truncateText(projectName, 25);
+  const truncatedTaskName = truncateText(taskName, 25);
 
   return (
-    <div className="flex flex-col items-start overflow-clip rounded-lg shrink-0 w-full">
+    <div className="content-stretch flex flex-col gap-[10px] items-start relative shrink-0 w-full" data-name="Activity" style={{ fontFamily: 'var(--font-family-base)' }}>
       {/* Accordion Header */}
       <div 
-        className="flex items-center justify-between w-full px-4 py-4 cursor-pointer transition-colors"
-        style={{ backgroundColor: isOpen ? 'var(--grey-01)' : 'transparent' }}
+        className="flex items-center justify-between w-full px-[16px] py-[16px] cursor-pointer transition-colors"
+        style={{ backgroundColor: isHovered ? 'var(--grey-01)' : 'transparent' }}
         onClick={() => setIsOpen(!isOpen)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="flex items-center gap-3">
-          <ActivityIcon />
-          <span 
-            style={{ 
-              fontSize: 'var(--text-h4)',
-              fontWeight: 'var(--font-weight-semibold)',
-              color: 'var(--text-primary)',
-            }}
-          >
+        <div className="flex items-center gap-[12px]">
+          <ActivityIcon className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
+          <span style={{
+            fontWeight: 'var(--font-weight-semibold)',
+            fontSize: 'var(--text-body)',
+            color: 'var(--text-primary)',
+            lineHeight: '21px'
+          }}>
             Activity
           </span>
         </div>
         
-        <div 
-          className="w-6 h-6 flex items-center justify-center transition-transform duration-200"
-          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-        >
-          <ChevronDown className="size-5" style={{ color: 'var(--text-secondary)' }} />
+        <div className="w-[24px] h-[24px] flex items-center justify-center">
+          <ChevronDownIcon isOpen={isOpen} />
         </div>
       </div>
 
       {/* Content */}
       {isOpen && (
-        <div className="w-full px-4 pb-4">
-          <div className="space-y-4">
-            {displayActivities.map((activity, index) => (
-              <div key={activity.id} className="flex gap-2">
+        <>
+          {/* First Activity Item */}
+          <div className="relative shrink-0 w-full">
+            <div className="size-full">
+              <div className="box-border content-stretch flex gap-[8px] items-start px-[16px] py-0 relative w-full">
                 {/* Left indicator */}
-                <div className="flex flex-col items-center pt-1">
-                  <div 
-                    className="w-3 h-3 rounded-full shrink-0"
-                    style={{ backgroundColor: 'var(--secondary-green)' }}
-                  />
-                  {index < displayActivities.length - 1 && (
-                    <div 
-                      className="w-0.5 flex-1 mt-1.5"
-                      style={{ backgroundColor: 'var(--grey-03)', minHeight: '40px' }}
-                    />
-                  )}
+                <div className="box-border content-stretch flex flex-col gap-[6px] items-center pb-0 pt-[13px] px-0 relative self-stretch shrink-0">
+                  <div className="relative shrink-0 size-[12px]">
+                    <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 12 12">
+                      <circle cx="6" cy="6" fill="var(--secondary-green)" r="6" />
+                    </svg>
+                  </div>
+                  <div className="basis-0 grow min-h-px min-w-px shrink-0 w-[2px]" style={{ backgroundColor: 'var(--border)' }} />
                 </div>
 
                 {/* Right content */}
-                <div className="flex-1 pb-2">
+                <div className="basis-0 box-border content-stretch flex flex-col gap-[12px] grow items-start min-h-px min-w-px px-0 py-[8px] relative self-stretch shrink-0">
                   {/* Header */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <Avatar name={activity.user.name} url={activity.user.avatarUrl} />
-                    <p 
-                      style={{ 
-                        fontSize: 'var(--text-label)',
+                  <div className="content-stretch flex items-center justify-between relative shrink-0 w-full">
+                    <div className="content-stretch flex gap-[8px] items-center relative shrink-0">
+                      <Avatar 
+                        size="xs" 
+                        variant="image" 
+                        imageUrl="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop"
+                      />
+                      <p style={{
                         fontWeight: 'var(--font-weight-medium)',
+                        fontSize: 'var(--text-label)',
+                        lineHeight: '16px',
                         color: 'var(--text-primary)',
-                      }}
-                    >
-                      {activity.user.name}
-                    </p>
+                      }}>
+                        Melissa Smith
+                      </p>
+                    </div>
                   </div>
 
                   {/* Message */}
-                  <div className="flex items-start justify-between mb-3 gap-2">
-                    <p 
-                      style={{ 
-                        fontSize: 'var(--text-label)',
-                        color: 'var(--text-secondary)',
-                        lineHeight: '1.4',
-                      }}
-                    >
-                      {activity.action}
+                  <div className="content-stretch flex items-start justify-between relative shrink-0 w-full" style={{
+                    fontWeight: 'var(--font-weight-regular)',
+                    fontSize: 'var(--text-label)',
+                    lineHeight: '16px',
+                    color: 'var(--text-primary)',
+                  }}>
+                    <p className="relative shrink-0" style={{ letterSpacing: '0.28px' }}>
+                      <span>Added </span>
+                      <span style={{ color: 'var(--brand-blue)' }}>@Melissa Smith</span>
+                      <span> as Task Owner</span>
                     </p>
-                    <p 
-                      className="shrink-0"
-                      style={{ 
-                        fontSize: 'var(--text-caption)',
-                        color: 'var(--text-secondary)',
-                      }}
-                    >
-                      {activity.timestamp}
-                    </p>
+                    <p className="relative shrink-0" style={{ fontSize: 'var(--text-caption)' }}>{formatActivityDate(0)}</p>
                   </div>
 
                   {/* Tags */}
-                  {activity.tags && activity.tags.length > 0 && (
-                    <div 
-                      className="p-2 rounded-lg border"
-                      style={{ 
-                        backgroundColor: 'var(--white)',
-                        borderColor: 'var(--border)',
-                      }}
-                    >
-                      <div className="flex flex-col gap-1">
-                        {activity.tags.map((tag, tagIndex) => (
-                          <div 
-                            key={tagIndex}
-                            className="flex items-center gap-1 px-1 py-1 rounded"
-                            style={{ backgroundColor: tag.color }}
-                          >
-                            {tag.type === 'folder' ? (
-                              <Folder className="size-3.5 text-white" />
-                            ) : (
-                              <Hash className="size-3.5 text-white" />
-                            )}
-                            <p 
-                              className="truncate"
-                              style={{ 
-                                fontSize: 'var(--text-label)',
-                                fontWeight: 'var(--font-weight-medium)',
-                                color: 'var(--white)',
-                              }}
-                            >
-                              {tag.label}
-                            </p>
+                  <div className="content-stretch flex flex-col gap-[6px] items-start relative shrink-0">
+                    <div className="relative rounded-[8px] shrink-0 w-full" style={{ backgroundColor: 'var(--white)' }}>
+                      <div aria-hidden="true" className="absolute border border-solid inset-0 pointer-events-none rounded-[8px]" style={{ borderColor: 'var(--border)' }} />
+                      <div className="size-full">
+                        <div className="box-border content-stretch flex flex-col gap-[32px] items-start p-[8px] relative w-full">
+                          <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0">
+                            {/* Folder tag */}
+                            <div className="content-stretch flex items-start relative shrink-0 w-[204px]">
+                              <div className="basis-0 grow min-h-px min-w-px relative rounded-[4px] shrink-0" style={{ backgroundColor: 'var(--secondary-green)' }}>
+                                <div className="flex flex-row items-center overflow-clip rounded-[inherit] size-full">
+                                  <div className="box-border content-stretch flex gap-[4px] items-center p-[4px] relative w-full">
+                                    <FolderIcon />
+                                    <p className="[white-space-collapse:collapse] basis-0 grow leading-[16px] min-h-px min-w-px not-italic overflow-ellipsis overflow-hidden relative shrink-0 text-nowrap text-white" style={{
+                                      fontWeight: 'var(--font-weight-medium)',
+                                      fontSize: 'var(--text-label)',
+                                    }}>
+                                      {truncatedProjectName}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Hash tag */}
+                            <div className="content-stretch flex items-start relative shrink-0">
+                              <div className="box-border content-stretch flex gap-[4px] items-center overflow-clip p-[4px] relative rounded-[4px] shrink-0" style={{ backgroundColor: 'var(--black)' }}>
+                                <HashIcon />
+                                <p className="leading-[16px] not-italic overflow-ellipsis overflow-hidden relative shrink-0 text-nowrap text-white whitespace-pre" style={{
+                                  fontWeight: 'var(--font-weight-medium)',
+                                  fontSize: 'var(--text-label)',
+                                }}>
+                                  {truncatedTaskName}
+                                </p>
+                              </div>
+                            </div>
                           </div>
-                        ))}
+                        </div>
                       </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
+
+          {/* Second Activity Item */}
+          <div className="relative shrink-0 w-full">
+            <div className="size-full">
+              <div className="box-border content-stretch flex gap-[8px] items-start px-[16px] py-0 relative w-full">
+                {/* Left indicator */}
+                <div className="box-border content-stretch flex flex-col gap-[6px] items-center pb-0 pt-[13px] px-0 relative self-stretch shrink-0">
+                  <div className="relative shrink-0 size-[12px]">
+                    <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 12 12">
+                      <circle cx="6" cy="6" fill="var(--secondary-green)" r="6" />
+                    </svg>
+                  </div>
+                  <div className="basis-0 grow min-h-px min-w-px shrink-0 w-[2px]" style={{ backgroundColor: 'var(--border)' }} />
+                </div>
+
+                {/* Right content */}
+                <div className="basis-0 box-border content-stretch flex flex-col gap-[12px] grow items-start min-h-px min-w-px px-0 py-[8px] relative self-stretch shrink-0">
+                  {/* Header */}
+                  <div className="content-stretch flex items-center justify-between relative shrink-0 w-full">
+                    <div className="content-stretch flex gap-[8px] items-center relative shrink-0">
+                      <Avatar 
+                        size="xs" 
+                        variant="image" 
+                        imageUrl="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop"
+                      />
+                      <p style={{
+                        fontWeight: 'var(--font-weight-medium)',
+                        fontSize: 'var(--text-label)',
+                        lineHeight: '16px',
+                        color: 'var(--text-primary)',
+                      }}>
+                        Melissa Smith
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Message */}
+                  <div className="content-stretch flex items-start justify-between relative shrink-0 w-full" style={{
+                    fontWeight: 'var(--font-weight-regular)',
+                    fontSize: 'var(--text-label)',
+                    lineHeight: '16px',
+                    color: 'var(--text-primary)',
+                  }}>
+                    <p className="relative shrink-0" style={{ letterSpacing: '0.28px' }}>Created this task</p>
+                    <p className="relative shrink-0" style={{ fontSize: 'var(--text-caption)' }}>{formatActivityDate(0)}</p>
+                  </div>
+
+                  {/* Tags */}
+                  <div className="content-stretch flex flex-col gap-[6px] items-start relative shrink-0">
+                    <div className="relative rounded-[8px] shrink-0 w-full" style={{ backgroundColor: 'var(--white)' }}>
+                      <div aria-hidden="true" className="absolute border border-solid inset-0 pointer-events-none rounded-[8px]" style={{ borderColor: 'var(--border)' }} />
+                      <div className="size-full">
+                        <div className="box-border content-stretch flex flex-col gap-[32px] items-start p-[8px] relative w-full">
+                          <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0">
+                            {/* Folder tag */}
+                            <div className="content-stretch flex items-start relative shrink-0 w-[204px]">
+                              <div className="basis-0 grow min-h-px min-w-px relative rounded-[4px] shrink-0" style={{ backgroundColor: 'var(--secondary-green)' }}>
+                                <div className="flex flex-row items-center overflow-clip rounded-[inherit] size-full">
+                                  <div className="box-border content-stretch flex gap-[4px] items-center p-[4px] relative w-full">
+                                    <FolderIcon />
+                                    <p className="[white-space-collapse:collapse] basis-0 grow leading-[16px] min-h-px min-w-px not-italic overflow-ellipsis overflow-hidden relative shrink-0 text-nowrap text-white" style={{
+                                      fontWeight: 'var(--font-weight-medium)',
+                                      fontSize: 'var(--text-label)',
+                                    }}>
+                                      {truncatedProjectName}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Hash tag */}
+                            <div className="content-stretch flex items-start relative shrink-0">
+                              <div className="box-border content-stretch flex gap-[4px] items-center overflow-clip p-[4px] relative rounded-[4px] shrink-0" style={{ backgroundColor: 'var(--black)' }}>
+                                <HashIcon />
+                                <p className="leading-[16px] not-italic overflow-ellipsis overflow-hidden relative shrink-0 text-nowrap text-white whitespace-pre" style={{
+                                  fontWeight: 'var(--font-weight-medium)',
+                                  fontSize: 'var(--text-label)',
+                                }}>
+                                  {truncatedTaskName}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

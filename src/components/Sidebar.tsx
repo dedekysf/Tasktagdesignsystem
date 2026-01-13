@@ -69,7 +69,9 @@ export function Sidebar({ activeSection, onSectionChange, isSidebarOpen, setIsSi
 
   const pagesItems = [
     { id: 'my-task', label: 'My Task' },
-    { id: 'task-panel', label: 'Task Panel' }
+    { id: 'task-panel', label: 'Task Panel' },
+    { id: 'project-details', label: 'Project Details' },
+    { id: 'team-detail', label: 'Team Detail' }
   ];
 
   const isSectionActive = (sectionId: string, items: Array<{ id: string }>) => {

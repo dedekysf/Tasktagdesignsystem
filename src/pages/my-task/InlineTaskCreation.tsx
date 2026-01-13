@@ -313,7 +313,10 @@ export function InlineTaskCreation({
                             size="sm"
                             className="btn-secondary w-full"
                             style={{
+                              height: "var(--size-sm)",
                               minHeight: "var(--size-sm)",
+                              maxHeight: "var(--size-sm)",
+                              padding: "0 var(--spacing-12)",
                               borderRadius:
                                 "var(--radius-full)",
                               borderColor: showProjectWarning
@@ -417,10 +420,21 @@ export function InlineTaskCreation({
                     size="sm"
                     className="btn-secondary !w-8 !h-8 !p-0"
                     style={{
+                      height: "var(--size-sm)",
                       minHeight: "var(--size-sm)",
+                      maxHeight: "var(--size-sm)",
+                      padding: "0",
                       borderRadius: "var(--radius-full)",
                       borderColor: "var(--grey-03)",
                       aspectRatio: "1",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxSizing: "border-box",
+                      overflow: "hidden",
+                      lineHeight: "0",
+                      flex: "none",
+                      gap: "0",
                     }}
                     onMouseDown={(e) => {
                       e.stopPropagation();
@@ -465,22 +479,56 @@ export function InlineTaskCreation({
                     }}
                   >
                     {priority === "high" && (
-                      <ChevronsUp
-                        className="size-4 text-[var(--alert-red)]"
-                        strokeWidth={2}
-                      />
+                      <div className="size-4 flex items-center justify-center" style={{ height: '16px', width: '16px' }}>
+                        <ChevronsUp
+                          className="size-4 text-[var(--alert-red)]"
+                          strokeWidth={2}
+                        />
+                      </div>
                     )}
                     {priority === "medium" && (
-                      <div className="size-4 flex flex-col items-center justify-center gap-[2px]">
-                        <div className="w-3 h-[2px] bg-[var(--vivid-yellow)] rounded-full" />
-                        <div className="w-3 h-[2px] bg-[var(--vivid-yellow)] rounded-full" />
+                      <div 
+                        className="size-4 flex items-center justify-center" 
+                        style={{ 
+                          height: '16px', 
+                          width: '16px',
+                          position: 'relative',
+                          overflow: 'hidden'
+                        }}
+                      >
+                        <div style={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '50%',
+                          transform: 'translate(-50%, -50%)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '2px'
+                        }}>
+                          <div style={{ 
+                            width: '12px', 
+                            height: '2px', 
+                            backgroundColor: 'var(--vivid-yellow)', 
+                            borderRadius: '9999px' 
+                          }} />
+                          <div style={{ 
+                            width: '12px', 
+                            height: '2px', 
+                            backgroundColor: 'var(--vivid-yellow)', 
+                            borderRadius: '9999px' 
+                          }} />
+                        </div>
                       </div>
                     )}
                     {priority === "low" && (
-                      <ChevronsDown
-                        className="size-4 text-[var(--pastel-blue)]"
-                        strokeWidth={2}
-                      />
+                      <div className="size-4 flex items-center justify-center" style={{ height: '16px', width: '16px' }}>
+                        <ChevronsDown
+                          className="size-4 text-[var(--pastel-blue)]"
+                          strokeWidth={2}
+                        />
+                      </div>
                     )}
                   </Button>
 
@@ -584,7 +632,10 @@ export function InlineTaskCreation({
                     className="btn-secondary shrink-0"
                     style={{
                       width: "124px",
+                      height: "var(--size-sm)",
                       minHeight: "var(--size-sm)",
+                      maxHeight: "var(--size-sm)",
+                      padding: "0 var(--spacing-12)",
                       borderRadius: "var(--radius-full)",
                       borderColor: "var(--grey-03)",
                     }}
@@ -681,7 +732,10 @@ export function InlineTaskCreation({
                     className="btn-secondary shrink-0"
                     style={{
                       width: "124px",
+                      height: "var(--size-sm)",
                       minHeight: "var(--size-sm)",
+                      maxHeight: "var(--size-sm)",
+                      padding: "0 var(--spacing-12)",
                       borderRadius: "var(--radius-full)",
                       borderColor: "var(--grey-03)",
                     }}

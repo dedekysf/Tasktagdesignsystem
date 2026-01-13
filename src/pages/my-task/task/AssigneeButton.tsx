@@ -67,7 +67,8 @@ export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
             className="btn-secondary shrink-0"
             style={{
               width: '120px',
-              minHeight: 'var(--size-sm)',
+              height: 'var(--size-sm)',
+              padding: '0 var(--spacing-12)',
               borderRadius: 'var(--radius-full)',
               borderColor: 'var(--grey-03)',
               justifyContent: 'flex-start'
@@ -81,9 +82,12 @@ export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
             }}
           >
             {assignee.isEmailInvite ? (
-              <div className="size-5 rounded-full shrink-0 relative flex items-center justify-center" style={{ backgroundColor: 'var(--grey-02)' }}>
-                <Mail className="size-[12px] text-[var(--text-secondary)]" />
-              </div>
+              <Avatar
+                size="xs"
+                variant="icon"
+                backgroundColor="var(--grey-02)"
+                iconColor="var(--grey-05)"
+              />
             ) : (
               <div className="size-5 rounded-full shrink-0 relative flex items-center justify-center" style={{ backgroundColor: color }}>
                 <span className="text-[10px] text-[var(--text-primary)]" style={{ fontWeight: 'var(--font-weight-medium)' }}>
@@ -103,9 +107,12 @@ export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
         >
           <div className="flex items-center gap-2">
             {assignee.isEmailInvite ? (
-              <div className="size-5 rounded-full shrink-0 flex items-center justify-center" style={{ backgroundColor: 'var(--grey-02)' }}>
-                <Mail className="size-[12px] text-[var(--text-secondary)]" />
-              </div>
+              <Avatar
+                size="xs"
+                variant="icon"
+                backgroundColor="var(--grey-02)"
+                iconColor="var(--grey-05)"
+              />
             ) : (
               <div className="size-5 rounded-full shrink-0 flex items-center justify-center" style={{ backgroundColor: color }}>
                 <span className="text-[10px] text-white" style={{ fontWeight: 'var(--font-weight-medium)' }}>
@@ -130,7 +137,8 @@ export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
       initials: assignee.isEmailInvite ? undefined : initials,
       imageUrl: assignee.avatar,
       backgroundColor: assignee.isEmailInvite ? 'var(--grey-02)' : color,
-      iconColor: 'var(--text-secondary)',
+      iconColor: assignee.isEmailInvite ? 'var(--grey-05)' : 'var(--text-secondary)',
+      isEmailInvite: assignee.isEmailInvite,
       tooltipContent: (
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-8)' }}>
           <Avatar
@@ -139,7 +147,7 @@ export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
             initials={initials}
             imageUrl={assignee.avatar}
             backgroundColor={assignee.isEmailInvite ? 'var(--grey-02)' : color}
-            iconColor="var(--text-secondary)"
+            iconColor={assignee.isEmailInvite ? 'var(--grey-05)' : 'var(--text-secondary)'}
           />
           <span style={{ fontWeight: 'var(--font-weight-regular)', color: 'var(--white)' }}>{assignee.name}</span>
         </div>
@@ -162,7 +170,7 @@ export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
               initials={initials}
               imageUrl={assignee.avatar}
               backgroundColor={assignee.isEmailInvite ? 'var(--grey-02)' : color}
-              iconColor="var(--text-secondary)"
+              iconColor={assignee.isEmailInvite ? 'var(--grey-05)' : 'var(--text-secondary)'}
             />
             <span style={{ fontWeight: 'var(--font-weight-regular)', color: 'var(--white)' }}>{assignee.name}</span>
           </div>

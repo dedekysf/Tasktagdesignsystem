@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { usePopper } from "react-popper";
 import { PriorityDropdown } from "../PriorityDropdown";
 import svgPaths from "../../../imports/svg-3x9ir0o7gu";
+import { Button } from "../../../components/Button";
 
 interface PriorityButtonProps {
   priority: "high" | "medium" | "low";
@@ -66,39 +67,88 @@ export function PriorityButton({ priority, onSelect }: PriorityButtonProps) {
   const getPriorityIcon = (p: "high" | "medium" | "low") => {
     if (p === "high") {
       return (
-        <svg className="size-4" fill="none" viewBox="0 0 16 16">
-          <path clipRule="evenodd" d={svgPaths.p2d174700} fill="var(--alert-red)" fillRule="evenodd" />
-        </svg>
+        <div className="size-4 flex items-center justify-center" style={{ height: '16px', width: '16px' }}>
+          <svg className="size-4" fill="none" viewBox="0 0 16 16">
+            <path clipRule="evenodd" d={svgPaths.p2d174700} fill="var(--alert-red)" fillRule="evenodd" />
+          </svg>
+        </div>
       );
     }
     if (p === "medium") {
       return (
-        <svg className="size-4" fill="none" viewBox="0 0 16 16">
-          <path d={svgPaths.p3a90b5c0} fill="var(--vivid-yellow)" />
-          <path d={svgPaths.p140f5900} fill="var(--vivid-yellow)" />
-        </svg>
+        <div 
+          className="size-4 flex items-center justify-center" 
+          style={{ 
+            height: '16px', 
+            width: '16px',
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+        >
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '2px'
+          }}>
+            <div style={{ 
+              width: '12px', 
+              height: '2px', 
+              backgroundColor: 'var(--vivid-yellow)', 
+              borderRadius: '9999px' 
+            }} />
+            <div style={{ 
+              width: '12px', 
+              height: '2px', 
+              backgroundColor: 'var(--vivid-yellow)', 
+              borderRadius: '9999px' 
+            }} />
+          </div>
+        </div>
       );
     }
     return (
-      <svg className="size-4" fill="none" viewBox="0 0 16 16">
-        <path clipRule="evenodd" d={svgPaths.pcab4b00} fill="var(--pastel-blue)" fillRule="evenodd" />
-      </svg>
+      <div className="size-4 flex items-center justify-center" style={{ height: '16px', width: '16px' }}>
+        <svg className="size-4" fill="none" viewBox="0 0 16 16">
+          <path clipRule="evenodd" d={svgPaths.pcab4b00} fill="var(--pastel-blue)" fillRule="evenodd" />
+        </svg>
+      </div>
     );
   };
 
   return (
     <>
-      <button
+      <Button
         ref={setReferenceElement}
-        className="rounded-full border border-[#e8e8e8] bg-white hover:bg-secondary flex items-center justify-center transition-colors cursor-pointer shrink-0"
+        variant="outline"
+        size="sm"
+        className="btn-secondary shrink-0"
         style={{
           width: '76px',
-          height: 'var(--size-sm)'
+          height: 'var(--size-sm)',
+          minHeight: 'var(--size-sm)',
+          maxHeight: 'var(--size-sm)',
+          padding: '0 var(--spacing-12)',
+          borderRadius: 'var(--radius-full)',
+          borderColor: 'var(--grey-03)',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          overflow: 'hidden',
+          lineHeight: '0',
+          flex: 'none',
+          gap: '0',
         }}
         onClick={() => setIsOpen(!isOpen)}
       >
         {getPriorityIcon(priority)}
-      </button>
+      </Button>
       {isOpen && (
         <div 
           ref={(el) => {

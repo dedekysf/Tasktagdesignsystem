@@ -376,55 +376,48 @@ export function AssigneeModal({
       );
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]); // Remove onClose from dependencies to prevent loop
 
   useEffect(() => {
     if (isOpen) {
       setSearchQuery("");
 
+      // Initialize with existing selected assignees when modal opens
       if (selectedAssignees && selectedAssignees.length > 0) {
-        const existingUsers: User[] = selectedAssignees.map(
-          (assignee) => {
-            if (assignee.isEmailInvite) {
-              return {
-                id: `invite-${assignee.email}`,
-                name: assignee.name,
-                email: assignee.email,
-                role: assignee.role || "assignee",
-                isEmailInvite: true,
-              };
-            }
-
-            const mockUser = mockUsers.find(
-              (user) =>
-                user.name === assignee.name ||
-                user.email === assignee.email,
-            );
-
-            if (mockUser) {
-              return {
-                ...mockUser,
-                role: assignee.role || "assignee",
-              };
-            }
-
+        // Convert selectedAssignees to User format
+        const initialUsers: User[] = selectedAssignees.map((assignee) => {
+          // Try to find matching user from mock data
+          const matchingUser = mockUsers.find(
+            (u) => u.email === assignee.email || u.name === assignee.name
+          );
+          
+          if (matchingUser) {
             return {
-              id: `unknown-${assignee.email}`,
-              name: assignee.name,
-              email: assignee.email,
+              ...matchingUser,
               role: assignee.role || "assignee",
+              isEmailInvite: assignee.isEmailInvite
             };
-          },
-        );
-
-        setLocalSelectedUsers(existingUsers);
+          }
+          
+          // If not found in mock data, create new user (for email invites)
+          return {
+            id: assignee.isEmailInvite ? `invite-${assignee.email}` : `user-${assignee.email}`,
+            name: assignee.name,
+            email: assignee.email,
+            role: assignee.role || "assignee",
+            isEmailInvite: assignee.isEmailInvite,
+            avatarUrl: undefined
+          };
+        });
+        
+        setLocalSelectedUsers(initialUsers);
       } else {
         setLocalSelectedUsers([]);
       }
 
       setTimeout(() => inputRef.current?.focus(), 100);
     }
-  }, [isOpen, selectedAssignees]);
+  }, [isOpen]); // Remove selectedAssignees from dependency to prevent loop
 
   const handleAddUser = (user: User) => {
     const existingUser = localSelectedUsers.find(
