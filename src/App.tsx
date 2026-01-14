@@ -38,6 +38,15 @@ import svgPaths from './imports/svg-92e1ovrkrf';
 import AppIconAndroid from './imports/AppIconAndroid-43-971';
 import AppIconIOs from './imports/AppIconIOs-43-942';
 import TaskTagLogo from './imports/TaskTagLogo';
+import Xls from './imports/Xls';
+import Pdf from './imports/Pdf';
+import Ppt from './imports/Ppt';
+import Zip from './imports/Zip';
+import Txt from './imports/Txt';
+import Xml from './imports/Xml';
+import Doc from './imports/Doc';
+import Html from './imports/Html';
+import Eps from './imports/Eps';
 import teamCollaborationImage from 'figma:asset/231f46d29d335b70c14e6a1c3a239decf66583f3.png';
 import MyTaskPage from './pages/MyTaskPage';
 import TaskPanelPage from './pages/TaskPanelPage';
@@ -4374,6 +4383,69 @@ export default function Example() {
                       objectFit: 'contain'
                     }}
                   />
+                </LogoItem>
+
+                {/* XLS Icon */}
+                <LogoItem title="XLS Icon">
+                  <div style={{ width: '56px', height: '56px' }}>
+                    <Xls />
+                  </div>
+                </LogoItem>
+
+                {/* PDF Icon */}
+                <LogoItem title="PDF Icon">
+                  <div style={{ width: '56px', height: '56px' }}>
+                    <Pdf />
+                  </div>
+                </LogoItem>
+
+                {/* PPT Icon */}
+                <LogoItem title="PPT Icon">
+                  <div style={{ width: '56px', height: '56px' }}>
+                    <Ppt />
+                  </div>
+                </LogoItem>
+
+                {/* ZIP Icon */}
+                <LogoItem title="ZIP Icon">
+                  <div style={{ width: '56px', height: '56px' }}>
+                    <Zip />
+                  </div>
+                </LogoItem>
+
+                {/* TXT Icon */}
+                <LogoItem title="TXT Icon">
+                  <div style={{ width: '56px', height: '56px' }}>
+                    <Txt />
+                  </div>
+                </LogoItem>
+
+                {/* XML Icon */}
+                <LogoItem title="XML Icon">
+                  <div style={{ width: '56px', height: '56px' }}>
+                    <Xml />
+                  </div>
+                </LogoItem>
+
+                {/* DOC Icon */}
+                <LogoItem title="DOC Icon">
+                  <div style={{ width: '56px', height: '56px' }}>
+                    <Doc />
+                  </div>
+                </LogoItem>
+
+                {/* HTML Icon */}
+                <LogoItem title="HTML Icon">
+                  <div style={{ width: '56px', height: '56px' }}>
+                    <Html />
+                  </div>
+                </LogoItem>
+
+                {/* EPS Icon */}
+                <LogoItem title="EPS Icon">
+                  <div style={{ width: '56px', height: '56px' }}>
+                    <Eps />
+                  </div>
                 </LogoItem>
               </div>
             </section>

@@ -4,7 +4,7 @@ import { DeleteFilesModal } from "./DeleteFilesModal";
 import { CopyLinkTooltip } from "./CopyLinkTooltip";
 import { Button } from "../../components/Button";
 import { DateRangeCalendar } from "../../components/DateRangeCalendar";
-import { Tooltip } from "../../components/Tooltip";
+import { Tooltip as MainTooltip } from "../../components/Tooltip";
 import { Textarea } from "../../components/Textarea";
 import { AssigneeModal } from "../../pages/my-task/AssigneeModal";
 import { SuccessTooltip } from "../../components/SuccessTooltip";
@@ -68,7 +68,7 @@ function CopyLinkButton() {
 
   return (
     <>
-      <Tooltip
+      <MainTooltip
         variant="bottom-right"
         content={showCopied ? <SuccessTooltip message="Link copied!" /> : "Copy link to invite"}
         size="sm"
@@ -85,7 +85,7 @@ function CopyLinkButton() {
             <Link className="w-4 h-4" style={{ color: 'var(--text-primary)' }} />
           </div>
         </div>
-      </Tooltip>
+      </MainTooltip>
     </>
   );
 }
@@ -492,7 +492,7 @@ function AssigneeButton({
     const member = assignedMembers[0];
     
     return (
-      <Tooltip 
+      <MainTooltip 
         variant="bottom-center"
         size="sm"
         content={
@@ -553,7 +553,7 @@ function AssigneeButton({
           </span>
           <div aria-hidden="true" className="absolute border border-[#e8e8e8] border-solid inset-0 pointer-events-none rounded-[40px]" />
         </button>
-      </Tooltip>
+      </MainTooltip>
     );
   }
 
@@ -631,7 +631,7 @@ function AssigneeButton({
 // Mark Complete Button - Outline primary dengan icon left dan label "Mark Complete"
 function MarkCompleteButton({ isCompleted, onClick }: { isCompleted: boolean; onClick: () => void }) {
   if (isCompleted) {
-    // When completed, show filled primary button with "Complete" text
+    // When completed, show filled primary button with "Completed" text
     return (
       <Button
         variant="fill"
@@ -652,7 +652,7 @@ function MarkCompleteButton({ isCompleted, onClick }: { isCompleted: boolean; on
           color: 'white',
           fontSize: '12px',
           fontWeight: 'var(--font-weight-regular)'
-        }}>Complete</span>
+        }}>Completed</span>
       </Button>
     );
   }
@@ -923,7 +923,6 @@ function Description() {
         lineHeight: '21px',
         color: 'var(--text-primary)',
         fontFamily: 'var(--font-family-base)',
-        width: '100%'
       }}>Description</p>
       
       {!isEditing ? (
@@ -1326,88 +1325,66 @@ export default function TaskPanelWrapper() {
       {/* Action Bar - Fixed at bottom when files are selected */}
       {selectedFilesCount > 0 && (
         <>
-          <TooltipProvider>
-            <div className="absolute bottom-0 left-0 right-0 bg-[#303742] px-[24px] py-[16px] flex items-center justify-between z-40">
-              {/* Left side - Clear selection and count */}
-              <div className="flex items-center gap-[16px]">
-                <UITooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      onClick={handleClearSelection}
-                      className="w-[32px] h-[32px] flex items-center justify-center hover:bg-white/10 rounded-full transition-colors"
-                    >
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M18 6L6 18M6 6L18 18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent side="top">
-                    <p>Clear selection</p>
-                  </TooltipContent>
-                </UITooltip>
-                <span className="font-['Inter:Medium',sans-serif] font-medium text-[16px] text-white">
-                  {selectedFilesCount} item{selectedFilesCount > 1 ? 's' : ''} selected
-                </span>
-              </div>
-
-              {/* Right side - Action buttons */}
-              <div className="flex items-center gap-[16px]">
-                <UITooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      onClick={handleDeleteSelected}
-                      className="w-[40px] h-[40px] flex items-center justify-center hover:bg-white/10 rounded transition-colors"
-                    >
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M3 6H5H21M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent side="top">
-                    <p>Delete</p>
-                  </TooltipContent>
-                </UITooltip>
-                <UITooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      onClick={handleDownloadSelected}
-                      className="w-[40px] h-[40px] flex items-center justify-center hover:bg-white/10 rounded transition-colors"
-                    >
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M21 15V19C21 19.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V16M7 10L12 15M12 15L17 10M12 15V3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent side="top">
-                    <p>Download</p>
-                  </TooltipContent>
-                </UITooltip>
-                <UITooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      ref={copyLinkButtonRef}
-                      onClick={handleCopyLinkSelected}
-                      className="w-[40px] h-[40px] flex items-center justify-center hover:bg-white/10 rounded transition-colors"
-                    >
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M10 13C10.4295 13.5741 10.9774 14.0491 11.6066 14.3929C12.2357 14.7367 12.9315 14.9411 13.6467 14.9923C14.3618 15.0435 15.0796 14.9403 15.7513 14.6897C16.4231 14.4392 17.0331 14.047 17.54 13.54L20.54 10.54C21.4508 9.59695 21.9548 8.33394 21.9434 7.02296C21.932 5.71198 21.4061 4.45791 20.4791 3.53087C19.5521 2.60383 18.298 2.07799 16.987 2.0666C15.676 2.0552 14.413 2.55918 13.47 3.46997L11.75 5.17997M14 11C13.5705 10.4258 13.0226 9.95078 12.3934 9.60703C11.7642 9.26327 11.0685 9.05885 10.3533 9.00763C9.63816 8.95641 8.92037 9.0596 8.24861 9.31018C7.57685 9.56077 6.96684 9.9529 6.45996 10.46L3.45996 13.46C2.54917 14.403 2.04519 15.666 2.05659 16.977C2.06798 18.288 2.59382 19.5421 3.52086 20.4691C4.4479 21.3961 5.70197 21.922 7.01295 21.9334C8.32393 21.9448 9.58694 21.4408 10.53 20.53L12.24 18.82" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent side="top">
-                    <p>Copy link</p>
-                  </TooltipContent>
-                </UITooltip>
-              </div>
+          <div className="absolute bottom-0 left-0 right-0 bg-[#303742] px-[24px] py-[16px] flex items-center justify-between z-40">
+            {/* Left side - Clear selection and count */}
+            <div className="flex items-center gap-[16px]">
+              <MainTooltip variant="top-right" content="Clear selection" size="sm">
+                <button
+                  onClick={handleClearSelection}
+                  className="w-[32px] h-[32px] flex items-center justify-center hover:bg-white/10 rounded-full transition-colors"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </MainTooltip>
+              <span className="font-['Inter:Medium',sans-serif] font-medium text-[16px] text-white">
+                {selectedFilesCount} item{selectedFilesCount > 1 ? 's' : ''} selected
+              </span>
             </div>
-          </TooltipProvider>
+
+            {/* Right side - Action buttons */}
+            <div className="flex items-center gap-[16px]">
+              <MainTooltip variant="top-right" content="Delete" size="sm">
+                <button
+                  onClick={handleDeleteSelected}
+                  className="w-[40px] h-[40px] flex items-center justify-center hover:bg-white/10 rounded transition-colors"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 6H5H21M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </MainTooltip>
+              <MainTooltip variant="top-right" content="Download" size="sm">
+                <button
+                  onClick={handleDownloadSelected}
+                  className="w-[40px] h-[40px] flex items-center justify-center hover:bg-white/10 rounded transition-colors"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 15V19C21 19.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V16M7 10L12 15M12 15L17 10M12 15V3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </MainTooltip>
+              <MainTooltip variant="top-right" content="Copy link" size="sm" forceHide={showCopyLinkTooltip}>
+                <button
+                  ref={copyLinkButtonRef}
+                  onClick={handleCopyLinkSelected}
+                  className="w-[40px] h-[40px] flex items-center justify-center hover:bg-white/10 rounded transition-colors"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M10 13C10.4295 13.5741 10.9774 14.0491 11.6066 14.3929C12.2357 14.7367 12.9315 14.9411 13.6467 14.9923C14.3618 15.0435 15.0796 14.9403 15.7513 14.6897C16.4231 14.4392 17.0331 14.047 17.54 13.54L20.54 10.54C21.4508 9.59695 21.9548 8.33394 21.9434 7.02296C21.932 5.71198 21.4061 4.45791 20.4791 3.53087C19.5521 2.60383 18.298 2.07799 16.987 2.0666C15.676 2.0552 14.413 2.55918 13.47 3.46997L11.75 5.17997M14 11C13.5705 10.4258 13.0226 9.95078 12.3934 9.60703C11.7642 9.26327 11.0685 9.05885 10.3533 9.00763C9.63816 8.95641 8.92037 9.0596 8.24861 9.31018C7.57685 9.56077 6.96684 9.9529 6.45996 10.46L3.45996 13.46C2.54917 14.403 2.04519 15.666 2.05659 16.977C2.06798 18.288 2.59382 19.5421 3.52086 20.4691C4.4479 21.3961 5.70197 21.922 7.01295 21.9334C8.32393 21.9448 9.58694 21.4408 10.53 20.53L12.24 18.82" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </MainTooltip>
+            </div>
+          </div>
           
           {/* Custom copy link tooltip */}
           <CopyLinkTooltip 
             isVisible={showCopyLinkTooltip} 
             buttonRef={copyLinkButtonRef} 
             onHide={() => setShowCopyLinkTooltip(false)} 
-            side="bottom"
+            side="top"
             align="end"
           />
         </>

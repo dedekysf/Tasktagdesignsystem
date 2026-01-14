@@ -160,7 +160,24 @@ export function DateRangeCalendar({
     );
   };
 
+  const isDateDisabled = (date: Date) => {
+    // If focused on start input and there's an end date, disable dates after end date
+    if (focusedInput === 'start' && tempEndDate) {
+      return date > tempEndDate;
+    }
+    // If focused on end input and there's a start date, disable dates before start date
+    if (focusedInput === 'end' && tempStartDate) {
+      return date < tempStartDate;
+    }
+    return false;
+  };
+
   const handleDateClick = (date: Date) => {
+    // Don't allow clicking disabled dates
+    if (isDateDisabled(date)) {
+      return;
+    }
+    
     // If focused on start input, set start date only (keep end date if exists)
     if (focusedInput === 'start') {
       setTempStartDate(date);
@@ -472,6 +489,7 @@ export function DateRangeCalendar({
               const inRange = isInRange(day.fullDate);
               const todayIndicator = isToday(day.fullDate);
               const isCurrentMonth = day.month === "current";
+              const isDisabled = isDateDisabled(day.fullDate);
 
               return (
                 <div
@@ -479,7 +497,7 @@ export function DateRangeCalendar({
                   className="flex-1 flex items-center justify-center"
                 >
                   <div className="relative w-full h-8 flex items-center justify-center">
-                    {isSelectedDate && (
+                    {isSelectedDate && !isDisabled && (
                       <div
                         className="absolute inset-y-0"
                         style={{
@@ -510,14 +528,17 @@ export function DateRangeCalendar({
                       onClick={() =>
                         handleDateClick(day.fullDate)
                       }
-                      className={`relative size-8 flex items-center justify-center rounded-full transition-colors cursor-pointer z-10 ${
-                        isStart || isEnd
-                          ? "bg-black hover:bg-black"
+                      disabled={isDisabled}
+                      className={`relative size-8 flex items-center justify-center rounded-full transition-colors z-10 ${
+                        isDisabled
+                          ? "cursor-not-allowed opacity-40"
+                          : isStart || isEnd
+                          ? "bg-black hover:bg-black cursor-pointer"
                           : isSelectedDate
-                            ? ""
-                            : "hover:bg-secondary"
+                            ? "cursor-pointer"
+                            : "hover:bg-secondary cursor-pointer"
                       } ${
-                        todayIndicator && !isStart && !isEnd
+                        todayIndicator && !isStart && !isEnd && !isDisabled
                           ? "border-2 border-black"
                           : ""
                       }`}

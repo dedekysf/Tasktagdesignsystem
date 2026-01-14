@@ -51,7 +51,7 @@ export function Members({ members: propMembers, onUpdateRole, onDeleteMember, on
   onDeleteMember: (id: string) => void;
   onAddMembers: (members: Member[]) => void;
 }) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false); // Collapsed by default
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [removeInviteModalOpen, setRemoveInviteModalOpen] = useState(false);

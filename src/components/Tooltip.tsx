@@ -20,9 +20,11 @@ interface TooltipProps {
   children: React.ReactNode;
   /** Force tooltip to show (controlled mode) */
   forceShow?: boolean;
+  /** Force tooltip to hide even on hover */
+  forceHide?: boolean;
 }
 
-export function Tooltip({ variant = 'top-center', size = 'md', style: tooltipStyle = 'default', className = '', content, children, forceShow }: TooltipProps) {
+export function Tooltip({ variant = 'top-center', size = 'md', style: tooltipStyle = 'default', className = '', content, children, forceShow, forceHide }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -47,7 +49,7 @@ export function Tooltip({ variant = 'top-center', size = 'md', style: tooltipSty
   const sizeConfig = sizeMap[size];
 
   useEffect(() => {
-    if ((isVisible || forceShow) && triggerRef.current && tooltipRef.current) {
+    if ((isVisible || forceShow) && !forceHide && triggerRef.current && tooltipRef.current) {
       const triggerRect = triggerRef.current.getBoundingClientRect();
       const tooltipRect = tooltipRef.current.getBoundingClientRect();
       
@@ -91,7 +93,7 @@ export function Tooltip({ variant = 'top-center', size = 'md', style: tooltipSty
 
       setPosition({ top, left });
     }
-  }, [isVisible, forceShow, variant]);
+  }, [isVisible, forceShow, forceHide, variant]);
 
   return (
     <>
@@ -104,7 +106,7 @@ export function Tooltip({ variant = 'top-center', size = 'md', style: tooltipSty
         {children}
       </div>
       
-      {(isVisible || forceShow) && (
+      {(isVisible || forceShow) && !forceHide && (
         createPortal(
           <div
             ref={tooltipRef}

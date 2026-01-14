@@ -48,7 +48,7 @@ function HashIcon() {
 }
 
 export function Activity() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false); // Collapsed by default
   const [isHovered, setIsHovered] = useState(false);
   
   // Get current month dates

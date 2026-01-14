@@ -9,12 +9,17 @@ interface CopyLinkTooltipProps {
   align?: 'start' | 'center' | 'end';
 }
 
-export function CopyLinkTooltip({ isVisible, buttonRef, onHide, side = 'bottom', align = 'end' }: CopyLinkTooltipProps) {
+export function CopyLinkTooltip({ isVisible, buttonRef, onHide, side = 'top', align = 'end' }: CopyLinkTooltipProps) {
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
   useEffect(() => {
     if (isVisible && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
+      
+      // Tooltip dimensions
+      const tooltipWidth = 120;
+      const tooltipHeight = 40;
+      const offset = 8;
       
       // Calculate position based on side and align
       let top = 0;
@@ -22,18 +27,18 @@ export function CopyLinkTooltip({ isVisible, buttonRef, onHide, side = 'bottom',
 
       // Calculate vertical position
       if (side === 'bottom') {
-        top = rect.bottom + 8;
+        top = rect.bottom + offset;
       } else if (side === 'top') {
-        top = rect.top - 8 - 40; // 40 is approximate tooltip height
+        top = rect.top - tooltipHeight - offset;
       }
 
       // Calculate horizontal position
       if (align === 'end') {
-        left = rect.right - 120; // 120 is approximate tooltip width
+        left = rect.right - tooltipWidth;
       } else if (align === 'start') {
         left = rect.left;
       } else {
-        left = rect.left + rect.width / 2 - 60; // 60 is half tooltip width
+        left = rect.left + rect.width / 2 - tooltipWidth / 2;
       }
 
       setPosition({ top, left });
