@@ -237,6 +237,7 @@ export default function App() {
         { name: '--grey-04', cssVar: '--grey-04' },
         { name: '--grey-05', cssVar: '--grey-05' },
         { name: '--grey-06', cssVar: '--grey-06' },
+        { name: '--grey-07', cssVar: '--grey-07' },
         { name: '--black', cssVar: '--black' },
         { name: '--overlay', cssVar: '--overlay' }
       ]
@@ -369,7 +370,7 @@ export default function App() {
               <SectionHeader
                 icon={Palette}
                 title="Colors"
-                description="35 foundational colors organized into 6 groups: Brand (3), Text (2), Neutrals (9), Vivid (7), Pastel (6), and Light Background (8)"
+                description="36 foundational colors organized into 6 groups: Brand (3), Text (2), Neutrals (10), Vivid (7), Pastel (6), and Light Background (8)"
               />
 
               <div>

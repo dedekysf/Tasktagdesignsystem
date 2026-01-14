@@ -24,6 +24,7 @@ import Txt from '../../imports/Txt';
 import Xml from '../../imports/Xml';
 import Html from '../../imports/Html';
 import Eps from '../../imports/Eps';
+import { FilePreviewModal } from '../../components/FilePreviewModal';
 
 function ChevronDownIcon({ isOpen }: { isOpen: boolean }) {
   return (
@@ -45,16 +46,25 @@ interface FileItemProps {
   date: string;
   isSelected?: boolean;
   onSelect?: (id: string) => void;
+  onClick?: (id: string) => void;
   status?: 'uploaded' | 'uploading' | 'loading';
 }
 
-function FileItem({ id, name, url, type, uploader, date, isSelected, onSelect, status = 'uploaded' }: FileItemProps) {
+function FileItem({ id, name, url, type, uploader, date, isSelected, onSelect, onClick, status = 'uploaded' }: FileItemProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [imageError, setImageError] = useState(false);
   
-  const handleClick = () => {
-    if (status === 'uploaded' && onSelect) {
+  const handleClick = (e: React.MouseEvent) => {
+    // Check if clicking on checkbox area
+    const target = e.target as HTMLElement;
+    const isCheckboxClick = target.closest('[data-checkbox-area]');
+    
+    if (isCheckboxClick && onSelect) {
+      // Handle selection
       onSelect(id);
+    } else if (!isCheckboxClick && onClick && status === 'uploaded') {
+      // Handle preview
+      onClick(id);
     }
   };
   
@@ -290,10 +300,11 @@ function FileItem({ id, name, url, type, uploader, date, isSelected, onSelect, s
             {/* Selection Circle Icon - Top Right Corner (on hover or when selected) */}
             {(isHovered || isSelected) && (
               <div 
+                data-checkbox-area
                 className="absolute top-[8px] right-[8px] cursor-pointer z-10"
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleClick();
+                  handleClick(e);
                 }}
               >
                 {isSelected ? (
@@ -406,6 +417,10 @@ export const FilesAndMedia = forwardRef<{
   const [filterDocument, setFilterDocument] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   
+  // Preview modal state
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [previewIndex, setPreviewIndex] = useState(0);
+  
   const [files, setFiles] = useState([
     {
       id: 'file-1',
@@ -473,6 +488,19 @@ export const FilesAndMedia = forwardRef<{
       }
       return newSet;
     });
+  };
+
+  const handleFileClick = (fileId: string) => {
+    // Open preview modal
+    const index = filteredFiles.findIndex(f => f.id === fileId);
+    if (index !== -1) {
+      setPreviewIndex(index);
+      setIsPreviewOpen(true);
+    };
+  };
+
+  const handlePreviewNavigate = (index: number) => {
+    setPreviewIndex(index);
   };
 
   const handleUploadClick = () => {
@@ -622,6 +650,17 @@ export const FilesAndMedia = forwardRef<{
   const activeFilterCount = (searchUploader ? 1 : 0) + (filterMedia ? 1 : 0) + (filterDocument ? 1 : 0);
   const hasActiveFilters = activeFilterCount > 0;
 
+  // Convert files for preview modal
+  const previewFiles = filteredFiles.map(f => ({
+    id: f.id,
+    type: f.type === 'image' ? 'media' as const : 'document' as const,
+    name: f.name,
+    url: f.url || '',
+    uploader: f.uploader.name,
+    uploadDate: f.date,
+    fileExtension: f.name.split('.').pop()
+  }));
+
   return (
     <div className="content-stretch flex flex-col items-start overflow-clip relative rounded-lg shrink-0 w-full" style={{ fontFamily: 'Inter, sans-serif' }}>
       {/* Hidden file input */}
@@ -636,15 +675,13 @@ export const FilesAndMedia = forwardRef<{
       
       {/* Accordion Header */}
       <div 
-        className="flex items-center justify-between w-full px-[16px] py-[16px] transition-colors"
+        className="flex items-center justify-between w-full px-[16px] py-[16px] cursor-pointer transition-colors"
         style={{ backgroundColor: isHovered ? 'var(--grey-01)' : 'transparent' }}
+        onClick={() => setIsOpen(!isOpen)}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div 
-          className="flex items-center gap-[12px] cursor-pointer flex-1"
-          onClick={() => setIsOpen(!isOpen)}
-        >
+        <div className="flex items-center gap-[12px]">
           <FileImage className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
           <span style={{
             fontWeight: 'var(--font-weight-semibold)',
@@ -698,10 +735,7 @@ export const FilesAndMedia = forwardRef<{
             </button>
           </MainTooltip>
           
-          <div 
-            className="w-[24px] h-[24px] flex items-center justify-center cursor-pointer"
-            onClick={() => setIsOpen(!isOpen)}
-          >
+          <div className="w-[24px] h-[24px] flex items-center justify-center">
             <ChevronDownIcon isOpen={isOpen} />
           </div>
         </div>
@@ -919,11 +953,23 @@ export const FilesAndMedia = forwardRef<{
                 date={file.date}
                 isSelected={selectedFiles.has(file.id)}
                 onSelect={handleFileSelect}
+                onClick={handleFileClick}
               />
             ))}
           </div>
         </div>
       )}
+      
+      {/* File Preview Modal */}
+      <FilePreviewModal 
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        files={previewFiles}
+        currentIndex={previewIndex}
+        onNavigate={handlePreviewNavigate}
+        projectName="Electrical Board Service Project"
+        taskName="Install electrical wiring"
+      />
     </div>
   );
 });

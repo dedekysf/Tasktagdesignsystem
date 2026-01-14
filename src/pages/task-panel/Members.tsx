@@ -235,7 +235,7 @@ export function Members({ members: propMembers, onUpdateRole, onDeleteMember, on
                     size="sm"
                     content="Resend invite"
                   >
-                    <button className="w-[32px] h-[32px] flex items-center justify-center rounded transition-colors" style={{ backgroundColor: isHovered ? 'var(--grey-02)' : 'transparent' }}>
+                    <button className="w-[32px] h-[32px] flex items-center justify-center rounded transition-colors cursor-pointer" style={{ backgroundColor: isHovered ? 'var(--grey-02)' : 'transparent' }}>
                       <Repeat className="size-[18px]" style={{ color: 'var(--text-primary)' }} strokeWidth={2} />
                     </button>
                   </Tooltip>
@@ -250,7 +250,7 @@ export function Members({ members: propMembers, onUpdateRole, onDeleteMember, on
                         setRemoveInviteModalOpen(true);
                         setMemberToRemove(member);
                       }}
-                      className="w-[32px] h-[32px] flex items-center justify-center rounded transition-colors"
+                      className="w-[32px] h-[32px] flex items-center justify-center rounded transition-colors cursor-pointer"
                       style={{ backgroundColor: isHovered ? 'var(--grey-02)' : 'transparent' }}
                     >
                       <Trash2 className="size-[18px]" style={{ color: 'var(--text-primary)' }} strokeWidth={2} />
@@ -263,7 +263,7 @@ export function Members({ members: propMembers, onUpdateRole, onDeleteMember, on
                   size="sm"
                   content="Send Message"
                 >
-                  <button className="w-[32px] h-[32px] flex items-center justify-center rounded transition-colors" style={{ backgroundColor: isHovered ? 'var(--grey-02)' : 'transparent' }}>
+                  <button className="w-[32px] h-[32px] flex items-center justify-center rounded transition-colors cursor-pointer" style={{ backgroundColor: isHovered ? 'var(--grey-02)' : 'transparent' }}>
                     <MessageSquare className="size-[18px]" style={{ color: 'var(--text-primary)' }} strokeWidth={2} />
                   </button>
                 </Tooltip>

@@ -240,7 +240,7 @@ export function InteractiveChecklist() {
                         
                         <button
                           onClick={handleCancelAddItem}
-                          className="absolute right-[16px] top-[16px] flex items-center justify-center z-10 rounded-full"
+                          className="absolute right-[16px] top-[16px] flex items-center justify-center z-10 rounded-full cursor-pointer"
                           style={{ backgroundColor: 'transparent' }}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.backgroundColor = 'var(--grey-02)';
@@ -313,7 +313,7 @@ export function InteractiveChecklist() {
                     ) : (
                       <button 
                         onClick={() => setIsAddingItem(true)}
-                        className="relative rounded-lg shrink-0 w-full transition-colors"
+                        className="relative rounded-lg shrink-0 w-full transition-colors cursor-pointer"
                         style={{ backgroundColor: 'var(--grey-01)' }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.backgroundColor = 'var(--grey-02)';

@@ -1325,7 +1325,7 @@ export default function TaskPanelWrapper() {
       {/* Action Bar - Fixed at bottom when files are selected */}
       {selectedFilesCount > 0 && (
         <>
-          <div className="absolute bottom-0 left-0 right-0 bg-[#303742] px-[24px] py-[16px] flex items-center justify-between z-40">
+          <div className="absolute bottom-0 left-0 right-0 px-[24px] py-[16px] flex items-center justify-between z-40" style={{ backgroundColor: 'var(--grey-07)' }}>
             {/* Left side - Clear selection and count */}
             <div className="flex items-center gap-[16px]">
               <MainTooltip variant="top-right" content="Clear selection" size="sm">

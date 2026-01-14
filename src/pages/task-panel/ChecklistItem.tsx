@@ -277,7 +277,7 @@ export function ChecklistItem({
             onDelete(id);
           }
         }}
-        className={`absolute right-[16px] ${isEditing ? 'top-[16px]' : 'top-1/2 -translate-y-1/2'} flex items-center justify-center transition-opacity z-10 rounded-full ${
+        className={`absolute right-[16px] ${isEditing ? 'top-[16px]' : 'top-1/2 -translate-y-1/2'} flex items-center justify-center transition-opacity z-10 rounded-full cursor-pointer ${
           isHovered || isEditing ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         style={{ backgroundColor: isHovered && !isEditing ? 'var(--grey-02)' : 'transparent' }}
@@ -358,7 +358,7 @@ export function ChecklistItem({
               <div className="content-stretch flex items-center relative shrink-0">
                 <button 
                   onClick={handleCheckboxClick}
-                  className="content-stretch flex items-start relative shrink-0"
+                  className="content-stretch flex items-start relative shrink-0 cursor-pointer"
                   onMouseEnter={() => setIsCheckboxHovered(true)}
                   onMouseLeave={() => setIsCheckboxHovered(false)}
                 >
