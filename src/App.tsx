@@ -156,7 +156,6 @@ export default function App() {
   const [dateRangeCalendarTab, setDateRangeCalendarTab] = useState('preview');
   const [discardChangesModalTab, setDiscardChangesModalTab] = useState('preview');
   const [priorityDropdownTab, setPriorityDropdownTab] = useState('preview');
-  const [taskSectionHeaderTab, setTaskSectionHeaderTab] = useState('preview');
   const [projectSelectModalTab, setProjectSelectModalTab] = useState('preview');
   const [assigneeModalTab, setAssigneeModalTab] = useState('preview');
   const [taskItemTab, setTaskItemTab] = useState('preview');
@@ -260,9 +259,6 @@ export default function App() {
   // Member Row states
   const [memberRowHoveredId, setMemberRowHoveredId] = useState<string | null>(null);
   const [memberRowDropdownId, setMemberRowDropdownId] = useState<string | null>(null);
-  
-  // Task Section Header state
-  const [isSectionExpanded, setIsSectionExpanded] = useState(true);
 
   // Tab Item interactive states
   const [activeTabSm, setActiveTabSm] = useState('tab1');
@@ -3556,13 +3552,16 @@ export default function Example() {
                       />
                     </TabPanel>
                     <TabPanel value="github" activeTab={tabBasicMdTab}>
-                      <CodeExample
-                        title="GitHub URL"
-                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabItem.tsx
-
-TabsContainer:
-https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabsContainer.tsx`}
-                      />
+                      <div className="space-y-4">
+                        <CodeExample
+                          title="TabItem - GitHub URL"
+                          code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabItem.tsx`}
+                        />
+                        <CodeExample
+                          title="TabsContainer - GitHub URL"
+                          code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabsContainer.tsx`}
+                        />
+                      </div>
                     </TabPanel>
                   </TabsContainer>
                 </div>
@@ -3688,13 +3687,16 @@ function MyTabs() {
                       />
                     </TabPanel>
                     <TabPanel value="github" activeTab={tabIconMdTab}>
-                      <CodeExample
-                        title="GitHub URL"
-                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabItem.tsx
-
-TabsContainer:
-https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabsContainer.tsx`}
-                      />
+                      <div className="space-y-4">
+                        <CodeExample
+                          title="TabItem - GitHub URL"
+                          code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabItem.tsx`}
+                        />
+                        <CodeExample
+                          title="TabsContainer - GitHub URL"
+                          code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabsContainer.tsx`}
+                        />
+                      </div>
                     </TabPanel>
                   </TabsContainer>
                 </div>
@@ -3777,13 +3779,16 @@ function MyTabs() {
                   </TabsContainer>
                 </div>
                 <TabPanel value="github" activeTab={tabDisabledTab}>
-                  <CodeExample
-                    title="GitHub URL"
-                    code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabItem.tsx
-
-TabsContainer:
-https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabsContainer.tsx`}
-                  />
+                  <div className="space-y-4">
+                    <CodeExample
+                      title="TabItem - GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabItem.tsx`}
+                    />
+                    <CodeExample
+                      title="TabsContainer - GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabsContainer.tsx`}
+                    />
+                  </div>
                 </TabPanel>
               </div>
             </section>
@@ -5636,72 +5641,6 @@ export default function Example() {
             </section>
           )}
 
-          {/* Task Section Header Component */}
-          {activeSection === 'task-section-header' && (
-            <section>
-              <SectionHeader
-                icon={ChevronDown}
-                title="Task Section Header"
-                description="Total Variant: 1"
-              />
-
-              <div>
-                <div style={{ marginBottom: 'var(--spacing-56)' }}>
-                  <TabsContainer
-                    activeTab={taskSectionHeaderTab}
-                    onTabChange={setTaskSectionHeaderTab}
-                    tabs={[
-                      { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' },
-                      { value: 'github', label: 'GitHub URL' }
-                    ]}
-                  >
-                    <TabPanel value="preview" activeTab={taskSectionHeaderTab}>
-                      <div className="component-card">
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-md)', padding: 'var(--spacing-8)' }}>
-                          <div style={{ backgroundColor: 'white', borderRadius: 'var(--radius-md)', border: '1px solid var(--grey-03)' }}>
-                            <TaskSectionHeader
-                            title="Current Tasks"
-                            count={12}
-                            isExpanded={isSectionExpanded}
-                            onToggle={() => setIsSectionExpanded(!isSectionExpanded)}
-                          />
-                          </div>
-                        </div>
-                      </div>
-                    </TabPanel>
-                    <TabPanel value="usage" activeTab={taskSectionHeaderTab}>
-                      <CodeExample 
-                        code={`import { TaskSectionHeader } from './components/TaskSectionHeader';
-import { useState } from 'react';
-
-export default function Example() {
-  const [isExpanded, setIsExpanded] = useState(true);
-
-  return (
-    <TaskSectionHeader
-      title="Current Tasks"
-      count={12}
-      isExpanded={isExpanded}
-      onToggle={() => setIsExpanded(!isExpanded)}
-      showCount={true}
-    />
-  );
-}`}
-                      />
-                    </TabPanel>
-                    <TabPanel value="github" activeTab={taskSectionHeaderTab}>
-                      <CodeExample
-                        title="GitHub URL"
-                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TaskSectionHeader.tsx`}
-                      />
-                    </TabPanel>
-                  </TabsContainer>
-                </div>
-              </div>
-            </section>
-          )}
-
           {/* Project Select Modal Component */}
           {activeSection === 'project-select-modal' && (
             <section>
@@ -6401,15 +6340,15 @@ export default function Example() {
 // - Load more on scroll`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={taskSectionTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TaskSection.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
               </div>
-              <TabPanel value="github" activeTab={taskItemTab}>
-                <CodeExample
-                  title="GitHub URL"
-                  code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TaskItem.tsx`}
-                />
-              </TabPanel>
             </section>
           )}
 

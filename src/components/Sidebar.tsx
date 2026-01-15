@@ -63,7 +63,6 @@ export function Sidebar({ activeSection, onSectionChange, isSidebarOpen, setIsSi
     { id: 'tabs-item', label: 'Tabs' },
     { id: 'task-item', label: 'Task Item' },
     { id: 'task-section', label: 'Task Section' },
-    { id: 'task-section-header', label: 'Task Section Header' },
     { id: 'text-input', label: 'Text Input' },
     { id: 'textarea', label: 'Text Area' },
     { id: 'toast', label: 'Toast' },
