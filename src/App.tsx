@@ -828,7 +828,8 @@ export default function App() {
                     onTabChange={setButtonVariantTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={buttonVariantTab}>
@@ -899,6 +900,12 @@ export default function App() {
 <Button variant="ghost" disabled>Disabled</Button>`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={buttonVariantTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Button.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -910,7 +917,8 @@ export default function App() {
                     onTabChange={setButtonRectTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={buttonRectTab}>
@@ -1029,6 +1037,12 @@ import { ChevronLeft, ChevronRight, User } from 'lucide-react';
 </Button>`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={buttonRectTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Button.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -1040,7 +1054,8 @@ import { ChevronLeft, ChevronRight, User } from 'lucide-react';
                     onTabChange={setButtonRoundTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={buttonRoundTab}>
@@ -1166,6 +1181,12 @@ import { ChevronLeft, ChevronRight, User } from 'lucide-react';
 </Button>`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={buttonRoundTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Button.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -1191,7 +1212,8 @@ import { ChevronLeft, ChevronRight, User } from 'lucide-react';
                     onTabChange={setInputTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={inputTab}>
@@ -1235,6 +1257,12 @@ import { ChevronLeft, ChevronRight, User } from 'lucide-react';
   placeholder="Search..." 
   state="disabled"
 />`}
+                      />
+                    </TabPanel>
+                    <TabPanel value="github" activeTab={inputTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TextInput.tsx`}
                       />
                     </TabPanel>
                   </TabsContainer>
@@ -1353,7 +1381,8 @@ import { ChevronLeft, ChevronRight, User } from 'lucide-react';
                     onTabChange={setInputBasicTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={inputBasicTab}>
@@ -1405,6 +1434,12 @@ import { Search } from 'lucide-react';
 />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={inputBasicTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TextInput.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -1416,7 +1451,8 @@ import { Search } from 'lucide-react';
                     onTabChange={setInputLabelTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={inputLabelTab}>
@@ -1472,6 +1508,12 @@ import { Search } from 'lucide-react';
 />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={inputLabelTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TextInput.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -1483,7 +1525,8 @@ import { Search } from 'lucide-react';
                     onTabChange={setInputSizeTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={inputSizeTab}>
@@ -1536,6 +1579,12 @@ import { Search } from 'lucide-react';
 />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={inputSizeTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TextInput.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -1547,7 +1596,8 @@ import { Search } from 'lucide-react';
                     onTabChange={setInputStatesTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={inputStatesTab}>
@@ -1625,6 +1675,12 @@ import { Search } from 'lucide-react';
 />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={inputStatesTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TextInput.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -1650,7 +1706,8 @@ import { Search } from 'lucide-react';
                     onTabChange={setTextareaBasicTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={textareaBasicTab}>
@@ -1676,6 +1733,12 @@ import { Search } from 'lucide-react';
 />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={textareaBasicTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Textarea.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -1687,7 +1750,8 @@ import { Search } from 'lucide-react';
                     onTabChange={setTextareaLabelTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={textareaLabelTab}>
@@ -1713,6 +1777,12 @@ import { Search } from 'lucide-react';
 />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={textareaLabelTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Textarea.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -1724,7 +1794,8 @@ import { Search } from 'lucide-react';
                     onTabChange={setTextareaSizeTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={textareaSizeTab}>
@@ -1773,6 +1844,12 @@ import { Search } from 'lucide-react';
 />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={textareaSizeTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Textarea.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -1784,7 +1861,8 @@ import { Search } from 'lucide-react';
                     onTabChange={setTextareaStatesTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={textareaStatesTab}>
@@ -1856,6 +1934,12 @@ import { Search } from 'lucide-react';
 />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={textareaStatesTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Textarea.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -1879,7 +1963,8 @@ import { Search } from 'lucide-react';
                   onTabChange={setCardTab}
                   tabs={[
                     { value: 'preview', label: 'Preview' },
-                    { value: 'usage', label: 'Usage' }
+                    { value: 'usage', label: 'Usage' },
+                    { value: 'github', label: 'GitHub URL' }
                   ]}
                 >
                   <TabPanel value="preview" activeTab={cardTab}>
@@ -1931,6 +2016,12 @@ import { Search } from 'lucide-react';
 </div>`}
                     />
                   </TabPanel>
+                  <TabPanel value="github" activeTab={cardTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/ui/Card.tsx`}
+                    />
+                  </TabPanel>
                 </TabsContainer>
               </div>
             </section>
@@ -1953,7 +2044,8 @@ import { Search } from 'lucide-react';
                   onTabChange={setCheckboxBasicTab}
                   tabs={[
                     { value: 'preview', label: 'Preview' },
-                    { value: 'usage', label: 'Usage' }
+                    { value: 'usage', label: 'Usage' },
+                    { value: 'github', label: 'GitHub URL' }
                   ]}
                 >
                   <TabPanel value="preview" activeTab={checkboxBasicTab}>
@@ -1996,6 +2088,12 @@ const [checked, setChecked] = useState(false);
 />`}
                     />
                   </TabPanel>
+                  <TabPanel value="github" activeTab={checkboxBasicTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Checkbox.tsx`}
+                    />
+                  </TabPanel>
                 </TabsContainer>
               </div>
 
@@ -2007,7 +2105,8 @@ const [checked, setChecked] = useState(false);
                   onTabChange={setCheckboxLabelTab}
                   tabs={[
                     { value: 'preview', label: 'Preview' },
-                    { value: 'usage', label: 'Usage' }
+                    { value: 'usage', label: 'Usage' },
+                    { value: 'github', label: 'GitHub URL' }
                   ]
                 }>
                   <TabPanel value="preview" activeTab={checkboxLabelTab}>
@@ -2050,6 +2149,12 @@ const [checked, setChecked] = useState(false);
 />`}
                     />
                   </TabPanel>
+                  <TabPanel value="github" activeTab={checkboxLabelTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Checkbox.tsx`}
+                    />
+                  </TabPanel>
                 </TabsContainer>
               </div>
 
@@ -2064,7 +2169,8 @@ const [checked, setChecked] = useState(false);
                   onTabChange={setCheckboxStatesTab}
                   tabs={[
                     { value: 'preview', label: 'Preview' },
-                    { value: 'usage', label: 'Usage' }
+                    { value: 'usage', label: 'Usage' },
+                    { value: 'github', label: 'GitHub URL' }
                   ]
                 }>
                   <TabPanel value="preview" activeTab={checkboxStatesTab}>
@@ -2124,6 +2230,12 @@ const [checked, setChecked] = useState(false);
 />`}
                     />
                   </TabPanel>
+                  <TabPanel value="github" activeTab={checkboxStatesTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Checkbox.tsx`}
+                    />
+                  </TabPanel>
                 </TabsContainer>
               </div>
             </section>
@@ -2146,7 +2258,8 @@ const [checked, setChecked] = useState(false);
                   onTabChange={setRadioBasicTab}
                   tabs={[
                     { value: 'preview', label: 'Preview' },
-                    { value: 'usage', label: 'Usage' }
+                    { value: 'usage', label: 'Usage' },
+                    { value: 'github', label: 'GitHub URL' }
                   ]}
                 >
                   <TabPanel value="preview" activeTab={radioBasicTab}>
@@ -2190,6 +2303,12 @@ const [selected, setSelected] = useState('option1');
 />`}
                     />
                   </TabPanel>
+                  <TabPanel value="github" activeTab={radioBasicTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/RadioButton.tsx`}
+                    />
+                  </TabPanel>
                 </TabsContainer>
               </div>
 
@@ -2201,7 +2320,8 @@ const [selected, setSelected] = useState('option1');
                   onTabChange={setRadioLabelTab}
                   tabs={[
                     { value: 'preview', label: 'Preview' },
-                    { value: 'usage', label: 'Usage' }
+                    { value: 'usage', label: 'Usage' },
+                    { value: 'github', label: 'GitHub URL' }
                   ]
                 }>
                   <TabPanel value="preview" activeTab={radioLabelTab}>
@@ -2256,6 +2376,12 @@ const [selected, setSelected] = useState('option1');
 />`}
                     />
                   </TabPanel>
+                  <TabPanel value="github" activeTab={radioLabelTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/RadioButton.tsx`}
+                    />
+                  </TabPanel>
                 </TabsContainer>
               </div>
 
@@ -2269,7 +2395,8 @@ const [selected, setSelected] = useState('option1');
                   onTabChange={setRadioStatesTab}
                   tabs={[
                     { value: 'preview', label: 'Preview' },
-                    { value: 'usage', label: 'Usage' }
+                    { value: 'usage', label: 'Usage' },
+                    { value: 'github', label: 'GitHub URL' }
                   ]
                 }>
                   <TabPanel value="preview" activeTab={radioStatesTab}>
@@ -2347,6 +2474,12 @@ const [selected, setSelected] = useState('option1');
 />`}
                     />
                   </TabPanel>
+                  <TabPanel value="github" activeTab={radioStatesTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/RadioButton.tsx`}
+                    />
+                  </TabPanel>
                 </TabsContainer>
               </div>
             </section>
@@ -2369,7 +2502,8 @@ const [selected, setSelected] = useState('option1');
                   onTabChange={setDropdownBasicTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                   <TabPanel value="preview" activeTab={dropdownBasicTab}>
@@ -2400,6 +2534,12 @@ const options: DropdownOption[] = [
 />`}
                     />
                   </TabPanel>
+                  <TabPanel value="github" activeTab={dropdownBasicTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Dropdown.tsx`}
+                    />
+                  </TabPanel>
                 </TabsContainer>
               </div>
 
@@ -2411,7 +2551,8 @@ const options: DropdownOption[] = [
                   onTabChange={setDropdownLabelTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={dropdownLabelTab}>
@@ -2437,6 +2578,12 @@ const options: DropdownOption[] = [
 />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={dropdownLabelTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Dropdown.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -2448,7 +2595,8 @@ const options: DropdownOption[] = [
                     onTabChange={setDropdownVariantTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]
                   }>
                     <TabPanel value="preview" activeTab={dropdownVariantTab}>
@@ -2477,6 +2625,12 @@ const options: DropdownOption[] = [
 />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={dropdownVariantTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Dropdown.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -2488,7 +2642,8 @@ const options: DropdownOption[] = [
                     onTabChange={setDropdownSizeTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]
                   }>
                     <TabPanel value="preview" activeTab={dropdownSizeTab}>
@@ -2537,6 +2692,12 @@ const options: DropdownOption[] = [
 />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={dropdownSizeTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Dropdown.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -2548,7 +2709,8 @@ const options: DropdownOption[] = [
                     onTabChange={setDropdownStatesTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]
                   }>
                     <TabPanel value="preview" activeTab={dropdownStatesTab}>
@@ -2621,6 +2783,12 @@ const options: DropdownOption[] = [
 />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={dropdownStatesTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Dropdown.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
             </section>
@@ -2643,7 +2811,8 @@ const options: DropdownOption[] = [
                   onTabChange={setModalTwoActionTab}
                   tabs={[
                     { value: 'preview', label: 'Preview' },
-                    { value: 'usage', label: 'Usage' }
+                    { value: 'usage', label: 'Usage' },
+                    { value: 'github', label: 'GitHub URL' }
                   ]}
                 >
                   <TabPanel value="preview" activeTab={modalTwoActionTab}>
@@ -2707,6 +2876,12 @@ const options: DropdownOption[] = [
 />`}
                     />
                   </TabPanel>
+                  <TabPanel value="github" activeTab={modalTwoActionTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Modal.tsx`}
+                    />
+                  </TabPanel>
                 </TabsContainer>
               </div>
 
@@ -2718,7 +2893,8 @@ const options: DropdownOption[] = [
                   onTabChange={setModalOneActionTab}
                   tabs={[
                     { value: 'preview', label: 'Preview' },
-                    { value: 'usage', label: 'Usage' }
+                    { value: 'usage', label: 'Usage' },
+                    { value: 'github', label: 'GitHub URL' }
                   ]}
                 >
                   <TabPanel value="preview" activeTab={modalOneActionTab}>
@@ -2791,6 +2967,12 @@ const options: DropdownOption[] = [
 />`}
                     />
                   </TabPanel>
+                  <TabPanel value="github" activeTab={modalOneActionTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Modal.tsx`}
+                    />
+                  </TabPanel>
                 </TabsContainer>
               </div>
             </section>
@@ -2810,7 +2992,8 @@ const options: DropdownOption[] = [
                 onTabChange={setDatepickerBasicTab}
                 tabs={[
                   { value: 'preview', label: 'Preview' },
-                  { value: 'usage', label: 'Usage' }
+                  { value: 'usage', label: 'Usage' },
+                  { value: 'github', label: 'GitHub URL' }
                 ]}
               >
                 <TabPanel value="preview" activeTab={datepickerBasicTab}>
@@ -2840,6 +3023,12 @@ const options: DropdownOption[] = [
 />`}
                   />
                 </TabPanel>
+                <TabPanel value="github" activeTab={datepickerBasicTab}>
+                  <CodeExample
+                    title="GitHub URL"
+                    code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Datepicker.tsx`}
+                  />
+                </TabPanel>
               </TabsContainer>
             </section>
           )}
@@ -2862,7 +3051,8 @@ const options: DropdownOption[] = [
                     onTabChange={setAvatarIconTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={avatarIconTab}>
@@ -2924,6 +3114,12 @@ const options: DropdownOption[] = [
 <Avatar size="md" variant="icon" disabled={true} />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={avatarIconTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/AvatarComponent.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -2935,7 +3131,8 @@ const options: DropdownOption[] = [
                     onTabChange={setAvatarImageTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={avatarImageTab}>
@@ -3022,6 +3219,12 @@ const options: DropdownOption[] = [
 />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={avatarImageTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/AvatarComponent.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -3033,7 +3236,8 @@ const options: DropdownOption[] = [
                     onTabChange={setAvatarInitialsTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={avatarInitialsTab}>
@@ -3100,6 +3304,12 @@ const options: DropdownOption[] = [
 />`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={avatarInitialsTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/AvatarComponent.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -3111,7 +3321,8 @@ const options: DropdownOption[] = [
                     onTabChange={setAvatarGroupTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={avatarGroupTab}>
@@ -3211,6 +3422,12 @@ const options: DropdownOption[] = [
 // Available sizes: xs, sm, md, lg, xl`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={avatarGroupTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/AvatarGroup.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -3236,7 +3453,8 @@ const options: DropdownOption[] = [
                     onTabChange={setTabBasicMdTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={tabBasicMdTab}>
@@ -3337,6 +3555,15 @@ export default function Example() {
 }`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={tabBasicMdTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabItem.tsx
+
+TabsContainer:
+https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabsContainer.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -3348,7 +3575,8 @@ export default function Example() {
                     onTabChange={setTabIconMdTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={tabIconMdTab}>
@@ -3459,6 +3687,15 @@ function MyTabs() {
 }`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={tabIconMdTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabItem.tsx
+
+TabsContainer:
+https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabsContainer.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -3470,7 +3707,8 @@ function MyTabs() {
                     onTabChange={setTabDisabledTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={tabDisabledTab}>
@@ -3538,6 +3776,15 @@ function MyTabs() {
                     </TabPanel>
                   </TabsContainer>
                 </div>
+                <TabPanel value="github" activeTab={tabDisabledTab}>
+                  <CodeExample
+                    title="GitHub URL"
+                    code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabItem.tsx
+
+TabsContainer:
+https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TabsContainer.tsx`}
+                  />
+                </TabPanel>
               </div>
             </section>
           )}
@@ -3560,7 +3807,8 @@ function MyTabs() {
                     onTabChange={setTooltipVariantTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={tooltipVariantTab}>
@@ -3672,6 +3920,12 @@ export default function Example() {
 }`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={tooltipVariantTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Tooltip.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -3683,7 +3937,8 @@ export default function Example() {
                     onTabChange={setTooltipAvatarExamplesTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={tooltipAvatarExamplesTab}>
@@ -3839,6 +4094,12 @@ export default function Example() {
 }`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={tooltipAvatarExamplesTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Tooltip.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -3852,7 +4113,8 @@ export default function Example() {
                     onTabChange={setTooltipAvatarGroupTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={tooltipAvatarGroupTab}>
@@ -4049,6 +4311,12 @@ export default function Example() {
 }`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={tooltipAvatarGroupTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Tooltip.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -4060,7 +4328,8 @@ export default function Example() {
                     onTabChange={setTooltipSuccessTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={tooltipSuccessTab}>
@@ -4301,6 +4570,12 @@ export default function Example() {
                   </div>
                 </LogoItem>
               </div>
+              <TabPanel value="github" activeTab={tooltipSuccessTab}>
+                <CodeExample
+                  title="GitHub URL"
+                  code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Tooltip.tsx`}
+                />
+              </TabPanel>
             </section>
           )}
 
@@ -4318,7 +4593,8 @@ export default function Example() {
                 onTabChange={setIconsTab}
                 tabs={[
                   { value: 'preview', label: 'Preview' },
-                  { value: 'usage', label: 'Usage' }
+                  { value: 'usage', label: 'Usage' },
+                  { value: 'github', label: 'GitHub URL' }
                 ]}
               >
                 <TabPanel value="preview" activeTab={iconsTab}>
@@ -4530,6 +4806,12 @@ export default function Example() {
                   </div>
                 </LogoItem>
               </div>
+              <TabPanel value="github" activeTab={iconsTab}>
+                <CodeExample
+                  title="GitHub URL"
+                  code={`https://lucide.dev/icons/`}
+                />
+              </TabPanel>
             </section>
           )}
 
@@ -4558,7 +4840,8 @@ export default function Example() {
                     onTabChange={setToastTab1}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={toastTab1}>
@@ -4590,6 +4873,12 @@ toast.custom(() => (
 });`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={toastTab1}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Toast.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -4608,7 +4897,8 @@ toast.custom(() => (
                     onTabChange={setToastTab2}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={toastTab2}>
@@ -4642,6 +4932,12 @@ toast.custom(() => (
 });`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={toastTab2}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Toast.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -4660,7 +4956,8 @@ toast.custom(() => (
                     onTabChange={setToastTab3}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={toastTab3}>
@@ -4692,6 +4989,12 @@ toast.custom(() => (
 });`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={toastTab3}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Toast.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
 
@@ -4710,7 +5013,8 @@ toast.custom(() => (
                     onTabChange={setToastTab4}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={toastTab4}>
@@ -4747,6 +5051,12 @@ toast.custom(() => (
                   </TabsContainer>
                 </div>
               </div>
+              <TabPanel value="github" activeTab={toastTab4}>
+                <CodeExample
+                  title="GitHub URL"
+                  code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Toast.tsx`}
+                />
+              </TabPanel>
             </section>
           )}
 
@@ -4766,7 +5076,8 @@ toast.custom(() => (
                     onTabChange={setToggleTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={toggleTab}>
@@ -4963,6 +5274,12 @@ export default function Example() {
                   </TabsContainer>
                 </div>
               </div>
+              <TabPanel value="github" activeTab={toggleTab}>
+                <CodeExample
+                  title="GitHub URL"
+                  code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Toggle.tsx`}
+                />
+              </TabPanel>
             </section>
           )}
 
@@ -4982,7 +5299,8 @@ export default function Example() {
                     onTabChange={setCalendarTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={calendarTab}>
@@ -5042,6 +5360,12 @@ export default function Example() {
 }`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={calendarTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Calendar.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
               </div>
@@ -5064,7 +5388,8 @@ export default function Example() {
                     onTabChange={setDateRangeCalendarTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={dateRangeCalendarTab}>
@@ -5130,6 +5455,12 @@ export default function Example() {
                   </TabsContainer>
                 </div>
               </div>
+              <TabPanel value="github" activeTab={dateRangeCalendarTab}>
+                <CodeExample
+                  title="GitHub URL"
+                  code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/DateRangeCalendar.tsx`}
+                />
+              </TabPanel>
             </section>
           )}
 
@@ -5149,7 +5480,8 @@ export default function Example() {
                     onTabChange={setDiscardChangesModalTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={discardChangesModalTab}>
@@ -5203,6 +5535,12 @@ export default function Example() {
 }`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={discardChangesModalTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/DiscardChangesModal.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
               </div>
@@ -5225,7 +5563,8 @@ export default function Example() {
                     onTabChange={setPriorityDropdownTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={priorityDropdownTab}>
@@ -5285,6 +5624,12 @@ export default function Example() {
 }`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={priorityDropdownTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/PriorityDropdown.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
               </div>
@@ -5307,7 +5652,8 @@ export default function Example() {
                     onTabChange={setTaskSectionHeaderTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={taskSectionHeaderTab}>
@@ -5344,6 +5690,12 @@ export default function Example() {
 }`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={taskSectionHeaderTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TaskSectionHeader.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
               </div>
@@ -5366,7 +5718,8 @@ export default function Example() {
                     onTabChange={setProjectSelectModalTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={projectSelectModalTab}>
@@ -5417,6 +5770,12 @@ export default function Example() {
 }`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={projectSelectModalTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/ProjectSelectModal.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
               </div>
@@ -5439,7 +5798,8 @@ export default function Example() {
                     onTabChange={setAssigneeModalTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={assigneeModalTab}>
@@ -5503,6 +5863,12 @@ export default function Example() {
 // - Copy link functionality`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={assigneeModalTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/pages/my-task/AssigneeModal.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
               </div>
@@ -5525,7 +5891,8 @@ export default function Example() {
                     onTabChange={setAssignedMembersButtonTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={assignedMembersButtonTab}>
@@ -5584,6 +5951,12 @@ export default function Example() {
 // - Tooltip: Only shows on hover if text is truncated (Avatar xs + name in white)`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={assignedMembersButtonTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/AssignedMembersButton.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
               </div>
@@ -5606,7 +5979,8 @@ export default function Example() {
                     onTabChange={setMemberRowTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={memberRowTab}>
@@ -5780,6 +6154,12 @@ export default function Example() {
                   </TabsContainer>
                 </div>
               </div>
+              <TabPanel value="github" activeTab={memberRowTab}>
+                <CodeExample
+                  title="GitHub URL"
+                  code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/MemberRow.tsx`}
+                />
+              </TabPanel>
             </section>
           )}
 
@@ -5799,7 +6179,8 @@ export default function Example() {
                     onTabChange={setChecklistItemTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={checklistItemTab}>
@@ -5853,6 +6234,12 @@ export default function Example() {
 // - className?: string (optional)`}
                       />
                     </TabPanel>
+                    <TabPanel value="github" activeTab={checklistItemTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/ChecklistItem.tsx`}
+                      />
+                    </TabPanel>
                   </TabsContainer>
                 </div>
               </div>
@@ -5875,7 +6262,8 @@ export default function Example() {
                     onTabChange={setTaskItemTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={taskItemTab}>
@@ -5954,7 +6342,8 @@ export default function Example() {
                     onTabChange={setTaskSectionTab}
                     tabs={[
                       { value: 'preview', label: 'Preview' },
-                      { value: 'usage', label: 'Usage' }
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
                     ]}
                   >
                     <TabPanel value="preview" activeTab={taskSectionTab}>
@@ -6015,6 +6404,12 @@ export default function Example() {
                   </TabsContainer>
                 </div>
               </div>
+              <TabPanel value="github" activeTab={taskItemTab}>
+                <CodeExample
+                  title="GitHub URL"
+                  code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/TaskItem.tsx`}
+                />
+              </TabPanel>
             </section>
           )}
 
