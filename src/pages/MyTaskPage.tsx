@@ -11,16 +11,16 @@ import { Toast } from "../components/Toast";
 import svgPaths from "../imports/svg-mytask";
 import type { Task, Assignee, FilterState, SortOption } from "./my-task-types";
 import { Modal, Button } from "../components";
+import { ALL_USERS, getRandomUsers } from "../data/userData";
 
 // Mock data generator
 const generateMockTasks = (count: number, section: "current" | "overdue" | "completed"): Task[] => {
-  const mockAssignees = [
-    { name: "James Logan Smith", avatar: "" },
-    { name: "Sarah Johnson", avatar: "" },
-    { name: "Michael Chen", avatar: "" },
-    { name: "Emily Davis", avatar: "" },
-    { name: "Alex Martinez", avatar: "" }
-  ];
+  // Use all 15 users (all with avatarUrl)
+  const mockAssignees: Assignee[] = ALL_USERS.map(user => ({
+    name: user.name,
+    email: user.email,
+    avatar: user.avatarUrl || ""
+  }));
 
   const taskNames = [
     "Fix the sink",

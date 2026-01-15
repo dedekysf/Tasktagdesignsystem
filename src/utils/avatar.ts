@@ -1,4 +1,5 @@
 // Avatar utility functions
+import { getUserByEmail, getColorFromEmail as getUserColorFromEmail, getInitials as getUserInitials } from "../data/userData";
 
 export function getInitials(name: string): string {
   if (!name) return "";
@@ -14,25 +15,18 @@ export function getInitials(name: string): string {
   }
 }
 
-export function getAvatarColor(name: string): string {
-  // Using pastel foundation colors from design system
-  const colors = [
-    "var(--light-peach)",
-    "var(--light-purple)",
-    "var(--light-lavender)",
-    "var(--light-lavender-blue)",
-    "var(--light-mint)",
-    "var(--light-sky)",
-    "var(--light-pink)",
-    "var(--light-cream)",
-  ];
-  
-  // Simple hash function based on name
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+/**
+ * Get avatar color - now uses userData for consistency
+ * @param identifier - Can be email or name
+ * @returns Color string (hex)
+ */
+export function getAvatarColor(identifier: string): string {
+  // Try to find user by email first
+  const user = getUserByEmail(identifier);
+  if (user) {
+    return user.color;
   }
   
-  const index = Math.abs(hash) % colors.length;
-  return colors[index];
+  // Fallback: generate color from identifier
+  return getUserColorFromEmail(identifier);
 }

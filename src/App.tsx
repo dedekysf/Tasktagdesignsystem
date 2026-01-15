@@ -33,7 +33,13 @@ import { ProjectSelectModal } from './components/ProjectSelectModal';
 import { TaskSection } from './components/TaskSection';
 import { AssigneeModal } from './pages/my-task/AssigneeModal';
 import { TaskItem } from './pages/my-task/TaskItem';
-import { Palette, Type, Square, Box, MousePointerClick, TextCursor, LayoutGrid, User, Users, Image, Menu, X, CheckSquare, Circle, Sparkles, ExternalLink, ChevronDown, ChevronLeft, ChevronRight, Trash2, Info, Home, Settings, Search, CircleCheckBig, Bell, CalendarDays, CalendarRange, AlertTriangle, ChevronUp as ChevronUpIcon, FolderOpen, UserPlus, List } from 'lucide-react';
+import { AssignedMembersButton } from './components/AssignedMembersButton';
+import { MemberRow } from './components/MemberRow';
+import { ChecklistItem } from './components/ChecklistItem';
+import { Toggle } from './components/Toggle';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Palette, Type, Square, Box, MousePointerClick, TextCursor, LayoutGrid, User, Users, Image, Menu, X, CheckSquare, Circle, Sparkles, ExternalLink, ChevronDown, ChevronLeft, ChevronRight, Trash2, Info, Home, Settings, Search, CircleCheckBig, Bell, CalendarDays, CalendarRange, AlertTriangle, ChevronUp as ChevronUpIcon, FolderOpen, UserPlus, List, Plus } from 'lucide-react';
 import svgPaths from './imports/svg-92e1ovrkrf';
 import AppIconAndroid from './imports/AppIconAndroid-43-971';
 import AppIconIOs from './imports/AppIconIOs-43-942';
@@ -155,6 +161,77 @@ export default function App() {
   const [assigneeModalTab, setAssigneeModalTab] = useState('preview');
   const [taskItemTab, setTaskItemTab] = useState('preview');
   const [taskSectionTab, setTaskSectionTab] = useState('preview');
+  const [assignedMembersButtonTab, setAssignedMembersButtonTab] = useState('preview');
+  const [memberRowTab, setMemberRowTab] = useState('preview');
+  const [checklistItemTab, setChecklistItemTab] = useState('preview');
+  const [toggleTab, setToggleTab] = useState('preview');
+  
+  // Toggle states
+  const [toggleBasic, setToggleBasic] = useState(false);
+  const [toggleSm, setToggleSm] = useState(false);
+  const [toggleMd, setToggleMd] = useState(true);
+  const [toggleLg, setToggleLg] = useState(false);
+  const [toggleChecked, setToggleChecked] = useState(true);
+  const [toggleUnchecked, setToggleUnchecked] = useState(false);
+  
+  // Checklist items state
+  const [checklistPreviewItems, setChecklistPreviewItems] = useState([
+    { id: '1', text: 'Electrical Board Service Task Check Completed...', checked: true },
+    { id: '2', text: 'Label all circuits clearly and accurately', checked: true },
+    { id: '3', text: 'Replace damaged breakers immediately', checked: false },
+    { id: '4', text: 'Test each circuit for stability', checked: false },
+    { id: '5', text: 'Verify voltage performance', checked: false },
+  ]);
+
+  // Checklist functions
+  const moveChecklistItem = (dragIndex: number, hoverIndex: number) => {
+    setChecklistPreviewItems((prevItems) => {
+      const newItems = [...prevItems];
+      const dragItem = newItems[dragIndex];
+      newItems.splice(dragIndex, 1);
+      newItems.splice(hoverIndex, 0, dragItem);
+      return newItems;
+    });
+  };
+
+  const toggleChecklistItem = (id: string) => {
+    setChecklistPreviewItems((prevItems) => {
+      const itemIndex = prevItems.findIndex(item => item.id === id);
+      const item = prevItems[itemIndex];
+      const updatedItem = { ...item, checked: !item.checked };
+      const newItems = prevItems.filter(i => i.id !== id);
+      
+      if (item.checked && !updatedItem.checked) {
+        const firstIncompleteIndex = newItems.findIndex(i => !i.checked);
+        if (firstIncompleteIndex !== -1) {
+          newItems.splice(firstIncompleteIndex, 0, updatedItem);
+        } else {
+          newItems.unshift(updatedItem);
+        }
+      } else {
+        const firstCompletedIndex = newItems.findIndex(i => i.checked);
+        if (firstCompletedIndex !== -1) {
+          newItems.splice(firstCompletedIndex, 0, updatedItem);
+        } else {
+          newItems.push(updatedItem);
+        }
+      }
+      
+      return newItems;
+    });
+  };
+
+  const deleteChecklistItem = (id: string) => {
+    setChecklistPreviewItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+
+  const updateChecklistItem = (id: string, newText: string) => {
+    setChecklistPreviewItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id ? { ...item, text: newText } : item
+      )
+    );
+  };
 
   // Modal visibility states
   const [isTwoActionModalOpen, setIsTwoActionModalOpen] = useState(false);
@@ -179,6 +256,10 @@ export default function App() {
   // Priority Dropdown state
   const [showPriorityDropdown, setShowPriorityDropdown] = useState(false);
   const [selectedPriority, setSelectedPriority] = useState<"high" | "medium" | "low">("medium");
+  
+  // Member Row states
+  const [memberRowHoveredId, setMemberRowHoveredId] = useState<string | null>(null);
+  const [memberRowDropdownId, setMemberRowDropdownId] = useState<string | null>(null);
   
   // Task Section Header state
   const [isSectionExpanded, setIsSectionExpanded] = useState(true);
@@ -4481,12 +4562,14 @@ export default function Example() {
                     ]}
                   >
                     <TabPanel value="preview" activeTab={toastTab1}>
-                      <div style={{ display: 'flex', justifyContent: 'center', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
-                        <Toast 
-                          variant="title-only" 
-                          type="success"
-                          title="Task Completed" 
-                        />
+                      <div className="component-card">
+                        <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-md)', padding: 'var(--spacing-8)' }}>
+                          <Toast 
+                            variant="title-only" 
+                            type="success"
+                            title="Task Completed" 
+                          />
+                        </div>
                       </div>
                     </TabPanel>
                     <TabPanel value="usage" activeTab={toastTab1}>
@@ -4529,13 +4612,15 @@ toast.custom(() => (
                     ]}
                   >
                     <TabPanel value="preview" activeTab={toastTab2}>
-                      <div style={{ display: 'flex', justifyContent: 'center', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
-                        <Toast 
-                          variant="title-caption" 
-                          type="success"
-                          title="Task Completed" 
-                          caption="Your task has been marked as complete" 
-                        />
+                      <div className="component-card">
+                        <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-md)', padding: 'var(--spacing-8)' }}>
+                          <Toast 
+                            variant="title-caption" 
+                            type="success"
+                            title="Task Completed" 
+                            caption="Your task has been marked as complete" 
+                          />
+                        </div>
                       </div>
                     </TabPanel>
                     <TabPanel value="usage" activeTab={toastTab2}>
@@ -4579,12 +4664,14 @@ toast.custom(() => (
                     ]}
                   >
                     <TabPanel value="preview" activeTab={toastTab3}>
-                      <div style={{ display: 'flex', justifyContent: 'center', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
-                        <Toast 
-                          variant="title-arrow" 
-                          type="success"
-                          title="Task Completed" 
-                        />
+                      <div className="component-card">
+                        <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-md)', padding: 'var(--spacing-8)' }}>
+                          <Toast 
+                            variant="title-arrow" 
+                            type="success"
+                            title="Task Completed" 
+                          />
+                        </div>
                       </div>
                     </TabPanel>
                     <TabPanel value="usage" activeTab={toastTab3}>
@@ -4627,13 +4714,15 @@ toast.custom(() => (
                     ]}
                   >
                     <TabPanel value="preview" activeTab={toastTab4}>
-                      <div style={{ display: 'flex', justifyContent: 'center', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
-                        <Toast 
-                          variant="title-caption-arrow" 
-                          type="success"
-                          title="Task Completed" 
-                          caption="Your task has been marked as complete" 
-                        />
+                      <div className="component-card">
+                        <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-md)', padding: 'var(--spacing-8)' }}>
+                          <Toast 
+                            variant="title-caption-arrow" 
+                            type="success"
+                            title="Task Completed" 
+                            caption="Your task has been marked as complete" 
+                          />
+                        </div>
                       </div>
                     </TabPanel>
                     <TabPanel value="usage" activeTab={toastTab4}>
@@ -4653,6 +4742,222 @@ toast.custom(() => (
   duration: 3000,
   position: 'bottom-center',
 });`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Toggle Component */}
+          {activeSection === 'toggle' && (
+            <section>
+              <SectionHeader
+                icon={CircleCheckBig}
+                title="Toggle"
+                description="Total Variant: 1"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={toggleTab}
+                    onTabChange={setToggleTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={toggleTab}>
+                      <div className="component-card">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-32)', padding: 'var(--spacing-24)' }}>
+                          {/* Basic Toggle */}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-16)' }}>
+                            <Toggle 
+                              checked={toggleBasic}
+                              onCheckedChange={setToggleBasic}
+                            />
+                            <span style={{
+                              fontSize: 'var(--text-label)',
+                              fontWeight: 'var(--font-weight-regular)',
+                              color: 'var(--text-primary)',
+                              letterSpacing: '0.28px'
+                            }}>
+                              Basic Toggle
+                            </span>
+                          </div>
+
+                          {/* Size Variants */}
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)' }}>
+                            <div style={{
+                              fontSize: 'var(--text-body)',
+                              fontWeight: 'var(--font-weight-semibold)',
+                              color: 'var(--text-primary)',
+                              marginBottom: 'var(--spacing-8)'
+                            }}>
+                              Size Variants
+                            </div>
+                            
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-16)' }}>
+                              <Toggle 
+                                size="sm"
+                                checked={toggleSm}
+                                onCheckedChange={setToggleSm}
+                              />
+                              <span style={{
+                                fontSize: 'var(--text-label)',
+                                fontWeight: 'var(--font-weight-regular)',
+                                color: 'var(--text-primary)',
+                                letterSpacing: '0.28px'
+                              }}>
+                                Small (sm)
+                              </span>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-16)' }}>
+                              <Toggle 
+                                size="md"
+                                checked={toggleMd}
+                                onCheckedChange={setToggleMd}
+                              />
+                              <span style={{
+                                fontSize: 'var(--text-label)',
+                                fontWeight: 'var(--font-weight-regular)',
+                                color: 'var(--text-primary)',
+                                letterSpacing: '0.28px'
+                              }}>
+                                Medium (md) - Default
+                              </span>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-16)' }}>
+                              <Toggle 
+                                size="lg"
+                                checked={toggleLg}
+                                onCheckedChange={setToggleLg}
+                              />
+                              <span style={{
+                                fontSize: 'var(--text-label)',
+                                fontWeight: 'var(--font-weight-regular)',
+                                color: 'var(--text-primary)',
+                                letterSpacing: '0.28px'
+                              }}>
+                                Large (lg)
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* States */}
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)' }}>
+                            <div style={{
+                              fontSize: 'var(--text-body)',
+                              fontWeight: 'var(--font-weight-semibold)',
+                              color: 'var(--text-primary)',
+                              marginBottom: 'var(--spacing-8)'
+                            }}>
+                              States
+                            </div>
+                            
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-16)' }}>
+                              <Toggle 
+                                checked={toggleChecked}
+                                onCheckedChange={setToggleChecked}
+                              />
+                              <span style={{
+                                fontSize: 'var(--text-label)',
+                                fontWeight: 'var(--font-weight-regular)',
+                                color: 'var(--text-primary)',
+                                letterSpacing: '0.28px'
+                              }}>
+                                Checked
+                              </span>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-16)' }}>
+                              <Toggle 
+                                checked={toggleUnchecked}
+                                onCheckedChange={setToggleUnchecked}
+                              />
+                              <span style={{
+                                fontSize: 'var(--text-label)',
+                                fontWeight: 'var(--font-weight-regular)',
+                                color: 'var(--text-primary)',
+                                letterSpacing: '0.28px'
+                              }}>
+                                Unchecked
+                              </span>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-16)' }}>
+                              <Toggle 
+                                checked={true}
+                                disabled
+                              />
+                              <span style={{
+                                fontSize: 'var(--text-label)',
+                                fontWeight: 'var(--font-weight-regular)',
+                                color: 'var(--grey-04)',
+                                letterSpacing: '0.28px'
+                              }}>
+                                Disabled (Checked)
+                              </span>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-16)' }}>
+                              <Toggle 
+                                checked={false}
+                                disabled
+                              />
+                              <span style={{
+                                fontSize: 'var(--text-label)',
+                                fontWeight: 'var(--font-weight-regular)',
+                                color: 'var(--grey-04)',
+                                letterSpacing: '0.28px'
+                              }}>
+                                Disabled (Unchecked)
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={toggleTab}>
+                      <CodeExample 
+                        code={`import { Toggle } from './components/Toggle';
+import { useState } from 'react';
+
+export default function Example() {
+  const [checked, setChecked] = useState(false);
+
+  return (
+    <div>
+      {/* Basic Toggle */}
+      <Toggle 
+        checked={checked}
+        onCheckedChange={setChecked}
+      />
+
+      {/* With Label */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <Toggle 
+          checked={checked}
+          onCheckedChange={setChecked}
+        />
+        <span>Show completed items</span>
+      </div>
+
+      {/* Size Variants */}
+      <Toggle size="sm" checked={checked} onCheckedChange={setChecked} />
+      <Toggle size="md" checked={checked} onCheckedChange={setChecked} />
+      <Toggle size="lg" checked={checked} onCheckedChange={setChecked} />
+
+      {/* Disabled State */}
+      <Toggle checked={true} disabled />
+      <Toggle checked={false} disabled />
+    </div>
+  );
+}`}
                       />
                     </TabPanel>
                   </TabsContainer>
@@ -4681,16 +4986,17 @@ toast.custom(() => (
                     ]}
                   >
                     <TabPanel value="preview" activeTab={calendarTab}>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
-                        <Button 
-                          variant="fill" 
-                          size="md"
-                          className="btn-secondary"
-                          style={{ width: '96px', height: '40px' }}
-                          onClick={() => setShowCalendar(!showCalendar)}
-                        >
-                          Calendar
-                        </Button>
+                      <div className="component-card">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-md)', padding: 'var(--spacing-8)' }}>
+                          <Button 
+                            variant="fill" 
+                            size="md"
+                            className="btn-secondary"
+                            style={{ width: '96px', height: '40px' }}
+                            onClick={() => setShowCalendar(!showCalendar)}
+                          >
+                            Calendar
+                          </Button>
                         {showCalendar && (
                           <div style={{ position: 'relative', display: 'inline-block' }}>
                             <Calendar
@@ -4703,6 +5009,7 @@ toast.custom(() => (
                             />
                           </div>
                         )}
+                        </div>
                       </div>
                     </TabPanel>
                     <TabPanel value="usage" activeTab={calendarTab}>
@@ -4761,16 +5068,17 @@ export default function Example() {
                     ]}
                   >
                     <TabPanel value="preview" activeTab={dateRangeCalendarTab}>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
-                        <Button 
-                          variant="fill" 
-                          size="md"
-                          className="btn-secondary"
-                          style={{ width: '96px' }}
-                          onClick={() => setShowDateRangeCalendar(!showDateRangeCalendar)}
-                        >
-                          Date
-                        </Button>
+                      <div className="component-card">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-md)', padding: 'var(--spacing-8)' }}>
+                          <Button 
+                            variant="fill" 
+                            size="md"
+                            className="btn-secondary"
+                            style={{ width: '96px' }}
+                            onClick={() => setShowDateRangeCalendar(!showDateRangeCalendar)}
+                          >
+                            Date
+                          </Button>
                         {showDateRangeCalendar && (
                           <div style={{ position: 'relative', display: 'inline-block', width: '380px' }}>
                             <DateRangeCalendar
@@ -4784,6 +5092,7 @@ export default function Example() {
                             />
                           </div>
                         )}
+                        </div>
                       </div>
                     </TabPanel>
                     <TabPanel value="usage" activeTab={dateRangeCalendarTab}>
@@ -4844,7 +5153,7 @@ export default function Example() {
                     ]}
                   >
                     <TabPanel value="preview" activeTab={discardChangesModalTab}>
-                      <div style={{ padding: 'var(--spacing-24)' }}>
+                      <div className="component-card">
                         <Button 
                           variant="fill" 
                           size="md"
@@ -4920,9 +5229,10 @@ export default function Example() {
                     ]}
                   >
                     <TabPanel value="preview" activeTab={priorityDropdownTab}>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
-                        <div>
-                          <Button 
+                      <div className="component-card">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-md)', padding: 'var(--spacing-8)' }}>
+                          <div>
+                            <Button 
                             variant="fill" 
                             size="md"
                             className="btn-secondary"
@@ -4943,6 +5253,7 @@ export default function Example() {
                             />
                           </div>
                         )}
+                        </div>
                       </div>
                     </TabPanel>
                     <TabPanel value="usage" activeTab={priorityDropdownTab}>
@@ -5000,14 +5311,16 @@ export default function Example() {
                     ]}
                   >
                     <TabPanel value="preview" activeTab={taskSectionHeaderTab}>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)', padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
-                        <div style={{ backgroundColor: 'white', borderRadius: 'var(--radius-md)', border: '1px solid var(--grey-03)' }}>
-                          <TaskSectionHeader
+                      <div className="component-card">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-md)', padding: 'var(--spacing-8)' }}>
+                          <div style={{ backgroundColor: 'white', borderRadius: 'var(--radius-md)', border: '1px solid var(--grey-03)' }}>
+                            <TaskSectionHeader
                             title="Current Tasks"
                             count={12}
                             isExpanded={isSectionExpanded}
                             onToggle={() => setIsSectionExpanded(!isSectionExpanded)}
                           />
+                          </div>
                         </div>
                       </div>
                     </TabPanel>
@@ -5057,7 +5370,7 @@ export default function Example() {
                     ]}
                   >
                     <TabPanel value="preview" activeTab={projectSelectModalTab}>
-                      <div style={{ padding: 'var(--spacing-24)' }}>
+                      <div className="component-card">
                         <Button 
                           variant="fill" 
                           size="md"
@@ -5116,7 +5429,7 @@ export default function Example() {
               <SectionHeader
                 icon={UserPlus}
                 title="Assignee Modal"
-                description="Modal for selecting and managing task assignees with search, groups, and email invites"
+                description="Total Variant: 1"
               />
 
               <div>
@@ -5130,7 +5443,7 @@ export default function Example() {
                     ]}
                   >
                     <TabPanel value="preview" activeTab={assigneeModalTab}>
-                      <div style={{ padding: 'var(--spacing-24)' }}>
+                      <div className="component-card">
                         <Button 
                           variant="fill" 
                           size="md"
@@ -5196,6 +5509,356 @@ export default function Example() {
             </section>
           )}
 
+          {/* Assigned Members Button Component */}
+          {activeSection === 'assigned-members-button' && (
+            <section>
+              <SectionHeader
+                icon={Users}
+                title="Assigned Members Button"
+                description="Total Variant: 1"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={assignedMembersButtonTab}
+                    onTabChange={setAssignedMembersButtonTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={assignedMembersButtonTab}>
+                      <div className="component-card">
+                        <AssignedMembersButton
+                          members={[
+                            {
+                              id: '2',
+                              name: 'Alexander Benjamin Richardson',
+                              email: 'alexander@example.com',
+                              initials: 'AR',
+                              color: 'var(--green)',
+                              role: 'assignee'
+                            }
+                          ]}
+                          onClick={() => console.log('Clicked')}
+                        />
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={assignedMembersButtonTab}>
+                      <CodeExample 
+                        code={`import { AssignedMembersButton } from './components/AssignedMembersButton';
+
+export default function Example() {
+  const members = [
+    {
+      id: '1',
+      name: 'Sarah Johnson',
+      email: 'sarah@example.com',
+      initials: 'SJ',
+      color: 'var(--blue)',
+      role: 'assignee'
+    }
+  ];
+
+  return (
+    <AssignedMembersButton
+      members={members}
+      onClick={() => console.log('Open assignee modal')}
+      className="custom-class"
+    />
+  );
+}
+
+// Props:
+// - members: AssignedMember[] (required) - Only displays first member
+// - onClick: () => void (required)
+// - className?: string (optional)
+// 
+// Features:
+// - Fixed width: 124px (text truncates if exceeds)
+// - Fixed height: 32px
+// - Avatar size: 24px (xs)
+// - Avatar position: Vertically centered with 8px padding from left
+// - Gap between avatar and text: 2px
+// - Tooltip: Only shows on hover if text is truncated (Avatar xs + name in white)`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Member Row Component */}
+          {activeSection === 'member-row' && (
+            <section>
+              <SectionHeader
+                icon={User}
+                title="Member Row"
+                description="Total Variant: 3"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={memberRowTab}
+                    onTabChange={setMemberRowTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={memberRowTab}>
+                      <div className="component-card">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-12)' }}>
+                          <div>
+                            <p style={{ marginBottom: 'var(--spacing-8)', fontSize: 'var(--text-label)', color: 'var(--text-secondary)' }}>Variant 1: Owner (role not editable)</p>
+                          <MemberRow
+                            member={{
+                              id: 'owner-1',
+                              name: 'Sarah Johnson',
+                              email: 'sarah@example.com',
+                              initials: 'SJ',
+                              color: 'var(--blue)',
+                              role: 'Owner',
+                              isPending: false
+                            }}
+                            isHovered={memberRowHoveredId === 'owner-1'}
+                            isDropdownOpen={memberRowDropdownId === 'owner-1'}
+                            onMouseEnter={() => setMemberRowHoveredId('owner-1')}
+                            onMouseLeave={() => setMemberRowHoveredId(null)}
+                            onToggleDropdown={() => {}}
+                            onUpdateRole={() => {}}
+                            onDelete={() => console.log('Delete owner-1')}
+                          />
+                        </div>
+                        <div>
+                          <p style={{ marginBottom: 'var(--spacing-8)', fontSize: 'var(--text-label)', color: 'var(--text-secondary)' }}>Variant 2: Invited Member (with resend & cancel)</p>
+                          <MemberRow
+                            member={{
+                              id: 'invite-1',
+                              name: 'emily@example.com',
+                              email: 'emily@example.com',
+                              initials: '',
+                              color: '',
+                              role: 'Assignee',
+                              isPending: true
+                            }}
+                            isHovered={memberRowHoveredId === 'invite-1'}
+                            isDropdownOpen={memberRowDropdownId === 'invite-1'}
+                            onMouseEnter={() => setMemberRowHoveredId('invite-1')}
+                            onMouseLeave={() => setMemberRowHoveredId(null)}
+                            onToggleDropdown={() => {}}
+                            onUpdateRole={() => {}}
+                            onDelete={() => console.log('Cancel invite-1')}
+                            onResendInvite={() => console.log('Resend invite-1')}
+                          />
+                        </div>
+                        <div>
+                          <p style={{ marginBottom: 'var(--spacing-8)', fontSize: 'var(--text-label)', color: 'var(--text-secondary)' }}>Variant 3: Active Member (role editable with dropdown)</p>
+                          <MemberRow
+                            member={{
+                              id: 'member-1',
+                              name: 'Mike Wilson',
+                              email: 'mike@example.com',
+                              initials: 'MW',
+                              color: 'var(--purple)',
+                              role: 'Assignee',
+                              isPending: false
+                            }}
+                            isHovered={memberRowHoveredId === 'member-1'}
+                            isDropdownOpen={memberRowDropdownId === 'member-1'}
+                            onMouseEnter={() => setMemberRowHoveredId('member-1')}
+                            onMouseLeave={() => setMemberRowHoveredId(null)}
+                            onToggleDropdown={() => {
+                              setMemberRowDropdownId(memberRowDropdownId === 'member-1' ? null : 'member-1');
+                            }}
+                            onUpdateRole={(role) => {
+                              console.log('Update role to:', role);
+                              setMemberRowDropdownId(null);
+                            }}
+                            onDelete={() => console.log('Delete member-1')}
+                          />
+                        </div>
+                        </div>
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={memberRowTab}>
+                      <CodeExample 
+                        code={`import { MemberRow } from './components/MemberRow';
+import { useState } from 'react';
+
+export default function Example() {
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [dropdownId, setDropdownId] = useState<string | null>(null);
+
+  // Variant 1: Owner (role not editable)
+  const ownerMember = {
+    id: 'owner-1',
+    name: 'Sarah Johnson',
+    email: 'sarah@example.com',
+    initials: 'SJ',
+    color: 'var(--blue)',
+    role: 'Owner',
+    isPending: false
+  };
+
+  // Variant 2: Invited Member
+  const invitedMember = {
+    id: 'invite-1',
+    name: 'emily@example.com',
+    email: 'emily@example.com',
+    role: 'Assignee',
+    isPending: true
+  };
+
+  // Variant 3: Active Member (role editable)
+  const activeMember = {
+    id: 'member-1',
+    name: 'Mike Wilson',
+    email: 'mike@example.com',
+    initials: 'MW',
+    color: 'var(--purple)',
+    role: 'Assignee',
+    isPending: false
+  };
+
+  return (
+    <div>
+      {/* Owner */}
+      <MemberRow
+        member={ownerMember}
+        isHovered={hoveredId === ownerMember.id}
+        isDropdownOpen={false}
+        onMouseEnter={() => setHoveredId(ownerMember.id)}
+        onMouseLeave={() => setHoveredId(null)}
+        onToggleDropdown={() => {}}
+        onUpdateRole={() => {}}
+        onDelete={() => console.log('Delete')}
+      />
+
+      {/* Invited */}
+      <MemberRow
+        member={invitedMember}
+        isHovered={hoveredId === invitedMember.id}
+        isDropdownOpen={false}
+        onMouseEnter={() => setHoveredId(invitedMember.id)}
+        onMouseLeave={() => setHoveredId(null)}
+        onToggleDropdown={() => {}}
+        onUpdateRole={() => {}}
+        onDelete={() => console.log('Cancel invite')}
+        onResendInvite={() => console.log('Resend')}
+      />
+
+      {/* Active Member */}
+      <MemberRow
+        member={activeMember}
+        isHovered={hoveredId === activeMember.id}
+        isDropdownOpen={dropdownId === activeMember.id}
+        onMouseEnter={() => setHoveredId(activeMember.id)}
+        onMouseLeave={() => setHoveredId(null)}
+        onToggleDropdown={() => {
+          setDropdownId(dropdownId === activeMember.id ? null : activeMember.id);
+        }}
+        onUpdateRole={(role) => {
+          console.log('Update role:', role);
+          setDropdownId(null);
+        }}
+        onDelete={() => console.log('Remove member')}
+      />
+    </div>
+  );
+}
+
+// Three variants:
+// 1. Owner: role === 'Owner' - Shows plain "Owner" text (not editable)
+// 2. Invited: isPending === true - Shows role text, Resend & Cancel buttons
+// 3. Active Member: isPending === false && role !== 'Owner' - Role dropdown (editable)`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Checklist Item Component */}
+          {activeSection === 'checklist-item' && (
+            <section>
+              <SectionHeader
+                icon={CheckSquare}
+                title="Checklist Item"
+                description="Total Variant: 1"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={checklistItemTab}
+                    onTabChange={setChecklistItemTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={checklistItemTab}>
+                      <div className="component-card">
+                        <DndProvider backend={HTML5Backend}>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)' }}>
+                            {checklistPreviewItems.map((item, idx) => (
+                              <ChecklistItem
+                                key={item.id}
+                                id={item.id}
+                                text={item.text}
+                                checked={item.checked}
+                                index={idx}
+                                onToggle={toggleChecklistItem}
+                                onDelete={deleteChecklistItem}
+                                moveItem={moveChecklistItem}
+                                onUpdate={updateChecklistItem}
+                              />
+                            ))}
+                          </div>
+                        </DndProvider>
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={checklistItemTab}>
+                      <CodeExample 
+                        code={`import { ChecklistItem } from './components/ChecklistItem';
+
+export default function Example() {
+  const item = {
+    id: '1',
+    text: 'Review design mockups',
+    completed: false
+  };
+
+  return (
+    <ChecklistItem
+      item={item}
+      onToggle={(id) => console.log('Toggle:', id)}
+      onDelete={(id) => console.log('Delete:', id)}
+      onTextChange={(id, text) => console.log('Text changed:', id, text)}
+      className="custom-class"
+    />
+  );
+}
+
+// Props:
+// - item: ChecklistItemData (required)
+// - onToggle: (id: string) => void (required)
+// - onDelete: (id: string) => void (required)
+// - onTextChange: (id: string, text: string) => void (required)
+// - className?: string (optional)`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
           {/* Task Item Component */}
           {activeSection === 'task-item' && (
             <section>
@@ -5216,11 +5879,13 @@ export default function Example() {
                     ]}
                   >
                     <TabPanel value="preview" activeTab={taskItemTab}>
-                      <div style={{ padding: 'var(--spacing-24)', backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-lg)' }}>
-                        <div style={{ backgroundColor: 'white', borderRadius: 'var(--radius-md)', border: '1px solid var(--grey-03)', padding: 'var(--spacing-12)' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-12)' }}>
-                            <Checkbox size="sm" />
-                            <span style={{ flex: 1 }}>Example task with drag-and-drop support</span>
+                      <div className="component-card">
+                        <div style={{ backgroundColor: 'var(--grey-01)', borderRadius: 'var(--radius-md)', padding: 'var(--spacing-8)' }}>
+                          <div style={{ backgroundColor: 'white', borderRadius: 'var(--radius-md)', border: '1px solid var(--grey-03)', padding: 'var(--spacing-12)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-12)' }}>
+                              <Checkbox size="sm" />
+                              <span style={{ flex: 1 }}>Example task with drag-and-drop support</span>
+                            </div>
                           </div>
                         </div>
                       </div>

@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { ChecklistItem } from './ChecklistItem';
-import { Switch } from '../../components/ui/switch';
+import { ChecklistItem } from '../../components/ChecklistItem';
+import { Button } from '../../components/Button';
+import { Toggle } from '../../components/Toggle';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -205,7 +206,7 @@ export function InteractiveChecklist() {
                 }}>
                   Show completed items
                 </span>
-                <Switch 
+                <Toggle 
                   checked={showCompleted} 
                   onCheckedChange={setShowCompleted}
                 />
@@ -311,10 +312,16 @@ export function InteractiveChecklist() {
                         </div>
                       </div>
                     ) : (
-                      <button 
+                      <Button 
                         onClick={() => setIsAddingItem(true)}
-                        className="relative rounded-lg shrink-0 w-full transition-colors cursor-pointer"
-                        style={{ backgroundColor: 'var(--grey-01)' }}
+                        size="lg"
+                        style={{
+                          backgroundColor: 'var(--grey-01)',
+                          color: 'var(--secondary-green)',
+                          width: '100%',
+                          border: 'none',
+                          justifyContent: 'flex-start'
+                        }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.backgroundColor = 'var(--grey-02)';
                         }}
@@ -322,18 +329,16 @@ export function InteractiveChecklist() {
                           e.currentTarget.style.backgroundColor = 'var(--grey-01)';
                         }}
                       >
-                        <div className="box-border content-stretch flex gap-[12px] items-center px-[16px] py-[16px] relative w-full">
-                          <Plus className="size-4" style={{ color: 'var(--secondary-green)' }} strokeWidth={2} />
-                          <p style={{
-                            fontWeight: 'var(--font-weight-medium)',
-                            fontSize: 'var(--text-label)',
-                            lineHeight: '16px',
-                            color: 'var(--secondary-green)',
-                          }}>
-                            Add item
-                          </p>
-                        </div>
-                      </button>
+                        <svg className="block size-4" fill="none" preserveAspectRatio="none" viewBox="0 0 16 16">
+                          <path d="M8 3.33333V12.6667M3.33333 8H12.6667" stroke="var(--secondary-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <span style={{
+                          fontWeight: 'var(--font-weight-medium)',
+                          color: 'var(--secondary-green)',
+                        }}>
+                          Add item
+                        </span>
+                      </Button>
                     )}
                   </>
                 )}

@@ -1,5 +1,4 @@
 import svgPaths from "../../../imports/svg-nwqvnvpy04";
-import { getInitials, getAvatarColor } from "../../../utils/avatar";
 import { Mail, User, UserPlus } from "lucide-react";
 import { Button } from "../../../components/Button";
 import { AvatarGroupWithTooltip } from "../../../components/AvatarGroupWithTooltip";
@@ -9,11 +8,14 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "../../../components/ui/tooltip";
+import { getUserByEmail, getColorFromEmail, getInitials } from "../../../data/userData";
+import { AssignedMembersButton } from "../../../components/AssignedMembersButton";
 
 interface Assignee {
   name: string;
   avatar: string;
   isEmailInvite?: boolean;
+  email?: string;
 }
 
 interface AssigneeButtonProps {
@@ -55,87 +57,50 @@ export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
   // 1 assignee - show single avatar with name or email with tooltip
   if (assignees.length === 1) {
     const assignee = assignees[0];
-    const initials = getInitials(assignee.name);
-    const color = getAvatarColor(assignee.name);
+    
+    // Get consistent color from userData
+    const userData = assignee.email ? getUserByEmail(assignee.email) : null;
+    const initials = userData?.initials || getInitials(assignee.name);
+    const color = assignee.isEmailInvite ? '' : (userData?.color || getColorFromEmail(assignee.email || assignee.name));
+    
+    // Use AssignedMembersButton from main components
+    const member = {
+      id: assignee.isEmailInvite ? `invite-${assignee.email}` : assignee.email || assignee.name,
+      name: assignee.name,
+      email: assignee.email || '',
+      avatar: assignee.avatar || userData?.avatarUrl,
+      initials: initials,
+      color: color,
+      role: 'Assignee'
+    };
     
     return (
-      <Tooltip delayDuration={300}>
-        <TooltipTrigger asChild>
-          <Button
-            variant="outline"
-            size="sm"
-            className="btn-secondary shrink-0"
-            style={{
-              width: '120px',
-              height: 'var(--size-sm)',
-              padding: '0 var(--spacing-12)',
-              borderRadius: 'var(--radius-full)',
-              borderColor: 'var(--grey-03)',
-              justifyContent: 'flex-start'
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              onClick?.();
-            }}
-            onMouseDown={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            {assignee.isEmailInvite ? (
-              <Avatar
-                size="xs"
-                variant="icon"
-                backgroundColor="var(--grey-02)"
-                iconColor="var(--grey-05)"
-              />
-            ) : (
-              <div className="size-5 rounded-full shrink-0 relative flex items-center justify-center" style={{ backgroundColor: color }}>
-                <span className="text-[10px] text-[var(--text-primary)]" style={{ fontWeight: 'var(--font-weight-medium)' }}>
-                  {initials}
-                </span>
-              </div>
-            )}
-            <span className="text-[12px] text-[var(--text-secondary)] truncate" style={{ fontWeight: 'var(--font-weight-regular)' }}>
-              {assignee.name}
-            </span>
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent 
-          side="bottom"
-          sideOffset={8}
-          className="bg-foreground text-primary-foreground border-none shadow-lg text-[12px] tracking-[0.24px] px-3 py-2"
-        >
-          <div className="flex items-center gap-2">
-            {assignee.isEmailInvite ? (
-              <Avatar
-                size="xs"
-                variant="icon"
-                backgroundColor="var(--grey-02)"
-                iconColor="var(--grey-05)"
-              />
-            ) : (
-              <div className="size-5 rounded-full shrink-0 flex items-center justify-center" style={{ backgroundColor: color }}>
-                <span className="text-[10px] text-white" style={{ fontWeight: 'var(--font-weight-medium)' }}>
-                  {initials}
-                </span>
-              </div>
-            )}
-            <span style={{ fontWeight: 'var(--font-weight-regular)' }}>{assignee.name}</span>
-          </div>
-        </TooltipContent>
-      </Tooltip>
+      <div
+        onMouseDown={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <AssignedMembersButton
+          members={[member]}
+          onClick={(e) => {
+            onClick?.();
+          }}
+        />
+      </div>
     );
   }
 
   // 2-3 assignees or more - show overlapping avatars with individual tooltips
   const avatarData = assignees.map((assignee) => {
-    const initials = getInitials(assignee.name);
-    const color = getAvatarColor(assignee.name);
+    // Get consistent color from userData
+    const userData = assignee.email ? getUserByEmail(assignee.email) : null;
+    const initials = userData?.initials || getInitials(assignee.name);
+    const color = assignee.isEmailInvite ? '' : (userData?.color || getColorFromEmail(assignee.email || assignee.name));
     
     return {
       variant: assignee.isEmailInvite ? ('icon' as const) : ('initials' as const),
       initials: assignee.isEmailInvite ? undefined : initials,
-      imageUrl: assignee.avatar,
+      imageUrl: assignee.avatar || userData?.avatarUrl,
       backgroundColor: assignee.isEmailInvite ? 'var(--grey-02)' : color,
       iconColor: assignee.isEmailInvite ? 'var(--grey-05)' : 'var(--text-secondary)',
       isEmailInvite: assignee.isEmailInvite,
@@ -145,7 +110,7 @@ export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
             size="xs"
             variant={assignee.isEmailInvite ? 'icon' : 'initials'}
             initials={initials}
-            imageUrl={assignee.avatar}
+            imageUrl={assignee.avatar || userData?.avatarUrl}
             backgroundColor={assignee.isEmailInvite ? 'var(--grey-02)' : color}
             iconColor={assignee.isEmailInvite ? 'var(--grey-05)' : 'var(--text-secondary)'}
           />
@@ -159,8 +124,10 @@ export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
   const remainingTooltipContent = assignees.length > 3 ? (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-8)' }}>
       {assignees.slice(3).map((assignee, idx) => {
-        const initials = getInitials(assignee.name);
-        const color = getAvatarColor(assignee.name);
+        // Get consistent color from userData
+        const userData = assignee.email ? getUserByEmail(assignee.email) : null;
+        const initials = userData?.initials || getInitials(assignee.name);
+        const color = assignee.isEmailInvite ? '' : (userData?.color || getColorFromEmail(assignee.email || assignee.name));
         
         return (
           <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-8)' }}>
@@ -168,7 +135,7 @@ export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
               size="xs"
               variant={assignee.isEmailInvite ? 'icon' : 'initials'}
               initials={initials}
-              imageUrl={assignee.avatar}
+              imageUrl={assignee.avatar || userData?.avatarUrl}
               backgroundColor={assignee.isEmailInvite ? 'var(--grey-02)' : color}
               iconColor={assignee.isEmailInvite ? 'var(--grey-05)' : 'var(--text-secondary)'}
             />

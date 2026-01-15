@@ -1,6 +1,7 @@
 export interface Assignee {
   name: string;
   avatar: string;
+  email?: string; // Add email support
   isEmailInvite?: boolean;
   role?: "assignee" | "viewer";
 }

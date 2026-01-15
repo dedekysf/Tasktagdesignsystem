@@ -330,6 +330,7 @@ export function TaskSection({ title, count, tasks, isExpanded, onToggle, onReord
                 onUpdateTask?.(taskId, { 
                   assignees: assignees.map(a => ({ 
                     name: a.name, 
+                    email: a.email, // Include email
                     avatar: a.avatarUrl || "",
                     role: a.role,
                     isEmailInvite: a.isEmailInvite

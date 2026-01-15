@@ -1,24 +1,7 @@
-import { 
-  ChevronLeft, 
-  MoreVertical, 
-  Plus, 
-  Search, 
-  Hash, 
-  FileText, 
-  Image as ImageIcon, 
-  Activity, 
-  Users, 
-  UserPlus,
-  Save,
-  MapPin,
-  Link,
-  X
-} from "lucide-react";
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { ChecklistItem } from '../../components/ChecklistItem';
+import { Toggle } from '../../components/Toggle';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { ChecklistItem } from './ChecklistItem';
-import { Switch } from '../../components/ui/switch';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -416,7 +399,7 @@ export default function ProjectDetailsPage() {
               letterSpacing: '0.28px',
               fontFamily: 'var(--font-family-base)'
             }}>Show completed items</span>
-            <Switch
+            <Toggle
               checked={showCompleted}
               onCheckedChange={setShowCompleted}
             />

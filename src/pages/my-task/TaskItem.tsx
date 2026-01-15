@@ -1087,7 +1087,7 @@ export function TaskItem({
                 </Button>
               </div>
 
-              {/* Assignees or Assignee Button using Button component */}
+              {/* Assignees or Assignee Button */}
               {task.assignees && task.assignees.length > 0 ? (
                 <div className="shrink-0">
                   <AssigneeButton

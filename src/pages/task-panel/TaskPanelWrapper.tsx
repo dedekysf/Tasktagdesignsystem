@@ -1,42 +1,25 @@
-import { Activity } from "./Activity";
-import { CompleteTaskModal } from "./CompleteTaskModal";
-import { DeleteFilesModal } from "./DeleteFilesModal";
-import { CopyLinkTooltip } from "./CopyLinkTooltip";
-import { Button } from "../../components/Button";
-import { DateRangeCalendar } from "../../components/DateRangeCalendar";
-import { Tooltip as MainTooltip } from "../../components/Tooltip";
-import { Textarea } from "../../components/Textarea";
-import { AssigneeModal } from "../../pages/my-task/AssigneeModal";
-import { SuccessTooltip } from "../../components/SuccessTooltip";
-import { InteractiveChecklist } from "./InteractiveChecklist";
-import { FilesAndMedia } from "./FilesAndMedia";
-import { Members } from "./Members";
-import { PriorityDropdown } from "../../components/PriorityDropdown";
-import { AvatarWithTooltip } from "../../components/AvatarWithTooltip";
-import { Avatar } from "../../components/AvatarComponent";
-import { AvatarGroupWithTooltip } from "../../components/AvatarGroupWithTooltip";
-import svgPaths from "../../imports/svg-3x9ir0o7gu";
-import {
-  Tooltip as UITooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../../components/ui/tooltip";
-import { useState, useRef, useEffect } from "react";
-import { 
-  Folder, 
-  Link, 
-  X, 
-  Check, 
-  Calendar,
-  UserPlus,
-  Image as ImageIcon,
-  EllipsisVertical,
-  ChevronsUp,
-  ChevronsDown
-} from "lucide-react";
-import React from "react";
-import { createPortal } from "react-dom";
+import { useState, useRef, useEffect } from 'react';
+import { X, Calendar, Check, ChevronsUp, ChevronDown, Folder, Link, EllipsisVertical, UserPlus, Image as ImageIcon, ChevronsDown } from 'lucide-react';
+import { Button } from '../../components/Button';
+import { Activity } from './Activity';
+import { InteractiveChecklist } from './InteractiveChecklist';
+import { Members } from './Members';
+import { FilesAndMedia } from './FilesAndMedia';
+import { CompleteTaskModal } from './CompleteTaskModal';
+import { PriorityDropdown } from '../../components/PriorityDropdown';
+import { AssigneeModal } from '../my-task/AssigneeModal';
+import { createPortal } from 'react-dom';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../components/ui/tooltip';
+import { Avatar } from '../../components/AvatarComponent';
+import { Textarea } from '../../components/Textarea';
+import { DateRangeCalendar } from '../../components/DateRangeCalendar';
+import { DeleteFilesModal } from './DeleteFilesModal';
+import { CopyLinkTooltip } from './CopyLinkTooltip';
+import { SuccessTooltip } from '../../components/SuccessTooltip';
+import { AvatarGroupWithTooltip } from '../../components/AvatarGroupWithTooltip';
+import { MainTooltip } from './MainTooltip';
+import { AssignedMembersButton } from '../../components/AssignedMembersButton';
+import { ALL_USERS, TASK_PANEL_OWNER, getUserByEmail, getColorFromEmail, getInitials } from '../../data/userData';
 
 function ProjectButton() {
   const projectName = "Electrical Board Service Project";
@@ -55,8 +38,8 @@ function ProjectButton() {
 }
 
 function CopyLinkButton() {
-  const [showCopied, setShowCopied] = React.useState(false);
-  const buttonRef = React.useRef<HTMLDivElement>(null);
+  const [showCopied, setShowCopied] = useState(false);
+  const buttonRef = useRef<HTMLDivElement>(null);
 
   const handleCopyLink = () => {
     setShowCopied(true);
@@ -491,69 +474,18 @@ function AssigneeButton({
   if (assignedMembers.length === 1) {
     const member = assignedMembers[0];
     
+    // Use AssignedMembersButton from main components
     return (
-      <MainTooltip 
-        variant="bottom-center"
-        size="sm"
-        content={
-          <div className="flex items-center gap-2">
-            {member.isEmailInvite ? (
-              <Avatar
-                size="xs"
-                variant="icon"
-                backgroundColor="var(--grey-02)"
-                iconColor="var(--grey-05)"
-              />
-            ) : (
-              <div className="size-5 rounded-full shrink-0 flex items-center justify-center" style={{ backgroundColor: member.color }}>
-                <span className="text-[10px] text-white" style={{ fontWeight: 'var(--font-weight-medium)' }}>
-                  {member.initials}
-                </span>
-              </div>
-            )}
-            <span style={{ fontWeight: 'var(--font-weight-regular)' }}>{member.name}</span>
-          </div>
-        }
+      <div
+        onMouseDown={(e) => {
+          e.stopPropagation();
+        }}
       >
-        <button
-          className="bg-white relative rounded-[40px] shrink-0 hover:bg-secondary transition-colors"
-          style={{
-            width: '120px',
-            height: 'var(--size-sm)',
-            padding: '0 var(--spacing-12)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 'var(--spacing-8)',
-            justifyContent: 'flex-start'
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            onClick();
-          }}
-          onMouseDown={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          {member.isEmailInvite ? (
-            <Avatar
-              size="xs"
-              variant="icon"
-              backgroundColor="var(--grey-02)"
-              iconColor="var(--grey-05)"
-            />
-          ) : (
-            <div className="size-5 rounded-full shrink-0 relative flex items-center justify-center" style={{ backgroundColor: member.color }}>
-              <span className="text-[10px] text-[var(--text-primary)]" style={{ fontWeight: 'var(--font-weight-medium)' }}>
-                {member.initials}
-              </span>
-            </div>
-          )}
-          <span className="text-[12px] text-[var(--text-secondary)] truncate" style={{ fontWeight: 'var(--font-weight-regular)' }}>
-            {member.name}
-          </span>
-          <div aria-hidden="true" className="absolute border border-[#e8e8e8] border-solid inset-0 pointer-events-none rounded-[40px]" />
-        </button>
-      </MainTooltip>
+        <AssignedMembersButton
+          members={[member]}
+          onClick={() => onClick()}
+        />
+      </div>
     );
   }
 
@@ -708,7 +640,10 @@ function Actions({ isCompleted, onMarkComplete, priority, onPriorityChange, star
       <MarkCompleteButton isCompleted={isCompleted} onClick={onMarkComplete} />
       <PriorityButton priority={priority} onSelect={onPriorityChange} />
       <DateButton startDate={startDate} endDate={endDate} onDateChange={onDateChange} />
-      <AssigneeButton assignedMembers={assignedMembers} onClick={onAssigneeClick} />
+      <AssigneeButton 
+        assignedMembers={assignedMembers} 
+        onClick={onAssigneeClick} 
+      />
     </div>
   );
 }
@@ -1003,6 +938,8 @@ export default function TaskPanelWrapper() {
     role: string;
     isEmailInvite?: boolean;
   }>>([]);
+  
+  // Initialize members with TASK_PANEL_OWNER (Melissa Monroe)
   const [members, setMembers] = useState<Array<{
     id: string;
     name: string;
@@ -1015,11 +952,13 @@ export default function TaskPanelWrapper() {
     isFromActiveMembers?: boolean;
   }>>([
     {
-      id: 'melissa-1',
-      name: 'Melissa Smith',
-      email: 'melissasmith@gmail.com',
+      id: TASK_PANEL_OWNER.id,
+      name: TASK_PANEL_OWNER.name,
+      email: TASK_PANEL_OWNER.email,
       role: 'Owner',
-      avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
+      avatarUrl: TASK_PANEL_OWNER.avatarUrl,
+      initials: TASK_PANEL_OWNER.initials,
+      color: TASK_PANEL_OWNER.color,
       isFromActiveMembers: false // Owner - no dropdown
     }
   ]);
@@ -1211,39 +1150,56 @@ export default function TaskPanelWrapper() {
 
   const handleAssignFromModal = (assignees: Array<{ id: string; name: string; email: string; role?: "assignee" | "viewer"; isEmailInvite?: boolean; avatarUrl?: string; }>) => {
     // Convert from AssigneeModal format to Task Panel format
-    const newAssignedMembers = assignees.map(assignee => ({
-      id: assignee.id,
-      name: assignee.name,
-      email: assignee.email,
-      avatar: assignee.avatarUrl,
-      // Email invites should NOT have initials or color
-      initials: assignee.isEmailInvite ? '' : assignee.name.split(' ').map(n => n[0]).join('').toUpperCase(),
-      color: assignee.isEmailInvite ? '' : (assignee.avatarUrl ? '' : ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8'][Math.floor(Math.random() * 5)]),
-      role: assignee.role === 'viewer' ? 'Viewer' : 'Assignee',
-      isEmailInvite: assignee.isEmailInvite
-    }));
+    const newAssignedMembers = assignees.map(assignee => {
+      // Try to get user from master data first
+      const userData = getUserByEmail(assignee.email);
+      
+      // Use consistent color from master data or generate from email
+      const color = assignee.isEmailInvite ? '' : (userData?.color || getColorFromEmail(assignee.email));
+      const initials = assignee.isEmailInvite ? '' : (userData?.initials || getInitials(assignee.name));
+      
+      return {
+        id: assignee.id,
+        name: assignee.name,
+        email: assignee.email,
+        avatar: userData?.avatarUrl || assignee.avatarUrl,
+        initials: initials,
+        color: color,
+        role: assignee.role === 'viewer' ? 'Viewer' : 'Assignee',
+        isEmailInvite: assignee.isEmailInvite
+      };
+    });
 
     // Replace assigned members with new data from modal (modal already handles existing + new)
     setAssignedMembers(newAssignedMembers);
 
-    // Also update members list - merge with existing members
-    const newMembersToAdd = assignees.map(assignee => ({
-      id: assignee.id,
-      name: assignee.name,
-      email: assignee.email,
-      role: (assignee.role === 'viewer' ? 'Viewer' : 'Assignee') as 'Owner' | 'Assignee' | 'Viewer',
-      avatarUrl: assignee.avatarUrl,
-      isPending: assignee.isEmailInvite === true, // Explicitly set false for active members
-      isFromActiveMembers: !assignee.isEmailInvite, // Active members can have role changed
-      initials: assignee.isEmailInvite ? '' : assignee.name.split(' ').map(n => n[0]).join('').toUpperCase(),
-      color: assignee.isEmailInvite ? '' : (assignee.avatarUrl ? '' : ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8'][Math.floor(Math.random() * 5)])
-    }));
-
+    // Sync members list with assigned members
+    // Keep OWNER + assignees from modal
     setMembers(prev => {
-      // Keep existing members that are not in the new list
-      const existingMembers = prev.filter(m => !newMembersToAdd.some(nm => nm.id === m.id));
-      // Add all new members
-      return [...existingMembers, ...newMembersToAdd];
+      // Keep owner
+      const owner = prev.find(m => m.role === 'Owner');
+      
+      // Convert assignees to members format
+      const newMembers = assignees.map(assignee => {
+        const userData = getUserByEmail(assignee.email);
+        const color = assignee.isEmailInvite ? '' : (userData?.color || getColorFromEmail(assignee.email));
+        const initials = assignee.isEmailInvite ? '' : (userData?.initials || getInitials(assignee.name));
+        
+        return {
+          id: assignee.id,
+          name: assignee.name,
+          email: assignee.email,
+          role: (assignee.role === 'viewer' ? 'Viewer' : 'Assignee') as 'Owner' | 'Assignee' | 'Viewer',
+          avatarUrl: userData?.avatarUrl || assignee.avatarUrl,
+          isPending: assignee.isEmailInvite === true,
+          isFromActiveMembers: !assignee.isEmailInvite,
+          initials: initials,
+          color: color
+        };
+      });
+      
+      // Return owner + new members (this removes deleted members)
+      return owner ? [owner, ...newMembers] : newMembers;
     });
   };
 
@@ -1410,10 +1366,12 @@ export default function TaskPanelWrapper() {
         isOpen={showInviteModal}
         onClose={() => setShowInviteModal(false)}
         selectedAssignees={assignedMembers.map(m => ({
+          id: m.id, // Add id for duplicate detection
           name: m.name,
           email: m.email,
-          isEmailInvite: m.isEmailInvite || false, // Task panel members are not email invites by default
-          role: m.role === 'Viewer' ? 'viewer' : 'assignee'
+          isEmailInvite: m.isEmailInvite || false,
+          role: m.role === 'Viewer' ? 'viewer' : 'assignee',
+          avatarUrl: m.avatar // Include avatarUrl for consistency
         }))}
         onAssign={handleAssignFromModal}
         taskId="task-panel-1"

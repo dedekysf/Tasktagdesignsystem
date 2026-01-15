@@ -1,22 +1,28 @@
-import { useState, useRef, useEffect } from 'react';
-import { ChevronDown, ChevronUp, Plus, X, Repeat, Trash2, MessageSquare } from 'lucide-react';
-import { getInitials, getAvatarColor } from '../../utils/avatar';
+import { useState, useEffect, useRef } from 'react';
+import { MoreVertical, ChevronDown, Users, Trash2, MessageSquare, Repeat } from 'lucide-react';
 import { Avatar } from '../../components/AvatarComponent';
-import { Tooltip } from '../../components/Tooltip';
+import { Dropdown } from '../../components/Dropdown';
 import { AssigneeModal } from '../my-task/AssigneeModal';
 import { RemoveInviteModal } from './RemoveInviteModal';
 import { RemoveMemberModal } from './RemoveMemberModal';
+import { Tooltip } from '../../components/Tooltip';
+import { MemberRow, Member } from '../../components/MemberRow';
+import { Button } from '../../components/Button';
 
-interface Member {
-  id: string;
-  name: string;
-  email: string;
-  role: 'Owner' | 'Assignee' | 'Viewer';
-  avatarUrl?: string;
-  initials?: string;
-  color?: string;
-  isPending?: boolean; // Email invite (not yet accepted)
-  isFromActiveMembers?: boolean; // Invited from active TaskTag members (role can be changed)
+// Helper functions for avatar
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+}
+
+function getAvatarColor(name: string): string {
+  const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F06595', '#CC5DE8', '#845EF7'];
+  const index = name.charCodeAt(0) % colors.length;
+  return colors[index];
 }
 
 function MembersIcon() {
@@ -73,6 +79,7 @@ export function Members({ members: propMembers, onUpdateRole, onDeleteMember, on
   };
 
   const handleAssignMembers = (assignedMembers: any[]) => {
+    // Convert from AssigneeModal format to Task Panel Member format
     const newMembers = assignedMembers.map(am => {
       // AssigneeModal returns role as "assignee" | "viewer" (lowercase)
       // We need to convert to Task Panel format: 'Owner' | 'Assignee' | 'Viewer'
@@ -96,6 +103,23 @@ export function Members({ members: propMembers, onUpdateRole, onDeleteMember, on
       };
     });
     
+    // Instead of adding, we need to REPLACE all non-owner members
+    // Get current owner
+    const owner = propMembers.find(m => m.role === 'Owner');
+    
+    // Replace all members with owner + new members from modal
+    const updatedMembers = owner ? [owner, ...newMembers] : newMembers;
+    
+    // Call parent to update the full members list (this will replace, not add)
+    // We need to clear existing non-owner members and replace with new ones
+    // First, delete all non-owner members
+    propMembers.forEach(m => {
+      if (m.role !== 'Owner') {
+        onDeleteMember(m.id);
+      }
+    });
+    
+    // Then add all new members
     onAddMembers(newMembers);
   };
 
@@ -147,274 +171,42 @@ export function Members({ members: propMembers, onUpdateRole, onDeleteMember, on
       {isOpen && (
         <div className="relative shrink-0 w-full px-[16px] pb-[16px] flex flex-col gap-[12px]" style={{ overflow: 'visible' }}>
           {/* Members List */}
-          {propMembers.map((member) => {
-            const isHovered = hoveredMemberId === member.id;
-            const isDropdownOpen = openDropdownId === member.id;
-            const shouldHighlight = isHovered || isDropdownOpen;
-            
-            return (
-            <div 
+          {propMembers.map((member) => (
+            <MemberRow
               key={member.id}
+              member={member}
+              isHovered={hoveredMemberId === member.id}
+              isDropdownOpen={openDropdownId === member.id}
               onMouseEnter={() => setHoveredMemberId(member.id)}
               onMouseLeave={() => setHoveredMemberId(null)}
-              className="flex items-center gap-[12px] p-[12px] rounded-lg border transition-colors"
-              style={{
-                backgroundColor: shouldHighlight ? 'var(--grey-01)' : 'var(--white)',
-                borderColor: 'var(--border)',
+              onToggleDropdown={() => setOpenDropdownId(openDropdownId === member.id ? null : member.id)}
+              onUpdateRole={(role) => updateMemberRole(member.id, role)}
+              onDelete={() => {
+                setMemberToRemove(member);
+                if (member.isPending) {
+                  setRemoveInviteModalOpen(true);
+                } else {
+                  setRemoveMemberModalOpen(true);
+                }
               }}
-            >
-              {/* Avatar */}
-              <Tooltip
-                variant="bottom-right"
-                size="sm"
-                content={member.name}
-              >
-                <div>
-                  {member.isPending ? (
-                    <Avatar
-                      size="md"
-                      variant="icon"
-                      backgroundColor="var(--grey-02)"
-                      iconColor="var(--grey-05)"
-                    />
-                  ) : member.avatarUrl ? (
-                    <Avatar 
-                      size="md"
-                      variant="image"
-                      imageUrl={member.avatarUrl}
-                    />
-                  ) : (
-                    <Avatar 
-                      size="md"
-                      variant="initials"
-                      initials={member.initials || getInitials(member.name)}
-                      backgroundColor={member.color || getAvatarColor(member.name)}
-                    />
-                  )}
-                </div>
-              </Tooltip>
-
-              {/* Name & Email */}
-              <div className="flex flex-col flex-1 min-w-0">
-                {member.isPending ? (
-                  <p className="truncate" style={{
-                    fontSize: 'var(--text-label)',
-                    fontWeight: 'var(--font-weight-medium)',
-                    color: 'var(--text-primary)',
-                    lineHeight: '18px'
-                  }}>
-                    {member.email}
-                  </p>
-                ) : (
-                  <>
-                    <p className="truncate" style={{
-                      fontSize: 'var(--text-label)',
-                      fontWeight: 'var(--font-weight-medium)',
-                      color: 'var(--text-primary)',
-                      lineHeight: '18px'
-                    }}>
-                      {member.name}
-                    </p>
-                    <p className="truncate" style={{
-                      fontSize: 'var(--text-caption)',
-                      fontWeight: 'var(--font-weight-regular)',
-                      color: 'var(--grey-04)',
-                      lineHeight: '16px'
-                    }}>
-                      {member.email}
-                    </p>
-                  </>
-                )}
-              </div>
-
-              {/* Action Icons */}
-              {member.isPending ? (
-                <div className="flex items-center gap-[8px]">
-                  <Tooltip
-                    variant="bottom-right"
-                    size="sm"
-                    content="Resend invite"
-                  >
-                    <button className="w-[32px] h-[32px] flex items-center justify-center rounded transition-colors cursor-pointer" style={{ backgroundColor: isHovered ? 'var(--grey-02)' : 'transparent' }}>
-                      <Repeat className="size-[18px]" style={{ color: 'var(--text-primary)' }} strokeWidth={2} />
-                    </button>
-                  </Tooltip>
-
-                  <Tooltip
-                    variant="bottom-right"
-                    size="sm"
-                    content="Cancel invite"
-                  >
-                    <button 
-                      onClick={() => {
-                        setRemoveInviteModalOpen(true);
-                        setMemberToRemove(member);
-                      }}
-                      className="w-[32px] h-[32px] flex items-center justify-center rounded transition-colors cursor-pointer"
-                      style={{ backgroundColor: isHovered ? 'var(--grey-02)' : 'transparent' }}
-                    >
-                      <Trash2 className="size-[18px]" style={{ color: 'var(--text-primary)' }} strokeWidth={2} />
-                    </button>
-                  </Tooltip>
-                </div>
-              ) : (
-                <Tooltip
-                  variant="bottom-right"
-                  size="sm"
-                  content="Send Message"
-                >
-                  <button className="w-[32px] h-[32px] flex items-center justify-center rounded transition-colors cursor-pointer" style={{ backgroundColor: isHovered ? 'var(--grey-02)' : 'transparent' }}>
-                    <MessageSquare className="size-[18px]" style={{ color: 'var(--text-primary)' }} strokeWidth={2} />
-                  </button>
-                </Tooltip>
-              )}
-
-              {/* Role - Owner = plain text, Email invite = plain text, Active member = dropdown */}
-              {member.role === 'Owner' ? (
-                // Owner - Plain text (no dropdown)
-                <div className="flex items-center px-[12px] py-[6px] w-[100px] justify-end">
-                  <span style={{
-                    fontSize: 'var(--text-caption-sm)',
-                    fontWeight: 'var(--font-weight-medium)',
-                    color: 'var(--text-primary)',
-                  }}>
-                    {member.role}
-                  </span>
-                </div>
-              ) : member.isPending === true ? (
-                // Email invite - Plain text (no dropdown)
-                <div className="flex items-center px-[12px] py-[6px] w-[100px] justify-end">
-                  <span style={{
-                    fontSize: 'var(--text-caption-sm)',
-                    fontWeight: 'var(--font-weight-medium)',
-                    color: 'var(--text-primary)',
-                  }}>
-                    {member.role}
-                  </span>
-                </div>
-              ) : (
-                // Active member (isPending === false or undefined) - Dropdown role (editable)
-                <div className="role-dropdown-container relative">
-                  <button 
-                    onClick={() => setOpenDropdownId(isDropdownOpen ? null : member.id)}
-                    className="flex items-center gap-[6px] px-[12px] py-[6px] rounded transition-colors w-[100px] justify-end cursor-pointer" 
-                    style={{
-                      backgroundColor: isDropdownOpen ? 'var(--grey-01)' : (isHovered ? 'var(--grey-01)' : 'transparent')
-                    }}
-                  >
-                    <span style={{
-                      fontSize: 'var(--text-caption-sm)',
-                      fontWeight: 'var(--font-weight-medium)',
-                      color: 'var(--text-primary)',
-                    }}>
-                      {member.role}
-                    </span>
-                    <div 
-                      className="shrink-0 transition-transform duration-200"
-                      style={{
-                        width: '16px',
-                        height: '16px',
-                        transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)'
-                      }}
-                    >
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M4 6L8 10L12 6" stroke="var(--text-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </div>
-                  </button>
-
-                  {/* Dropdown Menu - borderless, with divider */}
-                  {isDropdownOpen && (
-                    <div 
-                      className="absolute top-full right-0 mt-1 py-1 z-50 min-w-[120px]"
-                      style={{
-                        backgroundColor: 'var(--card)',
-                        boxShadow: 'var(--elevation-md)',
-                        borderRadius: 'var(--radius-8)',
-                      }}
-                    >
-                      {/* Assignee Option */}
-                      <button
-                        onClick={() => updateMemberRole(member.id, 'Assignee')}
-                        className="w-full text-left transition-colors"
-                        style={{
-                          padding: 'var(--spacing-8) var(--spacing-12)',
-                          fontSize: 'var(--text-base)',
-                          fontWeight: 'var(--font-weight-regular)',
-                          color: 'var(--text-primary)',
-                          backgroundColor: 'transparent',
-                          border: 'none',
-                          cursor: 'pointer'
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grey-02)'}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                      >
-                        Assignee
-                      </button>
-
-                      {/* Viewer Option */}
-                      <button
-                        onClick={() => updateMemberRole(member.id, 'Viewer')}
-                        className="w-full text-left transition-colors"
-                        style={{
-                          padding: 'var(--spacing-8) var(--spacing-12)',
-                          fontSize: 'var(--text-base)',
-                          fontWeight: 'var(--font-weight-regular)',
-                          color: 'var(--text-primary)',
-                          backgroundColor: 'transparent',
-                          border: 'none',
-                          cursor: 'pointer'
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grey-02)'}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                      >
-                        Viewer
-                      </button>
-
-                      {/* Divider */}
-                      <div 
-                        style={{ 
-                          height: '1px', 
-                          backgroundColor: 'var(--border)',
-                          margin: 'var(--spacing-4) 0'
-                        }} 
-                      />
-
-                      {/* Remove Option (Red) */}
-                      <button
-                        onClick={() => {
-                          setMemberToRemove(member);
-                          setRemoveMemberModalOpen(true);
-                          setOpenDropdownId(null);
-                        }}
-                        className="w-full text-left transition-colors"
-                        style={{
-                          padding: 'var(--spacing-8) var(--spacing-12)',
-                          fontSize: 'var(--text-base)',
-                          fontWeight: 'var(--font-weight-regular)',
-                          color: 'var(--alert-red)',
-                          backgroundColor: 'transparent',
-                          border: 'none',
-                          cursor: 'pointer'
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grey-02)'}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-            );
-          })}
+              onResendInvite={() => {
+                // Resend invite logic here
+                console.log('Resending invite to', member.email);
+              }}
+            />
+          ))}
 
           {/* Add Member Button */}
-          <button 
+          <Button
             onClick={() => setIsModalOpen(true)}
-            className="relative rounded-lg shrink-0 w-full transition-colors"
-            style={{ backgroundColor: 'var(--grey-01)' }}
+            size="lg"
+            style={{
+              backgroundColor: 'var(--grey-01)',
+              color: 'var(--secondary-green)',
+              width: '100%',
+              border: 'none',
+              justifyContent: 'flex-start'
+            }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = 'var(--grey-02)';
             }}
@@ -422,22 +214,16 @@ export function Members({ members: propMembers, onUpdateRole, onDeleteMember, on
               e.currentTarget.style.backgroundColor = 'var(--grey-01)';
             }}
           >
-            <div className="box-border content-stretch flex gap-[12px] items-center px-[16px] py-[16px] relative w-full">
-              <div className="relative shrink-0 size-[16px]">
-                <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 16 16">
-                  <path d="M8 3.33333V12.6667M3.33333 8H12.6667" stroke="var(--secondary-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              <p style={{
-                fontWeight: 'var(--font-weight-medium)',
-                fontSize: 'var(--text-label)',
-                lineHeight: '16px',
-                color: 'var(--secondary-green)',
-              }}>
-                Add Assignee
-              </p>
-            </div>
-          </button>
+            <svg className="block size-4" fill="none" preserveAspectRatio="none" viewBox="0 0 16 16">
+              <path d="M8 3.33333V12.6667M3.33333 8H12.6667" stroke="var(--secondary-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span style={{
+              fontWeight: 'var(--font-weight-medium)',
+              color: 'var(--secondary-green)',
+            }}>
+              Add Assignee
+            </span>
+          </Button>
         </div>
       )}
       
@@ -445,7 +231,18 @@ export function Members({ members: propMembers, onUpdateRole, onDeleteMember, on
       <AssigneeModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        selectedAssignees={propMembers
+          .filter(m => m.role !== 'Owner') // Exclude owner from selected assignees
+          .map(m => ({
+            id: m.id,
+            name: m.name,
+            email: m.email,
+            isEmailInvite: m.isPending,
+            role: m.role === 'Viewer' ? 'viewer' : 'assignee',
+            avatarUrl: m.avatarUrl
+          }))}
         onAssign={handleAssignMembers}
+        hideInitialSelection={true} // Don't show selected chips, only validate "already added"
       />
 
       {/* Remove Invite Modal */}

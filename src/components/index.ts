@@ -23,24 +23,13 @@ export { Datepicker } from './Datepicker';
 export { Modal } from './Modal';
 export { Tooltip } from './Tooltip';
 
-// Layout & Navigation Components
-export { Sidebar } from './Sidebar';
-export { SidebarDropdown } from './SidebarDropdown';
-export { SidebarMenuItem } from './SidebarMenuItem';
-export { SectionHeader } from './SectionHeader';
-
-// Foundation Display Components
-export { ColorItem } from './ColorItem';
-export { ColorSwatch } from './ColorSwatch';
-export { TypographyItem } from './TypographyItem';
-export { TypographyExample } from './TypographyExample';
-export { RadiusItem } from './RadiusItem';
-export { RadiusExample } from './RadiusExample';
-export { ElevationItem } from './ElevationItem';
-export { ElevationExample } from './ElevationExample';
-export { SpacingItem } from './SpacingItem';
-export { LogoItem } from './LogoItem';
-export { CodeExample } from './CodeExample';
+// Main Reusable Components (Task Panel)
+export { AssignedMembersButton } from './AssignedMembersButton';
+export type { AssignedMember, AssignedMembersButtonProps } from './AssignedMembersButton';
+export { MemberRow } from './MemberRow';
+export type { Member, MemberRowProps } from './MemberRow';
+export { ChecklistItem } from './ChecklistItem';
+export type { ChecklistItemProps } from './ChecklistItem';
 
 // TypeScript Types - Re-export all types for easy importing
 export type {

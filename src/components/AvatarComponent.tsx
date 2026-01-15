@@ -45,6 +45,11 @@ export function Avatar({ size = 'md', variant = 'icon', className = '', initials
   // Extract color from style for text, and remove it from container style
   const { color: textColor, border: customBorder, ...containerStyle } = style;
 
+  // Auto-detect variant: if imageUrl exists and is not the default, use 'image'
+  const defaultImageUrl = "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NjY0MDYyMjZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral";
+  const hasValidImage = imageUrl && imageUrl !== defaultImageUrl;
+  const effectiveVariant = hasValidImage ? 'image' : variant;
+
   // Check if background is gray-02 for special styling
   const bgColor = disabled ? 'var(--grey-02)' : (backgroundColor || 'var(--light-mint)');
   
@@ -76,7 +81,7 @@ export function Avatar({ size = 'md', variant = 'icon', className = '', initials
         }
       }}
     >
-      {variant === 'image' && (
+      {effectiveVariant === 'image' && (
         <img 
           alt="Avatar" 
           className="size-full object-cover" 
@@ -87,7 +92,7 @@ export function Avatar({ size = 'md', variant = 'icon', className = '', initials
         />
       )}
       
-      {variant === 'initials' && (
+      {effectiveVariant === 'initials' && (
         <p 
           style={{ 
             fontSize: config.text,
@@ -99,7 +104,7 @@ export function Avatar({ size = 'md', variant = 'icon', className = '', initials
         </p>
       )}
       
-      {variant === 'icon' && (
+      {effectiveVariant === 'icon' && (
         <User 
           style={{ color: effectiveIconColor }}
           size={iconSize}

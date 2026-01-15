@@ -44,15 +44,18 @@ export function Sidebar({ activeSection, onSectionChange, isSidebarOpen, setIsSi
 
   const componentItems = [
     { id: 'assignee-modal', label: 'Assignee Modal' },
+    { id: 'assigned-members-button', label: 'Assigned Members Button' },
     { id: 'avatars', label: 'Avatars' },
     { id: 'buttons', label: 'Buttons' },
     { id: 'calendar', label: 'Calendar' },
     { id: 'cards', label: 'Cards' },
     { id: 'checkbox', label: 'Checkbox' },
+    { id: 'checklist-item', label: 'Checklist Item' },
     { id: 'date-range-calendar', label: 'Date Range Calendar' },
     { id: 'datepicker', label: 'Datepicker' },
     { id: 'discard-changes-modal', label: 'Discard Changes Modal' },
     { id: 'dropdown', label: 'Dropdown' },
+    { id: 'member-row', label: 'Member Row' },
     { id: 'modal', label: 'Modal' },
     { id: 'priority-dropdown', label: 'Priority Dropdown' },
     { id: 'project-select-modal', label: 'Project Select Modal' },
@@ -64,6 +67,7 @@ export function Sidebar({ activeSection, onSectionChange, isSidebarOpen, setIsSi
     { id: 'text-input', label: 'Text Input' },
     { id: 'textarea', label: 'Text Area' },
     { id: 'toast', label: 'Toast' },
+    { id: 'toggle', label: 'Toggle' },
     { id: 'tooltip', label: 'Tooltip' }
   ];
 

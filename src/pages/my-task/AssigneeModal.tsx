@@ -1,9 +1,5 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
 import {
-  getInitials,
-  getAvatarColor,
-} from "../../utils/avatar";
-import {
   Mail,
   X,
   Trash2,
@@ -18,6 +14,7 @@ import { Tooltip } from "../../components/Tooltip";
 import { SuccessTooltip } from "../../components/SuccessTooltip";
 import { toast } from "sonner@2.0.3";
 import { Toast } from "../../components/Toast";
+import { ALL_USERS, TASK_PANEL_OWNER, getUserByEmail, getColorFromEmail, getInitials, type User as UserData } from "../../data/userData";
 
 interface User {
   id: string;
@@ -32,77 +29,43 @@ interface AssigneeModalProps {
   isOpen: boolean;
   onClose: () => void;
   selectedAssignees?: Array<{
+    id?: string; // Add id for duplicate detection
     name: string;
     email: string;
     isEmailInvite?: boolean;
     role?: "assignee" | "viewer";
+    avatarUrl?: string; // Add avatarUrl for consistency
   }>;
   onAssign?: (assignees: User[]) => void;
   taskId?: string;
+  hideInitialSelection?: boolean; // Hide selected chips at top, but still validate "already added"
 }
 
-const mockUsers: User[] = [
-  {
-    id: "1",
-    name: "James Logan Smith",
-    email: "jameslogansmith@gmail.com",
-  },
-  {
-    id: "2",
-    name: "Sarah Johnson",
-    email: "sarahjohnson@gmail.com",
-  },
-  {
-    id: "3",
-    name: "Michael Chen",
-    email: "michaelchen@gmail.com",
-  },
-  {
-    id: "4",
-    name: "Logan Jack",
-    email: "loganjack@gmail.com",
-  },
-  {
-    id: "5",
-    name: "Mason Gabriel",
-    email: "masongabriel@gmail.com",
-  },
-  {
-    id: "6",
-    name: "Caleb Gabriel",
-    email: "calebgabriel@gmail.com",
-  },
-  {
-    id: "7",
-    name: "Carlos Roberto",
-    email: "carlosroberto@gmail.com",
-  },
-  {
-    id: "8",
-    name: "Savannah Nguyen",
-    email: "savannahnguyen@gmail.com",
-  },
-  {
-    id: "9",
-    name: "Savara Lane",
-    email: "savaralane@gmail.com",
-  },
-];
+// Convert ALL_USERS from userData to modal format
+// Exclude TASK_PANEL_OWNER (Melissa Monroe) from the list
+const mockUsers: User[] = ALL_USERS
+  .filter(user => user.email !== TASK_PANEL_OWNER.email) // Filter out owner
+  .map(user => ({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    avatarUrl: user.avatarUrl
+  }));
 
 // More on TaskTag - recommended users (shown at top)
-const recommendedUsers = mockUsers.slice(7, 9); // Savannah Nguyen, Savara Lane
+const recommendedUsers = mockUsers.slice(6, 9); // Adjusted indices after filtering owner
 
 // Collapsible contact groups
 const contactGroups = [
   {
-    id: "chelsea",
-    name: "Chelsea Group",
-    members: mockUsers.slice(3, 7), // Logan Jack, Mason Gabriel, Caleb Gabriel, Carlos Roberto
+    id: "design-team",
+    name: "Design Team",
+    members: mockUsers.slice(0, 5), // First 5 users
   },
 ];
 
 // Individual contacts (shown after groups)
-const individualContacts = mockUsers.slice(0, 3); // James Logan Smith, Sarah Johnson, Michael Chen
+const individualContacts = mockUsers.slice(5, 7); // Michael Chen, Logan Jack
 
 // Helper component to highlight search text - ONLY for names, NEVER for emails
 function HighlightedText({
@@ -176,28 +139,44 @@ function UserItem({
         <div className="box-border content-stretch flex gap-[var(--spacing-8)] items-center p-[var(--spacing-8)] relative w-full">
           <div className="basis-0 content-stretch flex gap-[var(--spacing-8)] grow items-center min-h-px min-w-px relative shrink-0">
             <div className="relative shrink-0 size-[var(--size-md)]">
-              <svg
-                className="block size-full"
-                fill="none"
-                preserveAspectRatio="none"
-                viewBox="0 0 40 40"
-              >
-                <circle
-                  cx="20"
-                  cy="20"
-                  fill={getAvatarColor(user.name)}
-                  r="20"
-                />
-              </svg>
-              <p
-                className="absolute leading-[24px] left-1/2 not-italic text-[var(--text-base)] text-center text-nowrap top-[calc(50%-12px)] translate-x-[-50%] whitespace-pre"
-                style={{
-                  fontWeight: "var(--font-weight-medium)",
-                  color: "var(--text-primary)",
-                }}
-              >
-                {getInitials(user.name)}
-              </p>
+              {(() => {
+                const userData = getUserByEmail(user.email);
+                if (userData?.avatarUrl) {
+                  return (
+                    <img 
+                      src={userData.avatarUrl}
+                      alt={user.name}
+                      className="block size-full rounded-full object-cover"
+                    />
+                  );
+                }
+                return (
+                  <>
+                    <svg
+                      className="block size-full"
+                      fill="none"
+                      preserveAspectRatio="none"
+                      viewBox="0 0 40 40"
+                    >
+                      <circle
+                        cx="20"
+                        cy="20"
+                        fill={userData?.color || getColorFromEmail(user.email)}
+                        r="20"
+                      />
+                    </svg>
+                    <p
+                      className="absolute leading-[24px] left-1/2 not-italic text-[var(--text-base)] text-center text-nowrap top-[calc(50%-12px)] translate-x-[-50%] whitespace-pre"
+                      style={{
+                        fontWeight: "var(--font-weight-medium)",
+                        color: "var(--text-primary)",
+                      }}
+                    >
+                      {userData?.initials || getInitials(user.name)}
+                    </p>
+                  </>
+                );
+              })()}
             </div>
 
             <div className="basis-0 content-stretch flex flex-col grow items-start justify-center min-h-px min-w-px relative shrink-0">
@@ -259,6 +238,7 @@ export function AssigneeModal({
   selectedAssignees = [],
   onAssign,
   taskId,
+  hideInitialSelection = false,
 }: AssigneeModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -270,7 +250,7 @@ export function AssigneeModal({
   const [expandedGroups, setExpandedGroups] = useState<
     Record<string, boolean>
   >({
-    chelsea: true, // Default: expanded
+    "design-team": true, // Default: expanded
   });
 
   // Toggle group expand/collapse
@@ -677,8 +657,8 @@ export function AssigneeModal({
                   scrollbarColor: "var(--grey-03) transparent",
                 }}
               >
-                {/* Selected Users */}
-                {localSelectedUsers.length > 0 && (
+                {/* Selected Users - Only show if NOT hiding initial selection */}
+                {!hideInitialSelection && localSelectedUsers.length > 0 && (
                   <div className="content-stretch flex flex-col items-start relative shrink-0 w-full">
                     {localSelectedUsers.map((user) => (
                       <div
@@ -698,36 +678,46 @@ export function AssigneeModal({
                                   <div className="flex items-center justify-center size-full rounded-full bg-[var(--grey-03)]">
                                     <Mail className="size-[var(--spacing-20)] text-[var(--grey-05)]" />
                                   </div>
-                                ) : (
-                                  <>
-                                    <svg
-                                      className="block size-full"
-                                      fill="none"
-                                      preserveAspectRatio="none"
-                                      viewBox="0 0 40 40"
-                                    >
-                                      <circle
-                                        cx="20"
-                                        cy="20"
-                                        fill={getAvatarColor(
-                                          user.name,
-                                        )}
-                                        r="20"
+                                ) : (() => {
+                                  const userData = getUserByEmail(user.email);
+                                  if (userData?.avatarUrl) {
+                                    return (
+                                      <img 
+                                        src={userData.avatarUrl}
+                                        alt={user.name}
+                                        className="block size-full rounded-full object-cover"
                                       />
-                                    </svg>
-                                    <p
-                                      className="absolute leading-[24px] left-1/2 not-italic text-[var(--text-base)] text-center text-nowrap top-[calc(50%-12px)] translate-x-[-50%] whitespace-pre"
-                                      style={{
-                                        fontWeight:
-                                          "var(--font-weight-medium)",
-                                        color:
-                                          "var(--text-primary)",
-                                      }}
-                                    >
-                                      {getInitials(user.name)}
-                                    </p>
-                                  </>
-                                )}
+                                    );
+                                  }
+                                  return (
+                                    <>
+                                      <svg
+                                        className="block size-full"
+                                        fill="none"
+                                        preserveAspectRatio="none"
+                                        viewBox="0 0 40 40"
+                                      >
+                                        <circle
+                                          cx="20"
+                                          cy="20"
+                                          fill={userData?.color || getColorFromEmail(user.email)}
+                                          r="20"
+                                        />
+                                      </svg>
+                                      <p
+                                        className="absolute leading-[24px] left-1/2 not-italic text-[var(--text-base)] text-center text-nowrap top-[calc(50%-12px)] translate-x-[-50%] whitespace-pre"
+                                        style={{
+                                          fontWeight:
+                                            "var(--font-weight-medium)",
+                                          color:
+                                            "var(--text-primary)",
+                                        }}
+                                      >
+                                        {userData?.initials || getInitials(user.name)}
+                                      </p>
+                                    </>
+                                  );
+                                })()}
                               </div>
 
                               {/* Name and Email */}
@@ -827,7 +817,7 @@ export function AssigneeModal({
 
                 {/* Empty State */}
                 {!showAutocomplete &&
-                  localSelectedUsers.length === 0 && (
+                  (localSelectedUsers.length === 0 || hideInitialSelection) && (
                     <div className="content-stretch flex flex-col gap-[var(--spacing-8)] items-center justify-center relative shrink-0 w-full h-full">
                       <img
                         src={teamCollaborationImage}
@@ -1060,34 +1050,46 @@ export function AssigneeModal({
                                     <div className="basis-0 content-stretch flex gap-[var(--spacing-8)] grow items-center min-h-px min-w-px relative shrink-0">
                                       {/* Avatar */}
                                       <div className="relative shrink-0 size-[var(--size-md)]">
-                                        <svg
-                                          className="block size-full"
-                                          fill="none"
-                                          preserveAspectRatio="none"
-                                          viewBox="0 0 40 40"
-                                        >
-                                          <circle
-                                            cx="20"
-                                            cy="20"
-                                            fill={getAvatarColor(
-                                              user.name,
-                                            )}
-                                            r="20"
-                                          />
-                                        </svg>
-                                        <p
-                                          className="absolute leading-[24px] left-1/2 not-italic text-[var(--text-base)] text-center text-nowrap top-[calc(50%-12px)] translate-x-[-50%] whitespace-pre"
-                                          style={{
-                                            fontWeight:
-                                              "var(--font-weight-medium)",
-                                            color:
-                                              "var(--text-primary)",
-                                          }}
-                                        >
-                                          {getInitials(
-                                            user.name,
-                                          )}
-                                        </p>
+                                        {(() => {
+                                          const userData = getUserByEmail(user.email);
+                                          if (userData?.avatarUrl) {
+                                            return (
+                                              <img 
+                                                src={userData.avatarUrl}
+                                                alt={user.name}
+                                                className="block size-full rounded-full object-cover"
+                                              />
+                                            );
+                                          }
+                                          return (
+                                            <>
+                                              <svg
+                                                className="block size-full"
+                                                fill="none"
+                                                preserveAspectRatio="none"
+                                                viewBox="0 0 40 40"
+                                              >
+                                                <circle
+                                                  cx="20"
+                                                  cy="20"
+                                                  fill={userData?.color || getColorFromEmail(user.email)}
+                                                  r="20"
+                                                />
+                                              </svg>
+                                              <p
+                                                className="absolute leading-[24px] left-1/2 not-italic text-[var(--text-base)] text-center text-nowrap top-[calc(50%-12px)] translate-x-[-50%] whitespace-pre"
+                                                style={{
+                                                  fontWeight:
+                                                    "var(--font-weight-medium)",
+                                                  color:
+                                                    "var(--text-primary)",
+                                                }}
+                                              >
+                                                {userData?.initials || getInitials(user.name)}
+                                              </p>
+                                            </>
+                                          );
+                                        })()}
                                       </div>
 
                                       {/* Name and Email */}
