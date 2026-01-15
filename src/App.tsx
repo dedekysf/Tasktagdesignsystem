@@ -38,9 +38,12 @@ import { MemberRow } from './components/MemberRow';
 import { ChecklistItem } from './components/ChecklistItem';
 import { Toggle } from './components/Toggle';
 import { UpgradePromptModal } from './components/UpgradePromptModal';
+import { SubscriptionModal } from './components/SubscriptionModal';
+import { Tag } from './components/Tag';
+import { SideNav } from './components/SideNav';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Palette, Type, Square, Box, MousePointerClick, TextCursor, LayoutGrid, User, Users, Image, Menu, X, CheckSquare, Circle, Sparkles, ExternalLink, ChevronDown, ChevronLeft, ChevronRight, Trash2, Info, Home, Settings, Search, CircleCheckBig, Bell, CalendarDays, CalendarRange, AlertTriangle, ChevronUp as ChevronUpIcon, FolderOpen, UserPlus, List, Plus } from 'lucide-react';
+import { Palette, Type, Square, Box, MousePointerClick, TextCursor, LayoutGrid, User, Users, Image, Menu, X, Check, CheckSquare, Circle, Sparkles, ExternalLink, ChevronDown, ChevronLeft, ChevronRight, Trash2, Info, Home, Settings, Search, CircleCheckBig, Bell, CalendarDays, CalendarRange, AlertTriangle, ChevronUp as ChevronUpIcon, FolderOpen, UserPlus, List, Plus } from 'lucide-react';
 import svgPaths from './imports/svg-92e1ovrkrf';
 import AppIconAndroid from './imports/AppIconAndroid-43-971';
 import AppIconIOs from './imports/AppIconIOs-43-942';
@@ -55,6 +58,7 @@ import Doc from './imports/Doc';
 import Html from './imports/Html';
 import Eps from './imports/Eps';
 import teamCollaborationImage from 'figma:asset/231f46d29d335b70c14e6a1c3a239decf66583f3.png';
+import collaborationImage from 'figma:asset/727e6b11c9799f58fcfa4a733691914bdec7af1f.png';
 import MyTaskPage from './pages/MyTaskPage';
 import TaskPanelPage from './pages/TaskPanelPage';
 import ProjectDetailsPage from './pages/project-details/ProjectDetailsPage';
@@ -143,6 +147,7 @@ export default function App() {
   const [modalTwoActionTab, setModalTwoActionTab] = useState('preview');
   const [modalOneActionTab, setModalOneActionTab] = useState('preview');
   const [modalUpgradePromptTab, setModalUpgradePromptTab] = useState('preview');
+  const [modalSubscriptionTab, setModalSubscriptionTab] = useState('preview');
   const [datepickerBasicTab, setDatepickerBasicTab] = useState('preview');
   const [datepickerLabelTab, setDatepickerLabelTab] = useState('preview');
   const [datepickerSizeTab, setDatepickerSizeTab] = useState('preview');
@@ -166,6 +171,9 @@ export default function App() {
   const [memberRowTab, setMemberRowTab] = useState('preview');
   const [checklistItemTab, setChecklistItemTab] = useState('preview');
   const [toggleTab, setToggleTab] = useState('preview');
+  const [tagBasicTab, setTagBasicTab] = useState('preview');
+  const [tagWithIconTab, setTagWithIconTab] = useState('preview');
+  const [sideNavExpandedTab, setSideNavExpandedTab] = useState('preview');
   
   // Toggle states
   const [toggleBasic, setToggleBasic] = useState(false);
@@ -238,6 +246,7 @@ export default function App() {
   const [isTwoActionModalOpen, setIsTwoActionModalOpen] = useState(false);
   const [isOneActionModalOpen, setIsOneActionModalOpen] = useState(false);
   const [isUpgradePromptModalOpen, setIsUpgradePromptModalOpen] = useState(false);
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
   const [isDiscardModalOpen, setIsDiscardModalOpen] = useState(false);
   const [isProjectSelectModalOpen, setIsProjectSelectModalOpen] = useState(false);
   const [isAssigneeModalOpen, setIsAssigneeModalOpen] = useState(false);
@@ -2484,6 +2493,78 @@ const [selected, setSelected] = useState('option1');
             </section>
           )}
 
+          {/* Side Nav Component */}
+          {activeSection === 'side-nav' && (
+            <section>
+              <SectionHeader
+                icon={Menu}
+                title="Side Nav"
+                description="Total Variant: 1 (Interactive - Click chevron to toggle between Expanded & Collapsed)"
+              />
+
+              <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                <TabsContainer
+                  activeTab={sideNavExpandedTab}
+                  onTabChange={setSideNavExpandedTab}
+                  tabs={[
+                    { value: 'preview', label: 'Preview' },
+                    { value: 'usage', label: 'Usage' },
+                    { value: 'github', label: 'GitHub URL' }
+                  ]}
+                >
+                  <TabPanel value="preview" activeTab={sideNavExpandedTab}>
+                    <div className="component-card">
+                      <div style={{ height: '1080px', maxHeight: '1080px', width: '100%', maxWidth: '256px' }}>
+                        <SideNav variant="expanded" activeItem="projects" />
+                      </div>
+                    </div>
+                  </TabPanel>
+                  <TabPanel value="usage" activeTab={sideNavExpandedTab}>
+                    <CodeExample
+                      title="Side Nav Usage"
+                      code={`import { SideNav } from './components/SideNav';
+
+<SideNav 
+  variant="expanded"
+  activeItem="projects"
+  onNavigate={(item) => console.log('Navigated to:', item)}
+/>
+
+// Props:
+// - variant?: 'expanded' | 'collapsed' (default: 'expanded')
+// - size?: 'default' (default: 'default')
+// - className?: string (optional)
+// - activeItem?: string (default: 'projects')
+// - onNavigate?: (item: string) => void (optional)
+
+// Features:
+// - Click chevron icon to toggle between expanded and collapsed states
+// - Expanded width: 256px, Collapsed width: 86px
+// - Max height: 1080px
+// - Active menu item has light mint background and green color
+// - Hover state shows grey background
+// - Explore card only visible when expanded
+
+// Menu Items:
+// - projects
+// - my-tasks
+// - global-activity
+// - contacts
+// - help
+// - my-account`}
+                    />
+                  </TabPanel>
+                  <TabPanel value="github" activeTab={sideNavExpandedTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/SideNav.tsx`}
+                    />
+                  </TabPanel>
+                </TabsContainer>
+              </div>
+            </section>
+          )}
+
           {/* Dropdown Component */}
           {activeSection === 'dropdown' && (
             <section>
@@ -3067,6 +3148,91 @@ const options: DropdownOption[] = [
                     <CodeExample
                       title="GitHub URL"
                       code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Modal.tsx`}
+                    />
+                  </TabPanel>
+                </TabsContainer>
+              </div>
+
+              {/* Section 4: Subscription Modal */}
+              <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                <h3 style={{ fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-8)' }}>Subscription Modal</h3>
+                <TabsContainer
+                  activeTab={modalSubscriptionTab}
+                  onTabChange={setModalSubscriptionTab}
+                  tabs={[
+                    { value: 'preview', label: 'Preview' },
+                    { value: 'usage', label: 'Usage' },
+                    { value: 'github', label: 'GitHub URL' }
+                  ]}
+                >
+                  <TabPanel value="preview" activeTab={modalSubscriptionTab}>
+                    <div className="component-card">
+                      <Button 
+                        variant="fill" 
+                        size="md"
+                        className="btn-secondary"
+                        onClick={() => setIsSubscriptionModalOpen(true)}
+                        style={{ width: '200px' }}
+                      >
+                        click me!
+                      </Button>
+                      
+                      {isSubscriptionModalOpen && (
+                        <div 
+                          style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: 'var(--overlay)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 1000,
+                            padding: 'var(--spacing-16)'
+                          }}
+                          onClick={() => setIsSubscriptionModalOpen(false)}
+                        >
+                          <div onClick={(e) => e.stopPropagation()}>
+                            <SubscriptionModal
+                              variant="default"
+                              size="default"
+                              onClose={() => setIsSubscriptionModalOpen(false)}
+                              onCheckout={() => {
+                                console.log('Continue to Checkout clicked');
+                                setIsSubscriptionModalOpen(false);
+                              }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </TabPanel>
+                  <TabPanel value="usage" activeTab={modalSubscriptionTab}>
+                    <CodeExample
+                      title="Subscription Modal Usage"
+                      code={`import { SubscriptionModal } from './components/SubscriptionModal';
+
+<SubscriptionModal
+  variant="default"
+  size="default"
+  onClose={() => console.log('Close clicked')}
+  onCheckout={() => console.log('Checkout clicked')}
+/>
+
+// Props:
+// - variant: "default" (only one variant for now)
+// - size: "default" (only one size for now)
+// - onClose: () => void (optional, callback when close button is clicked)
+// - onCheckout: () => void (optional, callback when checkout button is clicked)
+// - className: string (optional)`}
+                    />
+                  </TabPanel>
+                  <TabPanel value="github" activeTab={modalSubscriptionTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/SubscriptionModal.tsx`}
                     />
                   </TabPanel>
                 </TabsContainer>
@@ -4848,6 +5014,20 @@ export default function Example() {
                   />
                 </LogoItem>
 
+                {/* Collaboration */}
+                <LogoItem title="Collaboration">
+                  <img 
+                    src={collaborationImage} 
+                    alt="Collaboration"
+                    style={{ 
+                      width: '100%',
+                      height: 'auto',
+                      maxWidth: '300px',
+                      objectFit: 'contain'
+                    }}
+                  />
+                </LogoItem>
+
                 {/* XLS Icon */}
                 <LogoItem title="XLS Icon">
                   <div style={{ width: '56px', height: '56px' }}>
@@ -6277,6 +6457,147 @@ export default function Example() {
                       <CodeExample
                         title="GitHub URL"
                         code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/ChecklistItem.tsx`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Tag Component */}
+          {activeSection === 'tag' && (
+            <section>
+              <SectionHeader
+                icon={Sparkles}
+                title="Tag"
+                description="Total Variant: 8 (2 colors × 2 appearances × 2 types)"
+              />
+
+              <div>
+                {/* Section 1: Basic Tag */}
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <h3 style={{ fontSize: 'var(--text-h3)', fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-8)' }}>Basic Tag</h3>
+                  <TabsContainer
+                    activeTab={tagBasicTab}
+                    onTabChange={setTagBasicTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={tagBasicTab}>
+                      <div className="component-card" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)' }}>
+                        {/* Fill Variants */}
+                        <div>
+                          <h4 style={{ fontSize: 'var(--text-label)', fontWeight: 'var(--font-weight-medium)', marginBottom: 'var(--spacing-8)', color: 'var(--text-secondary)' }}>Fill</h4>
+                          <div style={{ display: 'flex', gap: 'var(--spacing-8)', flexWrap: 'wrap' }}>
+                            <Tag variant="basic" color="primary" appearance="fill">Primary</Tag>
+                            <Tag variant="basic" color="destructive" appearance="fill">Destructive</Tag>
+                          </div>
+                        </div>
+                        
+                        {/* Outline Variants */}
+                        <div>
+                          <h4 style={{ fontSize: 'var(--text-label)', fontWeight: 'var(--font-weight-medium)', marginBottom: 'var(--spacing-8)', color: 'var(--text-secondary)' }}>Outline</h4>
+                          <div style={{ display: 'flex', gap: 'var(--spacing-8)', flexWrap: 'wrap' }}>
+                            <Tag variant="basic" color="primary" appearance="outline">Primary</Tag>
+                            <Tag variant="basic" color="destructive" appearance="outline">Destructive</Tag>
+                          </div>
+                        </div>
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={tagBasicTab}>
+                      <CodeExample
+                        title="Basic Tag Usage"
+                        code={`import { Tag } from './components/Tag';
+
+// Fill Variants
+<Tag variant="basic" color="primary" appearance="fill">Primary</Tag>
+<Tag variant="basic" color="destructive" appearance="fill">Destructive</Tag>
+
+// Outline Variants
+<Tag variant="basic" color="primary" appearance="outline">Primary</Tag>
+<Tag variant="basic" color="destructive" appearance="outline">Destructive</Tag>
+
+// Props:
+// - variant: 'basic' | 'with-icon' (default: 'basic')
+// - color: 'primary' | 'destructive' (default: 'primary')
+// - appearance: 'fill' | 'outline' (default: 'fill')
+// - className?: string (optional)
+// - children: ReactNode (required)`}
+                      />
+                    </TabPanel>
+                    <TabPanel value="github" activeTab={tagBasicTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Tag.tsx`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+
+                {/* Section 2: Tag with Icon */}
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <h3 style={{ fontSize: 'var(--text-h3)', fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-8)' }}>Tag with Icon</h3>
+                  <TabsContainer
+                    activeTab={tagWithIconTab}
+                    onTabChange={setTagWithIconTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={tagWithIconTab}>
+                      <div className="component-card" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-16)' }}>
+                        {/* Fill Variants */}
+                        <div>
+                          <h4 style={{ fontSize: 'var(--text-label)', fontWeight: 'var(--font-weight-medium)', marginBottom: 'var(--spacing-8)', color: 'var(--text-secondary)' }}>Fill</h4>
+                          <div style={{ display: 'flex', gap: 'var(--spacing-8)', flexWrap: 'wrap' }}>
+                            <Tag variant="with-icon" color="primary" appearance="fill" icon={<Sparkles size={12} />}>Primary</Tag>
+                            <Tag variant="with-icon" color="destructive" appearance="fill" icon={<AlertTriangle size={12} />}>Destructive</Tag>
+                          </div>
+                        </div>
+                        
+                        {/* Outline Variants */}
+                        <div>
+                          <h4 style={{ fontSize: 'var(--text-label)', fontWeight: 'var(--font-weight-medium)', marginBottom: 'var(--spacing-8)', color: 'var(--text-secondary)' }}>Outline</h4>
+                          <div style={{ display: 'flex', gap: 'var(--spacing-8)', flexWrap: 'wrap' }}>
+                            <Tag variant="with-icon" color="primary" appearance="outline" icon={<Sparkles size={12} />}>Primary</Tag>
+                            <Tag variant="with-icon" color="destructive" appearance="outline" icon={<AlertTriangle size={12} />}>Destructive</Tag>
+                          </div>
+                        </div>
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={tagWithIconTab}>
+                      <CodeExample
+                        title="Tag with Icon Usage"
+                        code={`import { Tag } from './components/Tag';
+import { Sparkles, AlertTriangle } from 'lucide-react';
+
+// Fill Variants
+<Tag variant="with-icon" color="primary" appearance="fill" icon={<Sparkles size={12} />}>Primary</Tag>
+<Tag variant="with-icon" color="destructive" appearance="fill" icon={<AlertTriangle size={12} />}>Destructive</Tag>
+
+// Outline Variants
+<Tag variant="with-icon" color="primary" appearance="outline" icon={<Sparkles size={12} />}>Primary</Tag>
+<Tag variant="with-icon" color="destructive" appearance="outline" icon={<AlertTriangle size={12} />}>Destructive</Tag>
+
+// Props:
+// - variant: 'basic' | 'with-icon' (default: 'basic')
+// - color: 'primary' | 'destructive' (default: 'primary')
+// - appearance: 'fill' | 'outline' (default: 'fill')
+// - icon?: ReactNode (optional, used with 'with-icon' variant)
+// - className?: string (optional)
+// - children: ReactNode (required)`}
+                      />
+                    </TabPanel>
+                    <TabPanel value="github" activeTab={tagWithIconTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Tag.tsx`}
                       />
                     </TabPanel>
                   </TabsContainer>

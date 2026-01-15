@@ -21,6 +21,7 @@ export { Textarea } from './Textarea';
 export { Dropdown } from './Dropdown';
 export { Datepicker } from './Datepicker';
 export { Modal } from './Modal';
+export { SubscriptionModal } from './SubscriptionModal';
 export { Tooltip } from './Tooltip';
 
 // Main Reusable Components (Task Panel)

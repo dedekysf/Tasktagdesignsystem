@@ -1001,11 +1001,6 @@
     height: var(--size-md);
   }
 
-  .size-\[var\(--size-sm\)\] {
-    width: var(--size-sm);
-    height: var(--size-sm);
-  }
-
   .size-\[var\(--spacing-20\)\] {
     width: var(--spacing-20);
     height: var(--spacing-20);
@@ -1783,10 +1778,6 @@
 
   .rounded-\[8px\] {
     border-radius: 8px;
-  }
-
-  .rounded-\[16px\] {
-    border-radius: 16px;
   }
 
   .rounded-\[17px\] {

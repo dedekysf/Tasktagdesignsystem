@@ -97,10 +97,11 @@ export function ProjectSelectModal({ isOpen, onClose, onSelect, className = "" }
       {/* Modal */}
       <div className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-[504px] ${className}`}>
         <div 
-          className="bg-white relative rounded-[16px]"
+          className="bg-white relative"
           style={{ 
             border: '1px solid var(--border)',
-            boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.06)'
+            boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.06)',
+            borderRadius: 'var(--radius-16)'
           }}
         >
           <div className="flex flex-col gap-4 px-4 py-6">

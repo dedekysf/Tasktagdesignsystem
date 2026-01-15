@@ -590,12 +590,10 @@ export function AssigneeModal({
                         e.stopPropagation();
                         onClose();
                       }}
-                      className="flex items-center justify-center size-[var(--size-sm)] hover:bg-secondary rounded-[var(--radius-8)] transition-colors cursor-pointer shrink-0"
+                      className="flex items-center justify-center hover:bg-secondary rounded-[var(--radius-8)] transition-colors cursor-pointer shrink-0"
+                      style={{ padding: 0, background: 'none', border: 'none' }}
                     >
-                      <X
-                        className="size-[var(--text-base)]"
-                        fill="var(--text-secondary)"
-                      />
+                      <X size={20} style={{ color: 'var(--text-secondary)' }} />
                     </button>
                   </div>
                 </div>

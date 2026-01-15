@@ -61,8 +61,8 @@ export function DiscardChangesModal({
 
       {/* Modal */}
       <div ref={modalRef} className="relative z-10 w-[400px]">
-        <div className="bg-white box-border content-stretch flex flex-col items-start p-[24px] relative rounded-[16px] w-full">
-          <div aria-hidden="true" className="absolute border border-[#e8e8e8] border-solid inset-[-1px] pointer-events-none rounded-[17px]" />
+        <div className="bg-white box-border content-stretch flex flex-col items-start p-[24px] relative w-full" style={{ borderRadius: 'var(--radius-16)' }}>
+          <div aria-hidden="true" className="absolute border border-[#e8e8e8] border-solid inset-[-1px] pointer-events-none" style={{ borderRadius: 'calc(var(--radius-16) + 1px)' }} />
           
           {/* Header with Title and Close Button */}
           <div className="w-full mb-4 flex items-center justify-between">
@@ -74,9 +74,10 @@ export function DiscardChangesModal({
                 e.stopPropagation();
                 onCancel();
               }}
-              className="size-6 flex items-center justify-center rounded hover:bg-secondary transition-colors"
+              className="flex items-center justify-center rounded hover:bg-secondary transition-colors"
+              style={{ padding: 0, background: 'none', border: 'none', cursor: 'pointer' }}
             >
-              <X className="size-4 text-[var(--text-secondary)]" />
+              <X size={20} style={{ color: 'var(--text-secondary)' }} />
             </button>
           </div>
 
