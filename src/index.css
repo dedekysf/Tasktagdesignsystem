@@ -991,6 +991,11 @@
     height: 32px;
   }
 
+  .size-\[36px\] {
+    width: 36px;
+    height: 36px;
+  }
+
   .size-\[var\(--size-md\)\] {
     width: var(--size-md);
     height: var(--size-md);

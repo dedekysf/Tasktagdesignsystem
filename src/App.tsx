@@ -37,6 +37,7 @@ import { AssignedMembersButton } from './components/AssignedMembersButton';
 import { MemberRow } from './components/MemberRow';
 import { ChecklistItem } from './components/ChecklistItem';
 import { Toggle } from './components/Toggle';
+import { UpgradePromptModal } from './components/UpgradePromptModal';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Palette, Type, Square, Box, MousePointerClick, TextCursor, LayoutGrid, User, Users, Image, Menu, X, CheckSquare, Circle, Sparkles, ExternalLink, ChevronDown, ChevronLeft, ChevronRight, Trash2, Info, Home, Settings, Search, CircleCheckBig, Bell, CalendarDays, CalendarRange, AlertTriangle, ChevronUp as ChevronUpIcon, FolderOpen, UserPlus, List, Plus } from 'lucide-react';
@@ -141,6 +142,7 @@ export default function App() {
   const [imagesTab, setImagesTab] = useState('preview');
   const [modalTwoActionTab, setModalTwoActionTab] = useState('preview');
   const [modalOneActionTab, setModalOneActionTab] = useState('preview');
+  const [modalUpgradePromptTab, setModalUpgradePromptTab] = useState('preview');
   const [datepickerBasicTab, setDatepickerBasicTab] = useState('preview');
   const [datepickerLabelTab, setDatepickerLabelTab] = useState('preview');
   const [datepickerSizeTab, setDatepickerSizeTab] = useState('preview');
@@ -235,6 +237,7 @@ export default function App() {
   // Modal visibility states
   const [isTwoActionModalOpen, setIsTwoActionModalOpen] = useState(false);
   const [isOneActionModalOpen, setIsOneActionModalOpen] = useState(false);
+  const [isUpgradePromptModalOpen, setIsUpgradePromptModalOpen] = useState(false);
   const [isDiscardModalOpen, setIsDiscardModalOpen] = useState(false);
   const [isProjectSelectModalOpen, setIsProjectSelectModalOpen] = useState(false);
   const [isAssigneeModalOpen, setIsAssigneeModalOpen] = useState(false);
@@ -2796,12 +2799,12 @@ const options: DropdownOption[] = [
               <SectionHeader
                 icon={Box}
                 title="Modal"
-                description="Total Variant: 2"
+                description="Total Variant: 3"
               />
 
-              {/* Section 1: Two Action Modal */}
+              {/* Section 1: Basic Web Modal */}
               <div style={{ marginBottom: 'var(--spacing-56)' }}>
-                <h3 style={{ fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-8)' }}>Web Modal</h3>
+                <h3 style={{ fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-8)' }}>Basic Web Modal</h3>
                 <TabsContainer
                   activeTab={modalTwoActionTab}
                   onTabChange={setModalTwoActionTab}
@@ -2881,9 +2884,106 @@ const options: DropdownOption[] = [
                 </TabsContainer>
               </div>
 
-              {/* Section 2: Mobile Modal */}
+              {/* Section 2: Upgrade Prompt Modal */}
               <div style={{ marginBottom: 'var(--spacing-56)' }}>
-                <h3 style={{ fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-8)' }}>Mobile Modal</h3>
+                <h3 style={{ fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-8)' }}>Upgrade Prompt Modal</h3>
+                <TabsContainer
+                  activeTab={modalUpgradePromptTab}
+                  onTabChange={setModalUpgradePromptTab}
+                  tabs={[
+                    { value: 'preview', label: 'Preview' },
+                    { value: 'usage', label: 'Usage' },
+                    { value: 'github', label: 'GitHub URL' }
+                  ]}
+                >
+                  <TabPanel value="preview" activeTab={modalUpgradePromptTab}>
+                    <div className="component-card">
+                      <Button 
+                        variant="fill" 
+                        size="md"
+                        className="btn-secondary"
+                        onClick={() => setIsUpgradePromptModalOpen(true)}
+                        style={{ width: '200px' }}
+                      >
+                        click me!
+                      </Button>
+                      
+                      {isUpgradePromptModalOpen && (
+                        <div 
+                          style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: 'var(--overlay)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 1000,
+                            padding: 'var(--spacing-16)'
+                          }}
+                          onClick={() => setIsUpgradePromptModalOpen(false)}
+                        >
+                          <div onClick={(e) => e.stopPropagation()}>
+                            <UpgradePromptModal
+                              variant="confirmation"
+                              size="web"
+                              onUpgradeClick={() => {
+                                console.log('Upgrade clicked');
+                                setIsUpgradePromptModalOpen(false);
+                              }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </TabPanel>
+                  <TabPanel value="usage" activeTab={modalUpgradePromptTab}>
+                    <CodeExample
+                      title="Upgrade Prompt Modal Usage"
+                      code={`import { UpgradePromptModal } from './components/UpgradePromptModal';
+
+<UpgradePromptModal
+  variant="confirmation"
+  size="web"
+  title="Keep Your Team Moving Forward"
+  description="Your team access has expired. Upgrade to Team Plan to restore collaboration and unlock all features."
+  benefits={[
+    "Unlimited projects and tasks",
+    "Unlimited cloud-based messages",
+    "Unlimited users for projects and tasks",
+    "Team admin and member roles"
+  ]}
+  benefitsTitle="Get more with the Team plan"
+  buttonText="Upgrade to Team Plan"
+  onUpgradeClick={() => console.log('Upgrade clicked')}
+/>
+
+// Props:
+// - variant: "confirmation" (only one variant for now)
+// - size: "web" (only one size for now)
+// - title: string (optional, default: "Keep Your Team Moving Forward")
+// - description: string (optional)
+// - benefits: string[] (optional, default list provided)
+// - benefitsTitle: string (optional, default: "Get more with the Team plan")
+// - buttonText: string (optional, default: "Upgrade to Team Plan")
+// - onUpgradeClick: () => void (optional)
+// - className: string (optional)`}
+                    />
+                  </TabPanel>
+                  <TabPanel value="github" activeTab={modalUpgradePromptTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/UpgradePromptModal.tsx`}
+                    />
+                  </TabPanel>
+                </TabsContainer>
+              </div>
+
+              {/* Section 3: Basic Mobile Modal */}
+              <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                <h3 style={{ fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-8)' }}>Basic Mobile Modal</h3>
                 <TabsContainer
                   activeTab={modalOneActionTab}
                   onTabChange={setModalOneActionTab}
