@@ -1,16 +1,16 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { SidebarDropdown } from './SidebarDropdown';
 import { SidebarMenuItem } from './SidebarMenuItem';
 import TaskTagLogo from '../imports/TaskTagLogo';
 
 interface SidebarProps {
-  activeSection: string;
-  onSectionChange: (section: string) => void;
   isSidebarOpen: boolean;
   setIsSidebarOpen: (open: boolean) => void;
 }
 
-export function Sidebar({ activeSection, onSectionChange, isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
+export function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
+  const location = useLocation();
   const [openSections, setOpenSections] = useState<string[]>(['foundation']);
 
   const toggleSection = (sectionId: string) => {
@@ -21,8 +21,7 @@ export function Sidebar({ activeSection, onSectionChange, isSidebarOpen, setIsSi
     );
   };
 
-  const handleMenuItemClick = (section: string) => {
-    onSectionChange(section);
+  const handleMenuItemClick = () => {
     // Close sidebar on mobile after selection
     if (window.innerWidth < 1080) {
       setIsSidebarOpen(false);
@@ -30,58 +29,58 @@ export function Sidebar({ activeSection, onSectionChange, isSidebarOpen, setIsSi
   };
 
   const foundationItems = [
-    { id: 'colors', label: 'Colors' },
-    { id: 'typography-web', label: 'Typography on web' },
-    { id: 'typography-mobile', label: 'Typography on mobile' },
-    { id: 'radius', label: 'Border Radius' },
-    { id: 'elevation', label: 'Elevation' },
-    { id: 'spacing', label: 'Space' },
-    { id: 'sizes', label: 'Sizes' },
-    { id: 'logos', label: 'Logos' },
-    { id: 'icons', label: 'Icons' },
-    { id: 'images', label: 'Images' }
+    { id: 'colors', label: 'Colors', path: '/colors' },
+    { id: 'typography-web', label: 'Typography on web', path: '/typography-web' },
+    { id: 'typography-mobile', label: 'Typography on mobile', path: '/typography-mobile' },
+    { id: 'radius', label: 'Border Radius', path: '/radius' },
+    { id: 'elevation', label: 'Elevation', path: '/elevation' },
+    { id: 'spacing', label: 'Space', path: '/spacing' },
+    { id: 'sizes', label: 'Sizes', path: '/sizes' },
+    { id: 'logos', label: 'Logos', path: '/logos' },
+    { id: 'icons', label: 'Icons', path: '/icons' },
+    { id: 'images', label: 'Images', path: '/images' }
   ];
 
   const componentItems = [
-    { id: 'alert', label: 'Alert' },
-    { id: 'assignee-modal', label: 'Assignee Modal' },
-    { id: 'assigned-members-button', label: 'Assigned Members Button' },
-    { id: 'avatars', label: 'Avatars' },
-    { id: 'buttons', label: 'Buttons' },
-    { id: 'calendar', label: 'Calendar' },
-    { id: 'cards', label: 'Cards' },
-    { id: 'checkbox', label: 'Checkbox' },
-    { id: 'checklist-item', label: 'Checklist Item' },
-    { id: 'date-range-calendar', label: 'Date Range Calendar' },
-    { id: 'datepicker', label: 'Datepicker' },
-    { id: 'discard-changes-modal', label: 'Discard Changes Modal' },
-    { id: 'dropdown', label: 'Dropdown' },
-    { id: 'member-row', label: 'Member Row' },
-    { id: 'modal', label: 'Modal' },
-    { id: 'priority-dropdown', label: 'Priority Dropdown' },
-    { id: 'project-select-modal', label: 'Project Select Modal' },
-    { id: 'radio-button', label: 'Radio Button' },
-    { id: 'side-nav', label: 'Side Nav' },
-    { id: 'tabs-item', label: 'Tabs' },
-    { id: 'tag', label: 'Tag' },
-    { id: 'task-item', label: 'Task Item' },
-    { id: 'task-section', label: 'Task Section' },
-    { id: 'text-input', label: 'Text Input' },
-    { id: 'textarea', label: 'Text Area' },
-    { id: 'toast', label: 'Toast' },
-    { id: 'toggle', label: 'Toggle' },
-    { id: 'tooltip', label: 'Tooltip' }
+    { id: 'alert', label: 'Alert', path: '/alert' },
+    { id: 'assignee-modal', label: 'Assignee Modal', path: '/assignee-modal' },
+    { id: 'assigned-members-button', label: 'Assigned Members Button', path: '/assigned-members-button' },
+    { id: 'avatars', label: 'Avatars', path: '/avatars' },
+    { id: 'buttons', label: 'Buttons', path: '/buttons' },
+    { id: 'calendar', label: 'Calendar', path: '/calendar' },
+    { id: 'cards', label: 'Cards', path: '/cards' },
+    { id: 'checkbox', label: 'Checkbox', path: '/checkbox' },
+    { id: 'checklist-item', label: 'Checklist Item', path: '/checklist-item' },
+    { id: 'date-range-calendar', label: 'Date Range Calendar', path: '/date-range-calendar' },
+    { id: 'datepicker', label: 'Datepicker', path: '/datepicker' },
+    { id: 'discard-changes-modal', label: 'Discard Changes Modal', path: '/discard-changes-modal' },
+    { id: 'dropdown', label: 'Dropdown', path: '/dropdown' },
+    { id: 'member-row', label: 'Member Row', path: '/member-row' },
+    { id: 'modal', label: 'Modal', path: '/modal' },
+    { id: 'priority-dropdown', label: 'Priority Dropdown', path: '/priority-dropdown' },
+    { id: 'project-select-modal', label: 'Project Select Modal', path: '/project-select-modal' },
+    { id: 'radio-button', label: 'Radio Button', path: '/radio-button' },
+    { id: 'side-nav', label: 'Side Nav', path: '/side-nav' },
+    { id: 'tabs-item', label: 'Tabs', path: '/tabs-item' },
+    { id: 'tag', label: 'Tag', path: '/tag' },
+    { id: 'task-item', label: 'Task Item', path: '/task-item' },
+    { id: 'task-section', label: 'Task Section', path: '/task-section' },
+    { id: 'text-input', label: 'Text Input', path: '/text-input' },
+    { id: 'textarea', label: 'Text Area', path: '/textarea' },
+    { id: 'toast', label: 'Toast', path: '/toast' },
+    { id: 'toggle', label: 'Toggle', path: '/toggle' },
+    { id: 'tooltip', label: 'Tooltip', path: '/tooltip' }
   ];
 
   const pagesItems = [
-    { id: 'my-task', label: 'My Task' },
-    { id: 'task-panel', label: 'Task Panel' },
-    { id: 'project-details', label: 'Project Details' },
-    { id: 'team-detail', label: 'Team Detail' }
+    { id: 'my-task', label: 'My Task', path: '/my-task' },
+    { id: 'task-panel', label: 'Task Panel', path: '/task-panel' },
+    { id: 'project-details', label: 'Project Details', path: '/project-details' },
+    { id: 'team-detail', label: 'Team Detail', path: '/team-detail' }
   ];
 
-  const isSectionActive = (sectionId: string, items: Array<{ id: string }>) => {
-    return items.some(item => item.id === activeSection);
+  const isSectionActive = (sectionId: string, items: Array<{ id: string, path: string }>) => {
+    return items.some(item => location.pathname === item.path);
   };
 
   return (
@@ -120,8 +119,8 @@ export function Sidebar({ activeSection, onSectionChange, isSidebarOpen, setIsSi
                 <SidebarMenuItem
                   key={item.id}
                   label={item.label}
-                  isActive={activeSection === item.id}
-                  onClick={() => handleMenuItemClick(item.id)}
+                  to={item.path}
+                  onClick={handleMenuItemClick}
                 />
               ))}
             </SidebarDropdown>
@@ -136,8 +135,8 @@ export function Sidebar({ activeSection, onSectionChange, isSidebarOpen, setIsSi
                 <SidebarMenuItem
                   key={item.id}
                   label={item.label}
-                  isActive={activeSection === item.id}
-                  onClick={() => handleMenuItemClick(item.id)}
+                  to={item.path}
+                  onClick={handleMenuItemClick}
                 />
               ))}
             </SidebarDropdown>
@@ -152,8 +151,8 @@ export function Sidebar({ activeSection, onSectionChange, isSidebarOpen, setIsSi
                 <SidebarMenuItem
                   key={item.id}
                   label={item.label}
-                  isActive={activeSection === item.id}
-                  onClick={() => handleMenuItemClick(item.id)}
+                  to={item.path}
+                  onClick={handleMenuItemClick}
                 />
               ))}
             </SidebarDropdown>

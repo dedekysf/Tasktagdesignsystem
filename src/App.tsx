@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { SectionHeader } from './components/SectionHeader';
 import { ColorItem } from './components/ColorItem';
@@ -65,8 +66,9 @@ import TaskPanelPage from './pages/TaskPanelPage';
 import ProjectDetailsPage from './pages/project-details/ProjectDetailsPage';
 import TeamDetailPage from './pages/team-detail/TeamDetailPage';
 
-export default function App() {
-  const [activeSection, setActiveSection] = useState('colors');
+function AppContent() {
+  const location = useLocation();
+  const activeSection = location.pathname.replace('/', '') || 'colors';
   const [inputValue, setInputValue] = useState('');
   const [textareaValue, setTextareaValue] = useState('');
   const [textareaValue2, setTextareaValue2] = useState('');
@@ -450,7 +452,7 @@ export default function App() {
       </header>
 
       {/* Sidebar */}
-      <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+      <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       {/* Main Content */}
       <main className={`flex-1 w-full min-[1080px]:w-auto h-screen max-[1080px]:pt-16 ${activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-details' || activeSection === 'team-detail' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
@@ -6902,5 +6904,16 @@ export default function Example() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to="/colors" replace />} />
+        <Route path="/*" element={<AppContent />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

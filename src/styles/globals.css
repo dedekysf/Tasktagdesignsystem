@@ -878,6 +878,7 @@ body {
     transition: color 0.2s;
     border-radius: var(--radius);
     color: var(--foreground);
+    text-decoration: none;
   }
 
   .sidebar-menu-item:hover {
