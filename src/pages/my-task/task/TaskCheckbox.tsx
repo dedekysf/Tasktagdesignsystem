@@ -28,8 +28,8 @@ export function TaskCheckbox({ onComplete, completed = false, triggerAnimation, 
       toast.custom(() => (
         <Toast 
           variant="title-only" 
-          type="error" 
-          title="Task Marked as Incompleted"
+          type="success" 
+          title="Marked as incomplete"
           duration={3000}
         />
       ), {
@@ -41,7 +41,7 @@ export function TaskCheckbox({ onComplete, completed = false, triggerAnimation, 
         <Toast 
           variant="title-only" 
           type="success" 
-          title="Task Completed"
+          title="Task completed"
           duration={3000}
         />
       ), {

@@ -452,6 +452,10 @@
     pointer-events: none;
   }
 
+  .collapse {
+    visibility: collapse;
+  }
+
   .invisible {
     visibility: hidden;
   }
@@ -746,40 +750,6 @@
 
   .z-\[100000\] {
     z-index: 100000;
-  }
-
-  .\!container {
-    width: 100% !important;
-  }
-
-  @media (width >= 40rem) {
-    .\!container {
-      max-width: 40rem !important;
-    }
-  }
-
-  @media (width >= 48rem) {
-    .\!container {
-      max-width: 48rem !important;
-    }
-  }
-
-  @media (width >= 64rem) {
-    .\!container {
-      max-width: 64rem !important;
-    }
-  }
-
-  @media (width >= 80rem) {
-    .\!container {
-      max-width: 80rem !important;
-    }
-  }
-
-  @media (width >= 96rem) {
-    .\!container {
-      max-width: 96rem !important;
-    }
   }
 
   .container {
@@ -1178,6 +1148,10 @@
 
   .max-h-\[90vh\] {
     max-height: 90vh;
+  }
+
+  .max-h-\[232px\] {
+    max-height: 232px;
   }
 
   .max-h-\[300px\] {
@@ -2267,6 +2241,10 @@
     padding-top: calc(var(--spacing) * 6);
   }
 
+  .pt-\[0px\] {
+    padding-top: 0;
+  }
+
   .pt-\[8px\] {
     padding-top: 8px;
   }
@@ -2281,6 +2259,10 @@
 
   .pr-10 {
     padding-right: calc(var(--spacing) * 10);
+  }
+
+  .pr-\[16px\] {
+    padding-right: 16px;
   }
 
   .pr-\[56px\] {
@@ -2345,6 +2327,10 @@
 
   .pl-12 {
     padding-left: calc(var(--spacing) * 12);
+  }
+
+  .pl-\[16px\] {
+    padding-left: 16px;
   }
 
   .pl-\[24px\] {

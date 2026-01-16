@@ -9,6 +9,7 @@ interface FilterDropdownProps {
   tasks: Task[];
   filters: FilterState;
   onFiltersChange: (filters: FilterState) => void;
+  hideProjects?: boolean;
 }
 
 // Helper function to highlight matched text with yellow background
@@ -34,12 +35,14 @@ function highlightText(text: string, query: string) {
   );
 }
 
-export function FilterDropdown({ tasks, filters, onFiltersChange }: FilterDropdownProps) {
+export function FilterDropdown({ tasks, filters, onFiltersChange, hideProjects }: FilterDropdownProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [expandedSections, setExpandedSections] = useState<Set<"projects" | "assignees" | "dueDate" | "priority">>(new Set(["projects"]));
+  const [expandedSections, setExpandedSections] = useState<Set<"projects" | "assignees" | "dueDate" | "priority">>(
+    new Set(hideProjects ? ["assignees"] : ["projects"])
+  );
   const [showCalendar, setShowCalendar] = useState(false);
 
   // Extract unique values from tasks
@@ -109,6 +112,12 @@ export function FilterDropdown({ tasks, filters, onFiltersChange }: FilterDropdo
   }, [isOpen, showCalendar]);
 
   const toggleSection = (section: "projects" | "assignees" | "dueDate" | "priority") => {
+    // If the section is already expanded, collapse it
+    if (expandedSections.has(section)) {
+      setExpandedSections(new Set([...expandedSections].filter(s => s !== section)));
+      return;
+    }
+
     // If in search mode and both projects and assignees have results, allow multiple sections
     const isSearchMode = searchQuery.trim() !== "";
     const hasProjectResults = filteredProjects.length > 0;
@@ -119,11 +128,7 @@ export function FilterDropdown({ tasks, filters, onFiltersChange }: FilterDropdo
       // In search mode with multiple results, allow toggling individual sections
       // But only for projects and assignees
       if (section === "projects" || section === "assignees") {
-        if (expandedSections.has(section)) {
-          setExpandedSections(new Set([...expandedSections].filter(s => s !== section)));
-        } else {
-          setExpandedSections(new Set([...expandedSections, section]));
-        }
+        setExpandedSections(new Set([...expandedSections, section]));
       } else {
         // For dueDate and priority, use strict single accordion
         setExpandedSections(new Set([section]));
@@ -177,7 +182,7 @@ export function FilterDropdown({ tasks, filters, onFiltersChange }: FilterDropdo
     setSearchQuery("");
   };
 
-  const totalFilterCount = filters.projects.length + filters.assignees.length + filters.priorities.length + filters.dueDates.length + (filters.customDateRange ? 1 : 0);
+  const totalFilterCount = (hideProjects ? 0 : filters.projects.length) + filters.assignees.length + filters.priorities.length + filters.dueDates.length + (filters.customDateRange ? 1 : 0);
 
   // Filter items by search query
   const filteredProjects = Array.from(uniqueProjects).filter(project =>
@@ -191,7 +196,7 @@ export function FilterDropdown({ tasks, filters, onFiltersChange }: FilterDropdo
   // Auto-expand sections based on search results
   useEffect(() => {
     if (searchQuery.trim() !== "") {
-      const hasProjectResults = filteredProjects.length > 0;
+      const hasProjectResults = !hideProjects && filteredProjects.length > 0;
       const hasAssigneeResults = filteredAssignees.length > 0;
       
       // If both have results, expand both
@@ -208,10 +213,10 @@ export function FilterDropdown({ tasks, filters, onFiltersChange }: FilterDropdo
       }
       // If no results, keep current state
     } else {
-      // No search, reset to default (projects expanded)
-      setExpandedSections(new Set(["projects"]));
+      // No search, reset to default (projects expanded, or assignees if projects hidden)
+      setExpandedSections(new Set(hideProjects ? ["assignees"] : ["projects"]));
     }
-  }, [searchQuery, filteredProjects.length, filteredAssignees.length]);
+  }, [searchQuery, filteredProjects.length, filteredAssignees.length, hideProjects]);
 
   const formatDateRange = (range: { start: Date | null; end: Date | null } | null) => {
     if (!range || !range.start || !range.end) return "Select Dates";
@@ -326,62 +331,64 @@ export function FilterDropdown({ tasks, filters, onFiltersChange }: FilterDropdo
               </div>
 
               {/* Projects Section */}
-              <div style={{ borderBottom: '1px solid var(--border)' }}>
-                <button
-                  onClick={() => toggleSection("projects")}
-                  className="w-full flex items-center justify-between px-4 py-3 transition-colors"
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grey-01)'}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-[16px]" style={{ fontWeight: 'var(--font-weight-semibold)', color: 'var(--text-primary)' }}>
-                      Projects
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {filters.projects.length > 0 && (
-                      <div className="bg-[var(--secondary-green)] size-5 rounded-full flex items-center justify-center">
-                        <span className="text-white text-[12px]" style={{ fontWeight: 'var(--font-weight-regular)' }}>
-                          {filters.projects.length}
-                        </span>
-                      </div>
-                    )}
-                    {expandedSections.has("projects") ? (
-                      <ChevronUp className="size-6" style={{ color: 'var(--text-primary)' }} />
-                    ) : (
-                      <ChevronDown className="size-6" style={{ color: 'var(--text-primary)' }} />
-                    )}
-                  </div>
-                </button>
-                
-                {expandedSections.has("projects") && (
-                  <div className="pb-2">
-                    {filteredProjects.length > 0 ? (
-                      filteredProjects.map((project) => (
-                        <div
-                          key={project}
-                          className="px-4 py-2 transition-colors cursor-pointer"
-                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grey-02)'}
-                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                        >
-                          <Checkbox
-                            variant="rectangular"
-                            checked={filters.projects.includes(project)}
-                            onChange={() => toggleProject(project)}
-                            label={<span>{highlightText(project, searchQuery)}</span>}
-                          />
+              {!hideProjects && (
+                <div style={{ borderBottom: '1px solid var(--border)' }}>
+                  <button
+                    onClick={() => toggleSection("projects")}
+                    className="w-full flex items-center justify-between px-4 py-3 transition-colors"
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grey-01)'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-[16px]" style={{ fontWeight: 'var(--font-weight-semibold)', color: 'var(--text-primary)' }}>
+                        Projects
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {filters.projects.length > 0 && (
+                        <div className="bg-[var(--secondary-green)] size-5 rounded-full flex items-center justify-center">
+                          <span className="text-white text-[12px]" style={{ fontWeight: 'var(--font-weight-regular)' }}>
+                            {filters.projects.length}
+                          </span>
                         </div>
-                      ))
-                    ) : (
-                      <div className="px-4 py-4 text-center">
-                        <span className="text-[14px]" style={{ fontWeight: 'var(--font-weight-regular)', color: 'var(--text-secondary)' }}>
-                          No results found
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
+                      )}
+                      {expandedSections.has("projects") ? (
+                        <ChevronUp className="size-6" style={{ color: 'var(--text-primary)' }} />
+                      ) : (
+                        <ChevronDown className="size-6" style={{ color: 'var(--text-primary)' }} />
+                      )}
+                    </div>
+                  </button>
+                  
+                  {expandedSections.has("projects") && (
+                    <div className="pb-2 max-h-[232px] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+                      {filteredProjects.length > 0 ? (
+                        filteredProjects.map((project) => (
+                          <div
+                            key={project}
+                            className="px-4 py-2 transition-colors cursor-pointer"
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--grey-02)'}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                          >
+                            <Checkbox
+                              variant="rectangular"
+                              checked={filters.projects.includes(project)}
+                              onChange={() => toggleProject(project)}
+                              label={<span>{highlightText(project, searchQuery)}</span>}
+                            />
+                          </div>
+                        ))
+                      ) : (
+                        <div className="px-4 py-4 text-center">
+                          <span className="text-[14px]" style={{ fontWeight: 'var(--font-weight-regular)', color: 'var(--text-secondary)' }}>
+                            No results found
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Assignee Section */}
               <div style={{ borderBottom: '1px solid var(--border)' }}>
@@ -413,7 +420,7 @@ export function FilterDropdown({ tasks, filters, onFiltersChange }: FilterDropdo
                 </button>
                 
                 {expandedSections.has("assignees") && (
-                  <div className="pb-2">
+                  <div className="pb-2 max-h-[232px] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
                     {filteredAssignees.length > 0 ? (
                       filteredAssignees.map((assignee) => (
                         <div

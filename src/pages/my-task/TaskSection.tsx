@@ -37,6 +37,8 @@ interface TaskSectionProps {
     allFiles?: boolean;
     withTags?: boolean;
   }) => void;
+  hideProjectName?: boolean;
+  hideProjectSelect?: boolean;
 }
 
 interface DragItem {
@@ -47,12 +49,12 @@ interface DragItem {
   selectedTaskIds?: string[];
 }
 
-export function TaskSection({ title, count, tasks, isExpanded, onToggle, onReorder, onCrossSectionDrop, onAddTask, onCompleteTask, onUncompleteTask, showInlineCreation, showCount = true, sectionType, selectedTaskIds, onTaskSelect, onUpdateTask, onMoveUp, onMoveDown, onDeleteTask, onDuplicateTask }: TaskSectionProps) {
+export function TaskSection({ title, count, tasks, isExpanded, onToggle, onReorder, onCrossSectionDrop, onAddTask, onCompleteTask, onUncompleteTask, showInlineCreation, showCount = true, sectionType, selectedTaskIds, onTaskSelect, onUpdateTask, onMoveUp, onMoveDown, onDeleteTask, onDuplicateTask, hideProjectName, hideProjectSelect }: TaskSectionProps) {
   const [displayedTasks, setDisplayedTasks] = useState<Task[]>([]);
   const [visibleCount, setVisibleCount] = useState(10);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [draggingTaskIds, setDraggingTaskIds] = useState<Set<string>>(new Set());
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const loadMoreTriggerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [assigneeModalOpen, setAssigneeModalOpen] = useState(false);
   const [assigneeModalTaskIds, setAssigneeModalTaskIds] = useState<string[]>([]);
@@ -101,27 +103,35 @@ export function TaskSection({ title, count, tasks, isExpanded, onToggle, onReord
     }
   }, [isExpanded]);
 
-  // Infinite scroll logic
+  // Infinite scroll with IntersectionObserver
   useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container || !isExpanded) return;
+    if (!isExpanded || visibleCount >= tasks.length) return;
 
-    const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = container;
-      const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
+    const trigger = loadMoreTriggerRef.current;
+    if (!trigger) return;
 
-      // Load more when scrolled to 80%
-      if (scrollPercentage > 0.8 && !isLoadingMore && visibleCount < tasks.length) {
-        setIsLoadingMore(true);
-        setTimeout(() => {
-          setVisibleCount(prev => Math.min(prev + 10, tasks.length));
-          setIsLoadingMore(false);
-        }, 1000);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isLoadingMore && visibleCount < tasks.length) {
+          setIsLoadingMore(true);
+          setTimeout(() => {
+            setVisibleCount(prev => Math.min(prev + 10, tasks.length));
+            setIsLoadingMore(false);
+          }, 1000);
+        }
+      },
+      {
+        root: null,
+        rootMargin: '100px',
+        threshold: 0.1
       }
-    };
+    );
 
-    container.addEventListener("scroll", handleScroll);
-    return () => container.removeEventListener("scroll", handleScroll);
+    observer.observe(trigger);
+
+    return () => {
+      observer.disconnect();
+    };
   }, [isExpanded, isLoadingMore, visibleCount, tasks.length]);
 
   const moveTask = (dragIndex: number, hoverIndex: number, selectedTaskIds?: string[]) => {
@@ -192,7 +202,7 @@ export function TaskSection({ title, count, tasks, isExpanded, onToggle, onReord
   };
 
   return (
-    <div ref={drop} className={`flex flex-col bg-white rounded-lg overflow-hidden ${isExpanded && sectionType === "current" ? "flex-1 min-h-0" : "shrink-0"} ${isOver && canDrop && !isExpanded ? "ring-2 ring-primary ring-inset" : ""}`} style={{ border: '1px solid var(--grey-03)' }}>
+    <div ref={drop} className={`flex flex-col bg-white rounded-lg overflow-hidden ${tasks.length > 5 && isExpanded ? "flex-1 min-h-0" : "shrink-0"} ${isOver && canDrop && !isExpanded ? "ring-2 ring-primary ring-inset" : ""}`} style={{ border: '1px solid var(--grey-03)' }}>
       <TaskSectionHeader 
         title={title} 
         count={count} 
@@ -205,8 +215,11 @@ export function TaskSection({ title, count, tasks, isExpanded, onToggle, onReord
         <>
           {/* Scrollable task list */}
           <div 
-            ref={scrollContainerRef}
-            className={sectionType === "current" ? "flex-1 min-h-0 overflow-y-auto" : "overflow-y-auto"}
+            className={
+              tasks.length > 5 
+                ? "flex-1 min-h-0 overflow-y-auto" 
+                : ""
+            }
             style={{ 
               scrollbarWidth: 'thin',
               scrollbarColor: 'var(--grey-03) transparent'
@@ -247,6 +260,8 @@ export function TaskSection({ title, count, tasks, isExpanded, onToggle, onReord
                     onDuplicateTask={onDuplicateTask}
                     totalTasksInSection={tasks.length}
                     allTasksInSection={displayedTasks}
+                    hideProjectName={hideProjectName}
+                    hideProjectSelect={hideProjectSelect}
                   />
                 ))}
                 
@@ -280,6 +295,11 @@ export function TaskSection({ title, count, tasks, isExpanded, onToggle, onReord
                   </>
                 )}
                 
+                {/* Load More Trigger for IntersectionObserver */}
+                {visibleCount < tasks.length && (
+                  <div ref={loadMoreTriggerRef} className="h-1" />
+                )}
+                
                 {/* Loading indicator */}
                 {isLoadingMore && (
                   <div className="flex justify-center items-center gap-2 py-4" style={{ borderTop: '1px solid var(--grey-03)' }}>
@@ -293,7 +313,7 @@ export function TaskSection({ title, count, tasks, isExpanded, onToggle, onReord
 
           {/* Inline task creation */}
           {showInlineCreation && (
-            <InlineTaskCreation onAddTask={onAddTask} />
+            <InlineTaskCreation onAddTask={onAddTask} hideProjectSelect={hideProjectSelect} />
           )}
         </>
       )}

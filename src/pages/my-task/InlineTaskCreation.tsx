@@ -40,10 +40,12 @@ interface InlineTaskCreationProps {
     dueDate: Date | null,
     assignees: Assignee[],
   ) => void;
+  hideProjectSelect?: boolean;
 }
 
 export function InlineTaskCreation({
   onAddTask,
+  hideProjectSelect,
 }: InlineTaskCreationProps) {
   const [taskName, setTaskName] = useState("");
   const [priority, setPriority] = useState<
@@ -83,7 +85,7 @@ export function InlineTaskCreation({
   const handleCreate = () => {
     if (taskName.trim()) {
       // Check if project is selected
-      if (!selectedProject) {
+      if (!selectedProject && !hideProjectSelect) {
         // Show warning tooltip
         setShowProjectWarning(true);
 
@@ -303,112 +305,114 @@ export function InlineTaskCreation({
             {taskName && (
               <div className="flex items-center gap-2 shrink-0">
                 {/* Select Project Button with Warning Tooltip */}
-                <div className="h-8 w-[130px]">
-                  <TooltipProvider delayDuration={0}>
-                    <Tooltip open={showProjectWarning}>
-                      <TooltipTrigger asChild>
-                        <div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="btn-secondary w-full"
-                            style={{
-                              height: "var(--size-sm)",
-                              minHeight: "var(--size-sm)",
-                              maxHeight: "var(--size-sm)",
-                              padding: "0 var(--spacing-12)",
-                              borderRadius:
-                                "var(--radius-full)",
-                              borderColor: showProjectWarning
-                                ? "var(--alert-red)"
-                                : "var(--grey-03)",
-                            }}
-                            onClick={() => {
-                              setIsProjectModalOpen(true);
-                              setShowProjectWarning(false);
-                            }}
-                          >
-                            {selectedProject ? (
-                              <>
-                                {selectedProject.icon ===
-                                  "helmet" && (
-                                  <HardHat
-                                    className="size-3"
+                {!hideProjectSelect && (
+                  <div className="h-8 w-[130px]">
+                    <TooltipProvider delayDuration={0}>
+                      <Tooltip open={showProjectWarning}>
+                        <TooltipTrigger asChild>
+                          <div>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="btn-secondary w-full"
+                              style={{
+                                height: "var(--size-sm)",
+                                minHeight: "var(--size-sm)",
+                                maxHeight: "var(--size-sm)",
+                                padding: "0 var(--spacing-12)",
+                                borderRadius:
+                                  "var(--radius-full)",
+                                borderColor: showProjectWarning
+                                  ? "var(--alert-red)"
+                                  : "var(--grey-03)",
+                              }}
+                              onClick={() => {
+                                setIsProjectModalOpen(true);
+                                setShowProjectWarning(false);
+                              }}
+                            >
+                              {selectedProject ? (
+                                <>
+                                  {selectedProject.icon ===
+                                    "helmet" && (
+                                    <HardHat
+                                      className="size-3"
+                                      style={{
+                                        color:
+                                          selectedProject.color,
+                                      }}
+                                    />
+                                  )}
+                                  {selectedProject.icon ===
+                                    "zap" && (
+                                    <Zap
+                                      className="size-3"
+                                      style={{
+                                        color:
+                                          selectedProject.color,
+                                      }}
+                                    />
+                                  )}
+                                  <span
+                                    className="text-[12px] text-[var(--text-primary)] truncate"
                                     style={{
-                                      color:
-                                        selectedProject.color,
+                                      fontWeight:
+                                        "var(--font-weight-regular)",
                                     }}
+                                  >
+                                    {selectedProject.name}
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <Building2
+                                    className="size-3 text-[var(--text-secondary)]"
+                                    strokeWidth={2}
                                   />
-                                )}
-                                {selectedProject.icon ===
-                                  "zap" && (
-                                  <Zap
-                                    className="size-3"
+                                  <span
+                                    className="text-[12px] text-[var(--text-primary)] truncate"
                                     style={{
-                                      color:
-                                        selectedProject.color,
+                                      fontWeight:
+                                        "var(--font-weight-regular)",
                                     }}
-                                  />
-                                )}
-                                <span
-                                  className="text-[12px] text-[var(--text-primary)] truncate"
-                                  style={{
-                                    fontWeight:
-                                      "var(--font-weight-regular)",
-                                  }}
-                                >
-                                  {selectedProject.name}
-                                </span>
-                              </>
-                            ) : (
-                              <>
-                                <Building2
-                                  className="size-3 text-[var(--text-secondary)]"
-                                  strokeWidth={2}
-                                />
-                                <span
-                                  className="text-[12px] text-[var(--text-primary)] truncate"
-                                  style={{
-                                    fontWeight:
-                                      "var(--font-weight-regular)",
-                                  }}
-                                >
-                                  Select Project
-                                </span>
-                              </>
-                            )}
-                          </Button>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent
-                        side="bottom"
-                        align="start"
-                        sideOffset={8}
-                        className="bg-foreground text-primary-foreground border-none shadow-lg z-[100000]"
-                      >
-                        <div>
-                          <p
-                            style={{
-                              fontWeight:
-                                "var(--font-weight-bold)",
-                            }}
-                          >
-                            No Project Selected
-                          </p>
-                          <p
-                            className="mt-1 opacity-90"
-                            style={{
-                              fontWeight:
-                                "var(--font-weight-regular)",
-                            }}
-                          >
-                            Please select one to continue
-                          </p>
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
+                                  >
+                                    Select Project
+                                  </span>
+                                </>
+                              )}
+                            </Button>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent
+                          side="bottom"
+                          align="start"
+                          sideOffset={8}
+                          className="bg-foreground text-primary-foreground border-none shadow-lg z-[100000]"
+                        >
+                          <div>
+                            <p
+                              style={{
+                                fontWeight:
+                                  "var(--font-weight-bold)",
+                              }}
+                            >
+                              No Project Selected
+                            </p>
+                            <p
+                              className="mt-1 opacity-90"
+                              style={{
+                                fontWeight:
+                                  "var(--font-weight-regular)",
+                              }}
+                            >
+                              Please select one to continue
+                            </p>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                )}
 
                 {/* Priority Button with Dropdown - CIRCULAR */}
                 <div

@@ -78,6 +78,7 @@ interface TaskItemProps {
     updates: Partial<Task>,
   ) => void;
   allTasksInSection?: Task[];
+  hideProjectName?: boolean;
 }
 
 interface DragItem {
@@ -115,6 +116,7 @@ export function TaskItem({
   totalTasksInSection,
   onUpdateTask,
   allTasksInSection,
+  hideProjectName,
 }: TaskItemProps) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [dropPosition, setDropPosition] = useState<
@@ -741,22 +743,24 @@ export function TaskItem({
                 {/* Metadata: Project Badge + Checklist Badge */}
                 <div className="flex items-center gap-2">
                   {/* Project Badge */}
-                  <div className="flex items-center gap-1">
-                    <HardHat
-                      className="size-[10px]"
-                      style={{ color: task.projectIcon }}
-                    />
-                    <span
-                      className="text-[10px] hover:underline cursor-pointer"
-                      style={{
-                        fontWeight:
-                          "var(--font-weight-regular)",
-                        color: 'var(--grey-05)'
-                      }}
-                    >
-                      {task.projectName}
-                    </span>
-                  </div>
+                  {!hideProjectName && (
+                    <div className="flex items-center gap-1">
+                      <HardHat
+                        className="size-[10px]"
+                        style={{ color: task.projectIcon }}
+                      />
+                      <span
+                        className="text-[10px] hover:underline cursor-pointer"
+                        style={{
+                          fontWeight:
+                            "var(--font-weight-regular)",
+                          color: 'var(--grey-05)'
+                        }}
+                      >
+                        {task.projectName}
+                      </span>
+                    </div>
+                  )}
 
                   {/* Checklist Badge */}
                   {task.checklistCount && (

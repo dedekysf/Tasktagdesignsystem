@@ -1,9 +1,9 @@
-import { Check, X, AlertCircle, Info, ArrowRight } from "lucide-react";
+import { Check, X, AlertCircle, Info, ArrowRight, ListChecks } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface ToastProps {
   variant?: "title-only" | "title-caption" | "title-arrow" | "title-caption-arrow";
-  type?: "success" | "error" | "warning" | "info";
+  type?: "success" | "error" | "warning" | "info" | "checklist";
   title: string;
   caption?: string;
   duration?: number;
@@ -51,6 +51,10 @@ export function Toast({
     info: {
       icon: Info,
       color: "#4A9EFF"
+    },
+    checklist: {
+      icon: ListChecks,
+      color: "#00d9a5"
     }
   };
 

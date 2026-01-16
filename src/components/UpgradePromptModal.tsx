@@ -58,15 +58,17 @@ function CheckIcon() {
 export function UpgradePromptModal({
   variant,
   size = "web",
-  title = "Keep Your Team Moving Forward",
-  description = "Your team access has expired. Upgrade to Team Plan to restore collaboration and unlock all features.",
+  title = "Reactivate Your Team",
+  description = "Your team access has expired. Upgrade to the Team Plan to restore collaboration and unlock all features.",
   benefits = [
-    "Unlimited projects and tasks",
-    "Unlimited cloud-based messages",
-    "Unlimited users for projects and tasks",
-    "Team admin and member roles"
+    "2TB shared team storage",
+    "Unlimited projects & tasks",
+    "Add unlimited users to projects & tasks",
+    "Team admin & member roles",
+    "Centralized billing",
+    "Global activity log for full visibility"
   ],
-  benefitsTitle = "Get more with the Team plan",
+  benefitsTitle = "Team Plan includes:",
   buttonText = "Upgrade to Team Plan",
   onUpgradeClick,
   className = ""

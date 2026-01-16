@@ -23,11 +23,12 @@ export function SubscriptionModal({
   const [isExpanded, setIsExpanded] = useState(false);
 
   const benefits = [
+    '2TB shared team storage',
     'Unlimited projects & tasks',
-    'Unlimited cloud-based messages',
-    'Unlimited users for projects & tasks',
+    'Add unlimited users to projects & tasks',
     'Team admin & member roles',
-    'Contacts free to chat, assign & add to project'
+    'Centralized billing',
+    'Global activity log for full visibility'
   ];
 
   const memberCount = 2;
@@ -66,7 +67,7 @@ export function SubscriptionModal({
             margin: 0,
             lineHeight: '21px'
           }}>
-            Upgrade Team Plan
+            Upgrade to Team Plan
           </h3>
           <p style={{ 
             fontSize: 'var(--text-caption)',
@@ -75,7 +76,7 @@ export function SubscriptionModal({
             margin: 0,
             letterSpacing: '0.24px'
           }}>
-            Power up your collaboration with Team Plan features, like free to chat, assign task and more.
+            Power up your workspace with advanced team features.
           </p>
         </div>
 
@@ -323,7 +324,7 @@ export function SubscriptionModal({
           margin: 0,
           lineHeight: '24px'
         }}>
-          Get more with the Team plan
+          Everything in the Team Plan:
         </h3>
 
         {/* Benefits List */}
