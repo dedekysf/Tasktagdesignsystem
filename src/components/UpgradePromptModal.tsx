@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import svgPaths from "../imports/svg-iwr5cqdfb5";
+import { Crown, Check } from "lucide-react";
 
 interface UpgradePromptModalProps {
   variant: "confirmation";
@@ -11,48 +11,6 @@ interface UpgradePromptModalProps {
   buttonText?: string;
   onUpgradeClick?: () => void;
   className?: string;
-}
-
-function CrownIcon() {
-  return (
-    <div className="relative shrink-0 size-[36px]">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 36 36">
-        <g>
-          <path 
-            d={svgPaths.p28c65d00} 
-            stroke="var(--primary)" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            strokeWidth="3" 
-          />
-          <path 
-            d="M7.50005 31.5004H28.5" 
-            stroke="var(--primary)" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            strokeWidth="3" 
-          />
-        </g>
-      </svg>
-    </div>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <div className="relative shrink-0 size-[16px]">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 16 16">
-        <g>
-          <path 
-            clipRule="evenodd" 
-            d={svgPaths.p1547ca00} 
-            fill="var(--primary)" 
-            fillRule="evenodd" 
-          />
-        </g>
-      </svg>
-    </div>
-  );
 }
 
 export function UpgradePromptModal({
@@ -102,7 +60,7 @@ export function UpgradePromptModal({
           justifyContent: "center",
         }}
       >
-        <CrownIcon />
+        <Crown size={36} style={{ color: "var(--primary)" }} />
       </div>
 
       {/* Title and Description */}
@@ -166,7 +124,7 @@ export function UpgradePromptModal({
               alignItems: "center",
             }}
           >
-            <CheckIcon />
+            <Check size={16} style={{ color: "var(--primary)" }} />
             <p
               className="text-web-metadata-primary"
               style={{
