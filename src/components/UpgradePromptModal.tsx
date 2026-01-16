@@ -44,8 +44,8 @@ export function UpgradePromptModal({
         flexDirection: "column",
         gap: "var(--spacing-24)",
         alignItems: "center",
-        minWidth: size === "web" ? "480px" : "328px",
-        width: "100%",
+        width: size === "web" ? "600px" : "328px",
+        maxWidth: "90vw",
       }}
       className={className}
     >
