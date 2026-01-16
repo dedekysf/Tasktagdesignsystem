@@ -49,6 +49,16 @@
   --light-pink: #ffdada;
   --light-cream: #fdf4e0;
 
+  /* Alert Colors */
+  --warning-bg: var(--light-cream);
+  --warning-border: var(--vivid-yellow);
+  --info-bg: var(--light-sky);
+  --info-border: var(--blue);
+  --success-bg: var(--light-mint);
+  --success-border: var(--secondary-green);
+  --error-bg: var(--light-pink);
+  --error-border: var(--alert-red);
+
   /* Neutrals */
   --white: #ffffff;
   --grey-01: #fafbfc;
@@ -144,6 +154,7 @@
   --radius-2: 2px;
   --radius-4: 4px;
   --radius-8: 8px;
+  --radius-10: 10px;
   --radius-12: 12px;
   --radius-16: 16px;
   --radius-20: 20px;
@@ -373,6 +384,12 @@ body {
     line-height: 32px;
   }
 
+  .text-web-heading-18 {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+
   .text-web-large-label {
     font-size: 18px;
     font-weight: 500;
@@ -395,6 +412,13 @@ body {
     font-size: 14px;
     font-weight: 500;
     line-height: 16px;
+  }
+
+  .text-web-label {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.28px;
   }
 
   .text-web-body {

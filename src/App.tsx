@@ -40,6 +40,7 @@ import { Toggle } from './components/Toggle';
 import { UpgradePromptModal } from './components/UpgradePromptModal';
 import { SubscriptionModal } from './components/SubscriptionModal';
 import { Tag } from './components/Tag';
+import { Alert } from './components/Alert';
 import { SideNav } from './components/SideNav';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -173,6 +174,7 @@ export default function App() {
   const [toggleTab, setToggleTab] = useState('preview');
   const [tagBasicTab, setTagBasicTab] = useState('preview');
   const [tagWithIconTab, setTagWithIconTab] = useState('preview');
+  const [alertTab, setAlertTab] = useState('preview');
   const [sideNavExpandedTab, setSideNavExpandedTab] = useState('preview');
   
   // Toggle states
@@ -5993,6 +5995,111 @@ export default function Example() {
                       <CodeExample
                         title="GitHub URL"
                         code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/ProjectSelectModal.tsx`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Alert Component */}
+          {activeSection === 'alert' && (
+            <section>
+              <SectionHeader
+                icon={AlertTriangle}
+                title="Alert"
+                description="Total Variant: 4 (Warning, Info, Success, Error)"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={alertTab}
+                    onTabChange={setAlertTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={alertTab}>
+                      <div className="component-card" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-24)' }}>
+                        {/* Warning Variant */}
+                        <div>
+                          <h4 style={{ marginBottom: 'var(--spacing-12)', color: 'var(--text-primary)' }}>Warning</h4>
+                          <Alert
+                            variant="warning"
+                            size="default"
+                            title="Access to Team Plan for TaskTag Project has ended"
+                            description="Your access ended on September 17, 2025. Upgrade to a Team plan to use advanced project features."
+                            buttonText="Upgrade Now"
+                            onButtonClick={() => console.log('Upgrade clicked')}
+                          />
+                        </div>
+
+                        {/* Info Variant */}
+                        <div>
+                          <h4 style={{ marginBottom: 'var(--spacing-12)', color: 'var(--text-primary)' }}>Info</h4>
+                          <Alert
+                            variant="info"
+                            size="default"
+                            title="New features available"
+                            description="Check out the latest updates to improve your workflow and productivity."
+                            buttonText="Learn More"
+                            onButtonClick={() => console.log('Learn more clicked')}
+                          />
+                        </div>
+
+                        {/* Success Variant */}
+                        <div>
+                          <h4 style={{ marginBottom: 'var(--spacing-12)', color: 'var(--text-primary)' }}>Success</h4>
+                          <Alert
+                            variant="success"
+                            size="default"
+                            title="Your plan has been upgraded successfully"
+                            description="You now have access to all Team Plan features. Start collaborating with your team."
+                            buttonText="Get Started"
+                            onButtonClick={() => console.log('Get started clicked')}
+                          />
+                        </div>
+
+                        {/* Error Variant */}
+                        <div>
+                          <h4 style={{ marginBottom: 'var(--spacing-12)', color: 'var(--text-primary)' }}>Error</h4>
+                          <Alert
+                            variant="error"
+                            size="default"
+                            title="Unable to process your request"
+                            description="There was an error processing your payment. Please try again or contact support."
+                            buttonText="Try Again"
+                            onButtonClick={() => console.log('Try again clicked')}
+                          />
+                        </div>
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={alertTab}>
+                      <CodeExample 
+                        code={`import { Alert } from './components/Alert';
+
+<Alert
+  variant="warning"
+  size="default"
+  title="Access to Team Plan for TaskTag Project has ended"
+  description="Your access ended on September 17, 2025. Upgrade to a Team plan to use advanced project features."
+  buttonText="Upgrade Now"
+  onButtonClick={() => console.log('Upgrade clicked')}
+/>
+
+// Available variants: 'warning' | 'info' | 'success' | 'error'
+// Available sizes: 'default'
+// Additional props: className`}
+                      />
+                    </TabPanel>
+                    <TabPanel value="github" activeTab={alertTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Alert.tsx`}
                       />
                     </TabPanel>
                   </TabsContainer>

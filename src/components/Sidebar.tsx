@@ -43,6 +43,7 @@ export function Sidebar({ activeSection, onSectionChange, isSidebarOpen, setIsSi
   ];
 
   const componentItems = [
+    { id: 'alert', label: 'Alert' },
     { id: 'assignee-modal', label: 'Assignee Modal' },
     { id: 'assigned-members-button', label: 'Assigned Members Button' },
     { id: 'avatars', label: 'Avatars' },
