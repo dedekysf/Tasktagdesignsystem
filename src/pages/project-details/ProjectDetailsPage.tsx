@@ -50,6 +50,7 @@ import type {
 import { Toaster, toast } from "sonner@2.0.3";
 import { Toast } from "../../components/Toast";
 import { Modal } from "../../components/Modal";
+import { usePaywall } from "../../contexts/PaywallContext";
 import svgPaths from "../../imports/svg-mytask";
 import { ALL_USERS } from "../../data/userData";
 
@@ -60,6 +61,7 @@ interface ChecklistItemData {
 }
 
 export default function ProjectDetailsPage() {
+  const { isExpiredMode, showUpgradeModal } = usePaywall();
   const [items, setItems] = useState<ChecklistItemData[]>([
     {
       id: "1",
@@ -1287,20 +1289,44 @@ export default function ProjectDetailsPage() {
                   style={{ color: "var(--text-primary)" }}
                 />
               </Button>
-              <Button
-                variant="fill"
-                size="sm"
-                style={{
-                  borderRadius: "var(--radius-full)",
-                  width: "120px",
-                  backgroundColor: "var(--text-primary)",
-                  color: "var(--white)",
-                  border: "none",
-                }}
-              >
-                <Plus className="w-4 h-4" />
-                <span>New Task</span>
-              </Button>
+              {isExpiredMode ? (
+                <Tooltip
+                  content="Upgrade to unlock team features"
+                  variant="bottom-right"
+                  size="sm"
+                >
+                  <Button
+                    variant="fill"
+                    size="sm"
+                    onClick={showUpgradeModal}
+                    style={{
+                      borderRadius: "var(--radius-full)",
+                      width: "120px",
+                      backgroundColor: "var(--text-primary)",
+                      color: "var(--white)",
+                      border: "none",
+                    }}
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>New Task</span>
+                  </Button>
+                </Tooltip>
+              ) : (
+                <Button
+                  variant="fill"
+                  size="sm"
+                  style={{
+                    borderRadius: "var(--radius-full)",
+                    width: "120px",
+                    backgroundColor: "var(--text-primary)",
+                    color: "var(--white)",
+                    border: "none",
+                  }}
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>New Task</span>
+                </Button>
+              )}
             </div>
           </div>
         </header>
@@ -1394,7 +1420,9 @@ export default function ProjectDetailsPage() {
             <div className="flex items-center gap-4 -mt-4">
               <Tooltip
                 content={
-                  linkCopied ? (
+                  isExpiredMode ? (
+                    "Upgrade to unlock team features"
+                  ) : linkCopied ? (
                     <SuccessTooltip message="Link Copied" />
                   ) : (
                     "Copy link to invite"
@@ -1402,8 +1430,8 @@ export default function ProjectDetailsPage() {
                 }
                 variant="bottom-right"
                 size="sm"
-                style={linkCopied ? "custom" : "default"}
-                forceShow={linkCopied}
+                style={linkCopied && !isExpiredMode ? "custom" : "default"}
+                forceShow={linkCopied && !isExpiredMode}
               >
                 <Button
                   variant="ghost"
@@ -1415,7 +1443,11 @@ export default function ProjectDetailsPage() {
                     minHeight: "var(--size-sm)",
                   }}
                   onClick={() => {
-                    copyToClipboard(window.location.href);
+                    if (isExpiredMode) {
+                      showUpgradeModal();
+                    } else {
+                      copyToClipboard(window.location.href);
+                    }
                   }}
                 >
                   <Link
@@ -1424,19 +1456,42 @@ export default function ProjectDetailsPage() {
                   />
                 </Button>
               </Tooltip>
-              <Button
-                variant="outline"
-                size="sm"
-                className="btn-secondary"
-                style={{
-                  borderRadius: "var(--radius-full)",
-                  width: "120px",
-                  minHeight: "var(--size-sm)",
-                }}
-              >
-                <UserPlus className="w-4 h-4" />
-                <span>Invite</span>
-              </Button>
+              {isExpiredMode ? (
+                <Tooltip
+                  content="Upgrade to unlock team features"
+                  variant="bottom-right"
+                  size="sm"
+                >
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="btn-secondary"
+                    onClick={showUpgradeModal}
+                    style={{
+                      borderRadius: "var(--radius-full)",
+                      width: "120px",
+                      minHeight: "var(--size-sm)",
+                    }}
+                  >
+                    <UserPlus className="w-4 h-4" />
+                    <span>Invite</span>
+                  </Button>
+                </Tooltip>
+              ) : (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="btn-secondary"
+                  style={{
+                    borderRadius: "var(--radius-full)",
+                    width: "120px",
+                    minHeight: "var(--size-sm)",
+                  }}
+                >
+                  <UserPlus className="w-4 h-4" />
+                  <span>Invite</span>
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -1458,28 +1513,60 @@ export default function ProjectDetailsPage() {
                   selectedSort={sortOption}
                   onSortChange={setSortOption}
                 />
-                <button
-                  className="h-10 flex items-center justify-center gap-2 px-4 rounded-lg hover:bg-secondary transition-colors cursor-pointer"
-                  style={{
-                    fontWeight: "var(--font-weight-semibold)",
-                  }}
-                >
-                  <svg
-                    className="size-4 shrink-0"
-                    fill="none"
-                    viewBox="0 0 16 16"
+                {isExpiredMode ? (
+                  <Tooltip
+                    content="Upgrade to unlock team features"
+                    variant="bottom-left"
+                    size="sm"
                   >
-                    <path
-                      clipRule="evenodd"
-                      d={svgPaths.calendarIcon}
-                      fill="var(--text-primary)"
-                      fillRule="evenodd"
-                    />
-                  </svg>
-                  <span className="text-[14px] leading-none">
-                    Add to calendar
-                  </span>
-                </button>
+                    <button
+                      onClick={showUpgradeModal}
+                      className="h-10 flex items-center justify-center gap-2 px-4 rounded-lg hover:bg-secondary transition-colors cursor-pointer"
+                      style={{
+                        fontWeight: "var(--font-weight-semibold)",
+                      }}
+                    >
+                      <svg
+                        className="size-4 shrink-0"
+                        fill="none"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          clipRule="evenodd"
+                          d={svgPaths.calendarIcon}
+                          fill="var(--text-primary)"
+                          fillRule="evenodd"
+                        />
+                      </svg>
+                      <span className="text-[14px] leading-none">
+                        Add to calendar
+                      </span>
+                    </button>
+                  </Tooltip>
+                ) : (
+                  <button
+                    className="h-10 flex items-center justify-center gap-2 px-4 rounded-lg hover:bg-secondary transition-colors cursor-pointer"
+                    style={{
+                      fontWeight: "var(--font-weight-semibold)",
+                    }}
+                  >
+                    <svg
+                      className="size-4 shrink-0"
+                      fill="none"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        clipRule="evenodd"
+                        d={svgPaths.calendarIcon}
+                        fill="var(--text-primary)"
+                        fillRule="evenodd"
+                      />
+                    </svg>
+                    <span className="text-[14px] leading-none">
+                      Add to calendar
+                    </span>
+                  </button>
+                )}
               </div>
             </div>
 
@@ -1536,6 +1623,8 @@ export default function ProjectDetailsPage() {
                 }
                 hideProjectName={true}
                 hideProjectSelect={true}
+                isExpiredMode={isExpiredMode}
+                onUpgradeClick={showUpgradeModal}
               />
               <TaskSection
                 title="Overdue"
@@ -1585,6 +1674,8 @@ export default function ProjectDetailsPage() {
                 }
                 hideProjectName={true}
                 hideProjectSelect={true}
+                isExpiredMode={isExpiredMode}
+                onUpgradeClick={showUpgradeModal}
               />
               <TaskSection
                 title="Completed"
@@ -1637,6 +1728,8 @@ export default function ProjectDetailsPage() {
                 hideProjectName={true}
                 hideProjectSelect={true}
                 showCount={false}
+                isExpiredMode={isExpiredMode}
+                onUpgradeClick={showUpgradeModal}
               />
             </div>
           </>
@@ -1648,22 +1741,58 @@ export default function ProjectDetailsPage() {
             {/* Action Bar */}
             <div className="bg-white px-4 py-4 flex items-center justify-between flex-shrink-0">
               <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="btn-secondary"
-                >
-                  <Save className="w-4 h-4" />
-                  <span>Save as Template</span>
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="btn-secondary"
-                >
-                  <Hash className="w-4 h-4" />
-                  <span>Convert to Tasks</span>
-                </Button>
+                {isExpiredMode ? (
+                  <Tooltip
+                    content="Upgrade to unlock team features"
+                    variant="bottom-left"
+                    size="sm"
+                  >
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="btn-secondary"
+                      onClick={showUpgradeModal}
+                    >
+                      <Save className="w-4 h-4" />
+                      <span>Save as Template</span>
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="btn-secondary"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>Save as Template</span>
+                  </Button>
+                )}
+                {isExpiredMode ? (
+                  <Tooltip
+                    content="Upgrade to unlock team features"
+                    variant="bottom-left"
+                    size="sm"
+                  >
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="btn-secondary"
+                      onClick={showUpgradeModal}
+                    >
+                      <Hash className="w-4 h-4" />
+                      <span>Convert to Tasks</span>
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="btn-secondary"
+                  >
+                    <Hash className="w-4 h-4" />
+                    <span>Convert to Tasks</span>
+                  </Button>
+                )}
               </div>
               <div className="flex items-center gap-3">
                 <span
@@ -1834,14 +1963,14 @@ export default function ProjectDetailsPage() {
                     !isAnyItemEditing &&
                     !showCompleted &&
                     !isAddingItem && (
-                      <div className="flex gap-6">
+                      <div className="flex gap-2" style={{ width: '100%' }}>
                         <Button
                           onClick={() => setIsAddingItem(true)}
                           size="lg"
                           style={{
                             backgroundColor: "var(--grey-01)",
                             color: "var(--secondary-green)",
-                            flex: 1,
+                            width: '50%',
                             border: "none",
                             justifyContent: "flex-start",
                           }}
@@ -1878,48 +2007,103 @@ export default function ProjectDetailsPage() {
                             Add item
                           </span>
                         </Button>
-                        <Button
-                          size="lg"
-                          style={{
-                            backgroundColor: "var(--grey-01)",
-                            color: "var(--secondary-green)",
-                            flex: 1,
-                            border: "none",
-                            justifyContent: "flex-start",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor =
-                              "var(--grey-02)";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.backgroundColor =
-                              "var(--grey-01)";
-                          }}
-                        >
-                          <svg
-                            className="block size-4"
-                            fill="none"
-                            preserveAspectRatio="none"
-                            viewBox="0 0 16 16"
-                          >
-                            <path
-                              d="M8 3.33333V12.6667M3.33333 8H12.6667"
-                              stroke="var(--secondary-green)"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                          <span
-                            style={{
-                              fontWeight:
-                                "var(--font-weight-medium)",
-                              color: "var(--secondary-green)",
-                            }}
-                          >
-                            Add item from template
-                          </span>
-                        </Button>
+                        <div style={{ width: '50%' }}>
+                          {isExpiredMode ? (
+                            <Tooltip
+                              content="Upgrade to unlock team features"
+                              variant="bottom-left"
+                              size="sm"
+                              fullWidth={true}
+                            >
+                              <Button
+                                size="lg"
+                                onClick={showUpgradeModal}
+                                style={{
+                                  backgroundColor: "var(--grey-01)",
+                                  color: "var(--secondary-green)",
+                                  width: '100%',
+                                  border: "none",
+                                  justifyContent: "flex-start",
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor =
+                                    "var(--grey-02)";
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor =
+                                    "var(--grey-01)";
+                                }}
+                              >
+                                <svg
+                                  className="block size-4"
+                                  fill="none"
+                                  preserveAspectRatio="none"
+                                  viewBox="0 0 16 16"
+                                >
+                                  <path
+                                    d="M8 3.33333V12.6667M3.33333 8H12.6667"
+                                    stroke="var(--secondary-green)"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                </svg>
+                                <span
+                                  style={{
+                                    fontWeight:
+                                      "var(--font-weight-medium)",
+                                    color: "var(--secondary-green)",
+                                  }}
+                                >
+                                  Add item from template
+                                </span>
+                              </Button>
+                            </Tooltip>
+                          ) : (
+                            <Button
+                              size="lg"
+                              style={{
+                                backgroundColor: "var(--grey-01)",
+                                color: "var(--secondary-green)",
+                                width: '100%',
+                                border: "none",
+                                justifyContent: "flex-start",
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor =
+                                  "var(--grey-02)";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor =
+                                  "var(--grey-01)";
+                              }}
+                            >
+                              <svg
+                                className="block size-4"
+                                fill="none"
+                                preserveAspectRatio="none"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M8 3.33333V12.6667M3.33333 8H12.6667"
+                                  stroke="var(--secondary-green)"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                              <span
+                                style={{
+                                  fontWeight:
+                                    "var(--font-weight-medium)",
+                                  color: "var(--secondary-green)",
+                                }}
+                              >
+                                Add item from template
+                              </span>
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     )}
                 </div>
@@ -1938,14 +2122,14 @@ export default function ProjectDetailsPage() {
                       zIndex: 10,
                     }}
                   >
-                    <div className="flex gap-6">
+                    <div className="flex gap-2" style={{ width: '100%' }}>
                       <Button
                         onClick={() => setIsAddingItem(true)}
                         size="lg"
                         style={{
                           backgroundColor: "var(--grey-01)",
                           color: "var(--secondary-green)",
-                          flex: 1,
+                          width: '50%',
                           border: "none",
                           justifyContent: "flex-start",
                         }}
@@ -1982,48 +2166,103 @@ export default function ProjectDetailsPage() {
                           Add item
                         </span>
                       </Button>
-                      <Button
-                        size="lg"
-                        style={{
-                          backgroundColor: "var(--grey-01)",
-                          color: "var(--secondary-green)",
-                          flex: 1,
-                          border: "none",
-                          justifyContent: "flex-start",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor =
-                            "var(--grey-02)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor =
-                            "var(--grey-01)";
-                        }}
-                      >
-                        <svg
-                          className="block size-4"
-                          fill="none"
-                          preserveAspectRatio="none"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            d="M8 3.33333V12.6667M3.33333 8H12.6667"
-                            stroke="var(--secondary-green)"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                        <span
-                          style={{
-                            fontWeight:
-                              "var(--font-weight-medium)",
-                            color: "var(--secondary-green)",
-                          }}
-                        >
-                          Add item from template
-                        </span>
-                      </Button>
+                      <div style={{ width: '50%' }}>
+                        {isExpiredMode ? (
+                          <Tooltip
+                            content="Upgrade to unlock team features"
+                            variant="bottom-left"
+                            size="sm"
+                            fullWidth={true}
+                          >
+                            <Button
+                              size="lg"
+                              onClick={showUpgradeModal}
+                              style={{
+                                backgroundColor: "var(--grey-01)",
+                                color: "var(--secondary-green)",
+                                width: '100%',
+                                border: "none",
+                                justifyContent: "flex-start",
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor =
+                                  "var(--grey-02)";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor =
+                                  "var(--grey-01)";
+                              }}
+                            >
+                              <svg
+                                className="block size-4"
+                                fill="none"
+                                preserveAspectRatio="none"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M8 3.33333V12.6667M3.33333 8H12.6667"
+                                  stroke="var(--secondary-green)"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                              <span
+                                style={{
+                                  fontWeight:
+                                    "var(--font-weight-medium)",
+                                  color: "var(--secondary-green)",
+                                }}
+                              >
+                                Add item from template
+                              </span>
+                            </Button>
+                          </Tooltip>
+                        ) : (
+                          <Button
+                            size="lg"
+                            style={{
+                              backgroundColor: "var(--grey-01)",
+                              color: "var(--secondary-green)",
+                              width: '100%',
+                              border: "none",
+                              justifyContent: "flex-start",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor =
+                                "var(--grey-02)";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor =
+                                "var(--grey-01)";
+                            }}
+                          >
+                            <svg
+                              className="block size-4"
+                              fill="none"
+                              preserveAspectRatio="none"
+                              viewBox="0 0 16 16"
+                            >
+                              <path
+                                d="M8 3.33333V12.6667M3.33333 8H12.6667"
+                                stroke="var(--secondary-green)"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                            <span
+                              style={{
+                                fontWeight:
+                                  "var(--font-weight-medium)",
+                                color: "var(--secondary-green)",
+                              }}
+                            >
+                              Add item from template
+                            </span>
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}

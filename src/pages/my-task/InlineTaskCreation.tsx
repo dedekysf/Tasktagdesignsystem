@@ -36,11 +36,15 @@ interface InlineTaskCreationProps {
     assignees: Assignee[],
   ) => void;
   hideProjectSelect?: boolean;
+  isExpiredMode?: boolean;
+  onUpgradeClick?: () => void;
 }
 
 export function InlineTaskCreation({
   onAddTask,
   hideProjectSelect,
+  isExpiredMode,
+  onUpgradeClick,
 }: InlineTaskCreationProps) {
   const [taskName, setTaskName] = useState("");
   const [priority, setPriority] = useState<
@@ -718,8 +722,56 @@ export function InlineTaskCreation({
                 {assignees.length > 0 ? (
                   <AssigneeButton
                     assignees={assignees}
-                    onClick={() => setIsAssigneeModalOpen(true)}
+                    onClick={() => {
+                      if (!isExpiredMode) {
+                        setIsAssigneeModalOpen(true);
+                      }
+                    }}
+                    isExpiredMode={isExpiredMode}
+                    onUpgradeClick={onUpgradeClick}
                   />
+                ) : isExpiredMode ? (
+                  <Tooltip
+                    content="Upgrade to unlock team features"
+                    variant="bottom-right"
+                    size="sm"
+                  >
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="btn-secondary shrink-0"
+                      style={{
+                        width: "124px",
+                        height: "var(--size-sm)",
+                        minHeight: "var(--size-sm)",
+                        maxHeight: "var(--size-sm)",
+                        padding: "0 var(--spacing-12)",
+                        borderRadius: "var(--radius-full)",
+                        borderColor: "var(--grey-03)",
+                      }}
+                      onClick={() => {
+                        if (isExpiredMode) {
+                          onUpgradeClick?.();
+                        } else {
+                          setIsAssigneeModalOpen(true);
+                        }
+                      }}
+                    >
+                      <UserPlus
+                        className="size-3 text-[var(--text-secondary)]"
+                        strokeWidth={2}
+                      />
+                      <span
+                        className="text-[12px] text-[var(--text-primary)] truncate"
+                        style={{
+                          fontWeight:
+                            "var(--font-weight-regular)",
+                        }}
+                      >
+                        Assignee
+                      </span>
+                    </Button>
+                  </Tooltip>
                 ) : (
                   <Button
                     variant="outline"
@@ -734,7 +786,11 @@ export function InlineTaskCreation({
                       borderRadius: "var(--radius-full)",
                       borderColor: "var(--grey-03)",
                     }}
-                    onClick={() => setIsAssigneeModalOpen(true)}
+                    onClick={() => {
+                      if (!isExpiredMode) {
+                        setIsAssigneeModalOpen(true);
+                      }
+                    }}
                   >
                     <UserPlus
                       className="size-3 text-[var(--text-secondary)]"

@@ -8,6 +8,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "../../../components/ui/tooltip";
+import { Tooltip as CustomTooltip } from "../../../components/Tooltip";
 import { getUserByEmail, getColorFromEmail, getInitials } from "../../../data/userData";
 import { AssignedMembersButton } from "../../../components/AssignedMembersButton";
 
@@ -22,16 +23,25 @@ interface Assignee {
 interface AssigneeButtonProps {
   assignees: Assignee[];
   onClick?: () => void;
+  isExpiredMode?: boolean;
+  onUpgradeClick?: () => void;
 }
 
-export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
+export function AssigneeButton({ assignees, onClick, isExpiredMode, onUpgradeClick }: AssigneeButtonProps) {
   // No assignees - show "Assignee" button
   if (assignees.length === 0) {
     return (
       <button 
         onClick={(e) => {
           e.stopPropagation();
-          onClick?.();
+          console.log('[AssigneeButton - No assignees] Clicked. isExpiredMode:', isExpiredMode);
+          if (!isExpiredMode) {
+            console.log('[AssigneeButton - No assignees] Calling onClick');
+            onClick?.();
+          } else {
+            console.log('[AssigneeButton - No assignees] Modal blocked by isExpiredMode');
+            onUpgradeClick?.();
+          }
         }}
         onMouseDown={(e) => {
           e.stopPropagation();
@@ -75,20 +85,34 @@ export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
       role: 'Assignee'
     };
     
-    return (
-      <div
-        onMouseDown={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        <AssignedMembersButton
-          members={[member]}
-          onClick={(e) => {
-            onClick?.();
-          }}
-        />
-      </div>
+    const handleClick = () => {
+      if (isExpiredMode) {
+        onUpgradeClick?.();
+      } else {
+        onClick?.();
+      }
+    };
+
+    const buttonContent = (
+      <AssignedMembersButton
+        members={[member]}
+        onClick={handleClick}
+      />
     );
+
+    if (isExpiredMode) {
+      return (
+        <CustomTooltip
+          content="Upgrade to unlock team features"
+          variant="bottom-right"
+          size="sm"
+        >
+          {buttonContent}
+        </CustomTooltip>
+      );
+    }
+
+    return buttonContent;
   }
 
   // 2-3 assignees or more - show overlapping avatars with individual tooltips
@@ -147,7 +171,7 @@ export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
     </div>
   ) : undefined;
 
-  return (
+  const avatarGroupContent = (
     <div 
       className="shrink-0 cursor-pointer flex items-center justify-start"
       style={{
@@ -156,7 +180,14 @@ export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
       }}
       onClick={(e) => {
         e.stopPropagation();
-        onClick?.();
+        console.log('[AssigneeButton - Multiple assignees] Clicked. isExpiredMode:', isExpiredMode);
+        if (!isExpiredMode) {
+          console.log('[AssigneeButton - Multiple assignees] Calling onClick');
+          onClick?.();
+        } else {
+          console.log('[AssigneeButton - Multiple assignees] Modal blocked by isExpiredMode');
+          onUpgradeClick?.();
+        }
       }}
       onMouseDown={(e) => {
         e.stopPropagation();
@@ -167,7 +198,23 @@ export function AssigneeButton({ assignees, onClick }: AssigneeButtonProps) {
         size="sm"
         max={3}
         remainingTooltipContent={remainingTooltipContent}
+        disableTooltip={isExpiredMode}
       />
     </div>
   );
+
+  if (isExpiredMode) {
+    return (
+      <CustomTooltip
+        content="Upgrade to unlock team features"
+        variant="bottom-right"
+        size="sm"
+        forceHide={false}
+      >
+        {avatarGroupContent}
+      </CustomTooltip>
+    );
+  }
+
+  return avatarGroupContent;
 }

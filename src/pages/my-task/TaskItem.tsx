@@ -79,6 +79,8 @@ interface TaskItemProps {
   ) => void;
   allTasksInSection?: Task[];
   hideProjectName?: boolean;
+  isExpiredMode?: boolean;
+  onUpgradeClick?: () => void;
 }
 
 interface DragItem {
@@ -117,6 +119,8 @@ export function TaskItem({
   onUpdateTask,
   allTasksInSection,
   hideProjectName,
+  isExpiredMode,
+  onUpgradeClick,
 }: TaskItemProps) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [dropPosition, setDropPosition] = useState<
@@ -570,6 +574,11 @@ export function TaskItem({
   };
 
   const handleCopyLink = () => {
+    if (isExpiredMode) {
+      onUpgradeClick?.();
+      return;
+    }
+
     const taskLink = `${window.location.origin}/task/${task.id}`;
 
     // Try modern clipboard API first
@@ -1096,11 +1105,51 @@ export function TaskItem({
                 <div className="shrink-0">
                   <AssigneeButton
                     assignees={task.assignees}
-                    onClick={() =>
-                      onOpenAssigneeModal?.(task.id)
-                    }
+                    onClick={() => {
+                      if (!isExpiredMode) {
+                        onOpenAssigneeModal?.(task.id);
+                      }
+                    }}
+                    isExpiredMode={isExpiredMode}
+                    onUpgradeClick={onUpgradeClick}
                   />
                 </div>
+              ) : isExpiredMode ? (
+                <Tooltip
+                  content="Upgrade to unlock team features"
+                  variant="bottom-right"
+                  size="sm"
+                >
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="btn-secondary shrink-0"
+                    style={{
+                      width: "124px",
+                      height: "var(--size-sm)",
+                      padding: "0 var(--spacing-12)",
+                      borderRadius: "var(--radius-full)",
+                      borderColor: "var(--grey-03)",
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onUpgradeClick?.();
+                    }}
+                  >
+                    <UserPlus
+                      className="size-3 text-[var(--text-secondary)]"
+                      strokeWidth={2}
+                    />
+                    <span
+                      className="text-[12px] text-[var(--text-primary)] truncate"
+                      style={{
+                        fontWeight: "var(--font-weight-regular)",
+                      }}
+                    >
+                      Assignee
+                    </span>
+                  </Button>
+                </Tooltip>
               ) : (
                 <Button
                   variant="outline"
@@ -1137,7 +1186,9 @@ export function TaskItem({
               <Tooltip
                 variant="bottom-right"
                 content={
-                  showLinkCopiedSuccess ? (
+                  isExpiredMode ? (
+                    "Upgrade to unlock team features"
+                  ) : showLinkCopiedSuccess ? (
                     <SuccessTooltip message="Link copied!" />
                   ) : (
                     "Copy link to invite"
@@ -1145,9 +1196,9 @@ export function TaskItem({
                 }
                 size="sm"
                 style={
-                  showLinkCopiedSuccess ? "custom" : "default"
+                  showLinkCopiedSuccess && !isExpiredMode ? "custom" : "default"
                 }
-                forceShow={showLinkCopiedSuccess}
+                forceShow={showLinkCopiedSuccess && !isExpiredMode}
               >
                 <button
                   className="shrink-0 p-1 rounded hover:bg-secondary transition-colors cursor-pointer"

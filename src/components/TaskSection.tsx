@@ -55,6 +55,7 @@ interface TaskSectionProps {
     withTags?: boolean;
   }) => void;
   className?: string;
+  isExpiredMode?: boolean;
   // Child components as props for flexibility
   TaskItemComponent: React.ComponentType<any>;
   InlineTaskCreationComponent?: React.ComponentType<any>;
@@ -92,6 +93,7 @@ export function TaskSection({
   onDeleteTask, 
   onDuplicateTask,
   className = "",
+  isExpiredMode = false,
   TaskItemComponent,
   InlineTaskCreationComponent,
   SectionHeaderComponent,
@@ -271,9 +273,12 @@ export function TaskSection({
                     onReorder={moveTask}
                     onCrossSectionDrop={handleCrossSectionMove}
                     onOpenAssigneeModal={(taskIds: string | string[]) => {
-                      const ids = Array.isArray(taskIds) ? taskIds : [taskIds];
-                      setAssigneeModalTaskIds(ids);
-                      setAssigneeModalOpen(true);
+                      // Only open modal if not in expired mode
+                      if (!isExpiredMode) {
+                        const ids = Array.isArray(taskIds) ? taskIds : [taskIds];
+                        setAssigneeModalTaskIds(ids);
+                        setAssigneeModalOpen(true);
+                      }
                     }}
                     sectionType={sectionType}
                     isLast={index === displayedTasks.length - 1 && !showInlineCreation}
@@ -296,6 +301,7 @@ export function TaskSection({
                     onDuplicateTask={onDuplicateTask}
                     totalTasksInSection={tasks.length}
                     allTasksInSection={displayedTasks}
+                    isExpiredMode={isExpiredMode}
                   />
                 ))}
                 

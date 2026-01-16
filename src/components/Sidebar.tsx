@@ -76,7 +76,8 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
     { id: 'my-task', label: 'My Task', path: '/my-task' },
     { id: 'task-panel', label: 'Task Panel', path: '/task-panel' },
     { id: 'project-details', label: 'Project Details', path: '/project-details' },
-    { id: 'team-detail', label: 'Team Detail', path: '/team-detail' }
+    { id: 'team-detail', label: 'Team Detail', path: '/team-detail' },
+    { id: 'paywall-cta', label: 'Paywall CTA', path: '/paywall-cta' }
   ];
 
   const isSectionActive = (sectionId: string, items: Array<{ id: string, path: string }>) => {

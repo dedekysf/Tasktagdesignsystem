@@ -13,6 +13,8 @@ interface ModalProps {
   onSecondaryClick?: () => void;
   onClose?: () => void;
   className?: string;
+  primaryButtonClassName?: string;
+  secondaryButtonClassName?: string;
 }
 
 export function Modal({
@@ -26,6 +28,8 @@ export function Modal({
   onSecondaryClick,
   onClose,
   className = "",
+  primaryButtonClassName,
+  secondaryButtonClassName,
 }: ModalProps) {
   const minWidth = size === "mobile" ? "328px" : "480px";
   const isMobile = size === "mobile";
@@ -69,7 +73,7 @@ export function Modal({
         >
           {title}
         </h4>
-        {!isMobile && (
+        {!isMobile && onClose && (
           <button
             onClick={onClose}
             style={{
@@ -185,6 +189,7 @@ export function Modal({
                   variant="outline"
                   size="md"
                   onClick={onSecondaryClick}
+                  className={secondaryButtonClassName || "btn-secondary"}
                 >
                   {secondaryButtonText}
                 </Button>
@@ -193,9 +198,10 @@ export function Modal({
               variant="fill"
               size="md"
               className={
-                variant === "one-action"
+                primaryButtonClassName ||
+                (variant === "one-action"
                   ? "btn-secondary"
-                  : "btn-primary"
+                  : "btn-primary")
               }
               onClick={onPrimaryClick}
             >

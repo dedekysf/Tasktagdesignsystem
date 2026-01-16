@@ -118,6 +118,10 @@
   --input-background: var(--white);
   /* The color for focus rings, outlines, and other focus indicators. */
   --ring: var(--brand-green);
+  /* Tooltip background color */
+  --tooltip-bg: var(--black);
+  /* Tooltip text color */
+  --tooltip-text: var(--white);
   /* Shadow for small elevations, such as cards or modals. */
   --elevation-sm: rgba(0, 0, 0, 0.05) 0px 1px 3px 0px;
   /* Shadow for medium elevations, such as dropdowns or tooltips. */

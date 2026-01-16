@@ -9,7 +9,6 @@ import { CompleteTaskModal } from './CompleteTaskModal';
 import { PriorityDropdown } from '../../components/PriorityDropdown';
 import { AssigneeModal } from '../my-task/AssigneeModal';
 import { createPortal } from 'react-dom';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../components/ui/tooltip';
 import { Avatar } from '../../components/AvatarComponent';
 import { Textarea } from '../../components/Textarea';
 import { DateRangeCalendar } from '../../components/DateRangeCalendar';

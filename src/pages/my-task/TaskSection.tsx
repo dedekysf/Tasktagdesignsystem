@@ -39,6 +39,8 @@ interface TaskSectionProps {
   }) => void;
   hideProjectName?: boolean;
   hideProjectSelect?: boolean;
+  isExpiredMode?: boolean;
+  onUpgradeClick?: () => void;
 }
 
 interface DragItem {
@@ -49,7 +51,7 @@ interface DragItem {
   selectedTaskIds?: string[];
 }
 
-export function TaskSection({ title, count, tasks, isExpanded, onToggle, onReorder, onCrossSectionDrop, onAddTask, onCompleteTask, onUncompleteTask, showInlineCreation, showCount = true, sectionType, selectedTaskIds, onTaskSelect, onUpdateTask, onMoveUp, onMoveDown, onDeleteTask, onDuplicateTask, hideProjectName, hideProjectSelect }: TaskSectionProps) {
+export function TaskSection({ title, count, tasks, isExpanded, onToggle, onReorder, onCrossSectionDrop, onAddTask, onCompleteTask, onUncompleteTask, showInlineCreation, showCount = true, sectionType, selectedTaskIds, onTaskSelect, onUpdateTask, onMoveUp, onMoveDown, onDeleteTask, onDuplicateTask, hideProjectName, hideProjectSelect, isExpiredMode, onUpgradeClick }: TaskSectionProps) {
   const [displayedTasks, setDisplayedTasks] = useState<Task[]>([]);
   const [visibleCount, setVisibleCount] = useState(10);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -235,9 +237,12 @@ export function TaskSection({ title, count, tasks, isExpanded, onToggle, onReord
                     onReorder={moveTask}
                     onCrossSectionDrop={handleCrossSectionMove}
                     onOpenAssigneeModal={(taskIds) => {
-                      const ids = Array.isArray(taskIds) ? taskIds : [taskIds];
-                      setAssigneeModalTaskIds(ids);
-                      setAssigneeModalOpen(true);
+                      // Only open modal if not in expired mode
+                      if (!isExpiredMode) {
+                        const ids = Array.isArray(taskIds) ? taskIds : [taskIds];
+                        setAssigneeModalTaskIds(ids);
+                        setAssigneeModalOpen(true);
+                      }
                     }}
                     sectionType={sectionType}
                     isLast={index === displayedTasks.length - 1 && !showInlineCreation}
@@ -262,6 +267,8 @@ export function TaskSection({ title, count, tasks, isExpanded, onToggle, onReord
                     allTasksInSection={displayedTasks}
                     hideProjectName={hideProjectName}
                     hideProjectSelect={hideProjectSelect}
+                    isExpiredMode={isExpiredMode}
+                    onUpgradeClick={onUpgradeClick}
                   />
                 ))}
                 
@@ -313,7 +320,7 @@ export function TaskSection({ title, count, tasks, isExpanded, onToggle, onReord
 
           {/* Inline task creation */}
           {showInlineCreation && (
-            <InlineTaskCreation onAddTask={onAddTask} hideProjectSelect={hideProjectSelect} />
+            <InlineTaskCreation onAddTask={onAddTask} hideProjectSelect={hideProjectSelect} isExpiredMode={isExpiredMode} onUpgradeClick={onUpgradeClick} />
           )}
         </>
       )}

@@ -29,6 +29,8 @@ interface AvatarGroupWithTooltipProps {
   tooltipVariant?: TooltipVariant;
   /** Tooltip variant for +N avatar */
   remainingTooltipVariant?: TooltipVariant;
+  /** Disable all tooltips */
+  disableTooltip?: boolean;
 }
 
 export function AvatarGroupWithTooltip({ 
@@ -39,7 +41,8 @@ export function AvatarGroupWithTooltip({
   disabled = false,
   remainingTooltipContent,
   tooltipVariant = 'bottom-right',
-  remainingTooltipVariant = 'bottom-right'
+  remainingTooltipVariant = 'bottom-right',
+  disableTooltip = false
 }: AvatarGroupWithTooltipProps) {
   const displayAvatars = max ? avatars.slice(0, max) : avatars;
   const remainingCount = max && avatars.length > max ? avatars.length - max : 0;
@@ -74,7 +77,7 @@ export function AvatarGroupWithTooltip({
             backgroundColor={avatar.isEmailInvite ? 'var(--grey-02)' : avatar.backgroundColor}
             iconColor={avatar.isEmailInvite ? 'var(--grey-05)' : avatar.iconColor}
             disabled={disabled}
-            tooltipContent={avatar.tooltipContent}
+            tooltipContent={disableTooltip ? undefined : avatar.tooltipContent}
             tooltipVariant={tooltipVariant}
             tooltipSize="sm"
             className="avatar-group-avatar"
@@ -97,7 +100,7 @@ export function AvatarGroupWithTooltip({
             variant="initials"
             initials={`+${remainingCount}`}
             disabled={false}
-            tooltipContent={remainingTooltipContent}
+            tooltipContent={disableTooltip ? undefined : remainingTooltipContent}
             tooltipVariant={remainingTooltipVariant}
             tooltipSize="sm"
             className="avatar-group-avatar"

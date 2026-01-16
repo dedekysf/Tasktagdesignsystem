@@ -22,9 +22,11 @@ interface TooltipProps {
   forceShow?: boolean;
   /** Force tooltip to hide even on hover */
   forceHide?: boolean;
+  /** Make wrapper take full width (useful for buttons in flex containers) */
+  fullWidth?: boolean;
 }
 
-export function Tooltip({ variant = 'top-center', size = 'md', style: tooltipStyle = 'default', className = '', content, children, forceShow, forceHide }: TooltipProps) {
+export function Tooltip({ variant = 'top-center', size = 'md', style: tooltipStyle = 'default', className = '', content, children, forceShow, forceHide, fullWidth }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -101,7 +103,7 @@ export function Tooltip({ variant = 'top-center', size = 'md', style: tooltipSty
         ref={triggerRef}
         onMouseEnter={() => setIsVisible(true)}
         onMouseLeave={() => setIsVisible(false)}
-        className="inline-block"
+        style={{ display: 'inline-block', width: fullWidth ? '100%' : 'auto' }}
       >
         {children}
       </div>

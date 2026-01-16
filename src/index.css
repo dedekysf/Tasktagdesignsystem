@@ -1807,11 +1807,6 @@
     border-width: 1px;
   }
 
-  .border-0 {
-    border-style: var(--tw-border-style);
-    border-width: 0;
-  }
-
   .border-2 {
     border-style: var(--tw-border-style);
     border-width: 2px;
@@ -3489,6 +3484,8 @@
   --input: var(--white);
   --input-background: var(--white);
   --ring: var(--brand-green);
+  --tooltip-bg: var(--black);
+  --tooltip-text: var(--white);
   --elevation-sm: #0000000d 0px 1px 3px 0px;
   --elevation-md: #0000001a 0px 4px 6px -1px, #0000000f 0px 2px 4px -1px;
   --elevation-lg: #0000001a 0px 10px 15px -3px, #0000000d 0px 4px 6px -2px;
