@@ -403,7 +403,6 @@ function DateButton({ startDate, endDate, onDateChange }: { startDate: Date | nu
             style={{
               top: `${datePickerPosition.top}px`,
               left: `${datePickerPosition.left}px`,
-              width: '360px',
             }}
           >
             <DateRangeCalendar

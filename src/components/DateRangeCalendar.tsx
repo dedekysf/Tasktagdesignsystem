@@ -27,8 +27,10 @@ export function DateRangeCalendar({
   const [currentMonth, setCurrentMonth] = useState<Date>(
     startDate || new Date(),
   );
-  const [focusedInput, setFocusedInput] = useState<'start' | 'end' | null>(null);
-  
+  const [focusedInput, setFocusedInput] = useState<
+    "start" | "end" | null
+  >(null);
+
   const startInputRef = useRef<HTMLInputElement>(null);
   const endInputRef = useRef<HTMLInputElement>(null);
 
@@ -162,11 +164,11 @@ export function DateRangeCalendar({
 
   const isDateDisabled = (date: Date) => {
     // If focused on start input and there's an end date, disable dates after end date
-    if (focusedInput === 'start' && tempEndDate) {
+    if (focusedInput === "start" && tempEndDate) {
       return date > tempEndDate;
     }
     // If focused on end input and there's a start date, disable dates before start date
-    if (focusedInput === 'end' && tempStartDate) {
+    if (focusedInput === "end" && tempStartDate) {
       return date < tempStartDate;
     }
     return false;
@@ -177,19 +179,19 @@ export function DateRangeCalendar({
     if (isDateDisabled(date)) {
       return;
     }
-    
+
     // If focused on start input, set start date only (keep end date if exists)
-    if (focusedInput === 'start') {
+    if (focusedInput === "start") {
       setTempStartDate(date);
       // Don't clear end date - keep it if it exists
       // Auto shift to end input
-      setFocusedInput('end');
+      setFocusedInput("end");
       setTimeout(() => {
         endInputRef.current?.focus();
       }, 100);
-    } 
+    }
     // If focused on end input, set end date only (keep start date if exists)
-    else if (focusedInput === 'end') {
+    else if (focusedInput === "end") {
       setTempEndDate(date);
       // Don't swap or clear start date - just set end date
     }
@@ -275,12 +277,17 @@ export function DateRangeCalendar({
 
   return (
     <div
-      className={`w-full bg-white overflow-x-hidden ${className}`}
-      style={{ maxHeight: "600px", overflowY: "auto" }}
+      className={`bg-white rounded-lg shadow-lg overflow-hidden ${className}`}
+      style={{
+        width: "360px",
+        maxHeight: "600px",
+        overflowY: "auto",
+        border: "1px solid var(--grey-03)",
+      }}
     >
       {/* Header */}
       <div
-        className="px-4 pb-4 pt-2"
+        className="px-4 py-3"
         style={{ borderBottom: "1px solid var(--grey-03)" }}
       >
         <p
@@ -298,14 +305,14 @@ export function DateRangeCalendar({
       >
         <div className="flex gap-4">
           {/* Start Date Input */}
-          <div style={{ flex: "1 1 0%", minWidth: 0 }}>
+          <div style={{ width: "156px", flexShrink: 0 }}>
             <label
               style={{
-                display: 'block',
-                fontSize: 'var(--text-label)',
-                fontWeight: 'var(--font-weight-medium)',
-                color: 'var(--text-primary)',
-                marginBottom: 'var(--spacing-8)'
+                display: "block",
+                fontSize: "var(--text-label)",
+                fontWeight: "var(--font-weight-medium)",
+                color: "var(--text-primary)",
+                marginBottom: "var(--spacing-8)",
               }}
             >
               Start Date
@@ -313,10 +320,11 @@ export function DateRangeCalendar({
             <div
               className="relative flex items-center transition-all"
               style={{
-                border: `1px solid ${focusedInput === 'start' ? 'var(--black)' : 'var(--border)'}`,
-                borderRadius: 'var(--radius-8)',
-                backgroundColor: 'var(--input-background)',
-                height: 'var(--size-sm)'
+                border: `1px solid ${focusedInput === "start" ? "var(--black)" : "var(--border)"}`,
+                borderRadius: "var(--radius-8)",
+                backgroundColor: "var(--input-background)",
+                height: "var(--size-sm)",
+                width: "100%",
               }}
             >
               <input
@@ -324,15 +332,18 @@ export function DateRangeCalendar({
                 value={formatDate(tempStartDate)}
                 placeholder="MM / DD / YYYY"
                 readOnly
-                onFocus={() => setFocusedInput('start')}
+                onFocus={() => setFocusedInput("start")}
                 onBlur={() => setFocusedInput(null)}
                 className="flex-1 bg-transparent outline-none cursor-pointer"
                 style={{
-                  padding: 'var(--spacing-8) var(--spacing-12)',
-                  paddingRight: tempStartDate ? 'var(--spacing-36)' : 'var(--spacing-12)',
-                  fontSize: 'var(--text-label)',
-                  fontWeight: 'var(--font-weight-regular)',
-                  color: 'var(--text-primary)',
+                  padding: "var(--spacing-8) var(--spacing-12)",
+                  paddingRight: tempStartDate
+                    ? "var(--spacing-36)"
+                    : "var(--spacing-12)",
+                  fontSize: "var(--text-label)",
+                  fontWeight: "var(--font-weight-regular)",
+                  color: "var(--text-primary)",
+                  width: "100%",
                 }}
               />
               {/* Clear Button - inside input */}
@@ -345,17 +356,19 @@ export function DateRangeCalendar({
                   }}
                   className="absolute right-[var(--spacing-12)] flex items-center justify-center cursor-pointer"
                   style={{
-                    background: 'transparent',
-                    border: 'none',
+                    background: "transparent",
+                    border: "none",
                     padding: 0,
-                    color: 'var(--grey-05)',
-                    transition: 'color 0.2s'
+                    color: "var(--grey-05)",
+                    transition: "color 0.2s",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = 'var(--text-primary)';
+                    e.currentTarget.style.color =
+                      "var(--text-primary)";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = 'var(--grey-05)';
+                    e.currentTarget.style.color =
+                      "var(--grey-05)";
                   }}
                 >
                   <X size={16} />
@@ -365,14 +378,14 @@ export function DateRangeCalendar({
           </div>
 
           {/* End Date Input */}
-          <div style={{ flex: "1 1 0%", minWidth: 0 }}>
+          <div style={{ width: "156px", flexShrink: 0 }}>
             <label
               style={{
-                display: 'block',
-                fontSize: 'var(--text-label)',
-                fontWeight: 'var(--font-weight-medium)',
-                color: 'var(--text-primary)',
-                marginBottom: 'var(--spacing-8)'
+                display: "block",
+                fontSize: "var(--text-label)",
+                fontWeight: "var(--font-weight-medium)",
+                color: "var(--text-primary)",
+                marginBottom: "var(--spacing-8)",
               }}
             >
               End Date
@@ -380,10 +393,11 @@ export function DateRangeCalendar({
             <div
               className="relative flex items-center transition-all"
               style={{
-                border: `1px solid ${focusedInput === 'end' ? 'var(--black)' : 'var(--border)'}`,
-                borderRadius: 'var(--radius-8)',
-                backgroundColor: 'var(--input-background)',
-                height: 'var(--size-sm)'
+                border: `1px solid ${focusedInput === "end" ? "var(--black)" : "var(--border)"}`,
+                borderRadius: "var(--radius-8)",
+                backgroundColor: "var(--input-background)",
+                height: "var(--size-sm)",
+                width: "100%",
               }}
             >
               <input
@@ -391,15 +405,18 @@ export function DateRangeCalendar({
                 value={formatDate(tempEndDate)}
                 placeholder="MM / DD / YYYY"
                 readOnly
-                onFocus={() => setFocusedInput('end')}
+                onFocus={() => setFocusedInput("end")}
                 onBlur={() => setFocusedInput(null)}
                 className="flex-1 bg-transparent outline-none cursor-pointer"
                 style={{
-                  padding: 'var(--spacing-8) var(--spacing-12)',
-                  paddingRight: tempEndDate ? 'var(--spacing-36)' : 'var(--spacing-12)',
-                  fontSize: 'var(--text-label)',
-                  fontWeight: 'var(--font-weight-regular)',
-                  color: 'var(--text-primary)',
+                  padding: "var(--spacing-8) var(--spacing-12)",
+                  paddingRight: tempEndDate
+                    ? "var(--spacing-36)"
+                    : "var(--spacing-12)",
+                  fontSize: "var(--text-label)",
+                  fontWeight: "var(--font-weight-regular)",
+                  color: "var(--text-primary)",
+                  width: "100%",
                 }}
               />
               {/* Clear Button - inside input */}
@@ -412,17 +429,19 @@ export function DateRangeCalendar({
                   }}
                   className="absolute right-[var(--spacing-12)] flex items-center justify-center cursor-pointer"
                   style={{
-                    background: 'transparent',
-                    border: 'none',
+                    background: "transparent",
+                    border: "none",
                     padding: 0,
-                    color: 'var(--grey-05)',
-                    transition: 'color 0.2s'
+                    color: "var(--grey-05)",
+                    transition: "color 0.2s",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = 'var(--text-primary)';
+                    e.currentTarget.style.color =
+                      "var(--text-primary)";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = 'var(--grey-05)';
+                    e.currentTarget.style.color =
+                      "var(--grey-05)";
                   }}
                 >
                   <X size={16} />
@@ -494,80 +513,81 @@ export function DateRangeCalendar({
               return (
                 <div
                   key={dayIndex}
-                  className="flex-1 flex items-center justify-center"
+                  className="relative"
+                  style={{ width: "32px", height: "32px" }}
                 >
-                  <div className="relative w-full h-8 flex items-center justify-center">
-                    {isSelectedDate && !isDisabled && (
-                      <div
-                        className="absolute inset-y-0"
-                        style={{
-                          backgroundColor: "var(--grey-02)",
-                          left: isStart ? "50%" : "0",
-                          right: isEnd ? "50%" : "0",
-                          borderTopLeftRadius: isStart
-                            ? "50%"
-                            : "0",
-                          borderBottomLeftRadius: isStart
-                            ? "50%"
-                            : "0",
-                          borderTopRightRadius: isEnd
-                            ? "50%"
-                            : "0",
-                          borderBottomRightRadius: isEnd
-                            ? "50%"
-                            : "0",
-                        }}
-                      />
-                    )}
-
-                    <button
-                      onMouseDown={(e) => {
-                        // Prevent blur on inputs
-                        e.preventDefault();
+                  {/* Range Background */}
+                  {isSelectedDate && !isDisabled && (
+                    <div
+                      className="absolute inset-y-0"
+                      style={{
+                        backgroundColor: "var(--grey-02)",
+                        left: isStart ? "50%" : "-100%",
+                        right: isEnd ? "50%" : "-100%",
+                        borderTopLeftRadius: isStart
+                          ? "50%"
+                          : "0",
+                        borderBottomLeftRadius: isStart
+                          ? "50%"
+                          : "0",
+                        borderTopRightRadius: isEnd
+                          ? "50%"
+                          : "0",
+                        borderBottomRightRadius: isEnd
+                          ? "50%"
+                          : "0",
                       }}
-                      onClick={() =>
-                        handleDateClick(day.fullDate)
-                      }
-                      disabled={isDisabled}
-                      className={`relative size-8 flex items-center justify-center rounded-full transition-colors z-10 ${
-                        isDisabled
-                          ? "cursor-not-allowed opacity-40"
-                          : isStart || isEnd
+                    />
+                  )}
+
+                  <button
+                    onMouseDown={(e) => {
+                      // Prevent blur on inputs
+                      e.preventDefault();
+                    }}
+                    onClick={() =>
+                      handleDateClick(day.fullDate)
+                    }
+                    disabled={isDisabled}
+                    className={`relative size-8 flex items-center justify-center rounded-full transition-colors z-10 ${
+                      isDisabled
+                        ? "cursor-not-allowed opacity-40"
+                        : isStart || isEnd
                           ? "bg-black hover:bg-black cursor-pointer"
                           : isSelectedDate
                             ? "cursor-pointer"
                             : "hover:bg-secondary cursor-pointer"
-                      } ${
-                        todayIndicator && !isStart && !isEnd && !isDisabled
-                          ? "border-2 border-black"
-                          : ""
+                    } ${
+                      todayIndicator &&
+                      !isStart &&
+                      !isEnd &&
+                      !isDisabled
+                        ? "border-2 border-black"
+                        : ""
+                    }`}
+                  >
+                    <p
+                      className={`text-[14px] text-center leading-4 ${
+                        isStart || isEnd
+                          ? "text-white"
+                          : isCurrentMonth
+                            ? "text-[var(--text-secondary)]"
+                            : ""
                       }`}
-                    >
-                      <p
-                        className={`text-[14px] text-center leading-4 ${
+                      style={{
+                        fontWeight:
                           isStart || isEnd
-                            ? "text-white"
-                            : isCurrentMonth
-                              ? "text-[var(--text-secondary)]"
-                              : ""
-                        }`}
-                        style={{
-                          fontWeight:
-                            isStart || isEnd
-                              ? "var(--font-weight-semibold)"
-                              : "var(--font-weight-regular)",
-                          color:
-                            !isStart &&
-                            !isEnd &&
-                            !isCurrentMonth
-                              ? "var(--grey-05)"
-                              : undefined,
-                        }}
-                      >
-                        {day.date}
-                      </p>
-                    </button>
-                  </div>
+                            ? "var(--font-weight-semibold)"
+                            : "var(--font-weight-regular)",
+                        color:
+                          !isStart && !isEnd && !isCurrentMonth
+                            ? "var(--grey-05)"
+                            : undefined,
+                      }}
+                    >
+                      {day.date}
+                    </p>
+                  </button>
                 </div>
               );
             })}

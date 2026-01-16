@@ -41,10 +41,7 @@ export function CalendarDateRange({ isOpen, onClose, onSelect, buttonRef, startD
   return (
     <div
       ref={calendarRef}
-      className="absolute z-50 mt-2 rounded-lg shadow-lg border border-[#e8e8e8] bg-white overflow-hidden"
-      style={{
-        width: '320px',
-      }}
+      className="absolute z-50 mt-2"
     >
       <DateRangeCalendar
         startDate={startDate}

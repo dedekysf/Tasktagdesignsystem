@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, ChevronDown, ChevronUp, ListFilter, X, Calendar } from "lucide-react";
-import { DateRangeCalendar } from "./DateRangeCalendar";
+import { DateRangeCalendar } from "../../components/DateRangeCalendar";
 import { Checkbox } from "../../components/Checkbox";
 import { RadioButton } from "../../components/RadioButton";
 import type { Task, FilterState } from "../my-task-types";
@@ -224,31 +224,45 @@ export function FilterDropdown({ tasks, filters, onFiltersChange, hideProjects }
     const currentYear = new Date().getFullYear();
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     
-    const formatDate = (date: Date, showYear: boolean) => {
-      const month = months[date.getMonth()];
-      const day = date.getDate();
-      const year = date.getFullYear();
-      
-      if (showYear) {
-        return `${month} ${day}, ${year}`;
-      } else {
-        return `${month} ${day}`;
-      }
-    };
-    
+    const startMonth = months[range.start.getMonth()];
+    const startDay = range.start.getDate();
     const startYear = range.start.getFullYear();
+    const endMonth = months[range.end.getMonth()];
+    const endDay = range.end.getDate();
     const endYear = range.end.getFullYear();
     
-    // If both dates are in current year, hide years for both
+    // Both dates in current year
     if (startYear === currentYear && endYear === currentYear) {
-      return `${formatDate(range.start, false)} – ${formatDate(range.end, false)}`;
+      // Same month: "Jan 7 - 9"
+      if (range.start.getMonth() === range.end.getMonth()) {
+        return `${startMonth} ${startDay} - ${endDay}`;
+      }
+      // Different months: "Jan 27 - Feb 1"
+      return `${startMonth} ${startDay} - ${endMonth} ${endDay}`;
     }
     
-    // If either date is outside current year, show year for dates not in current year
-    const showStartYear = startYear !== currentYear;
-    const showEndYear = endYear !== currentYear;
+    // Start in current year, end in different year
+    if (startYear === currentYear && endYear !== currentYear) {
+      return `${startMonth} ${startDay} - ${endMonth} ${endDay}, ${endYear}`;
+    }
     
-    return `${formatDate(range.start, showStartYear)} – ${formatDate(range.end, showEndYear)}`;
+    // Start in different year, end in current year
+    if (startYear !== currentYear && endYear === currentYear) {
+      return `${startMonth} ${startDay}, ${startYear} - ${endMonth} ${endDay}`;
+    }
+    
+    // Both dates in same non-current year
+    if (startYear === endYear) {
+      // Same month: "Jan 7 - 9, 2025"
+      if (range.start.getMonth() === range.end.getMonth()) {
+        return `${startMonth} ${startDay} - ${endDay}, ${startYear}`;
+      }
+      // Different months: "Jan 27 - Feb 1, 2025"
+      return `${startMonth} ${startDay} - ${endMonth} ${endDay}, ${startYear}`;
+    }
+    
+    // Different years
+    return `${startMonth} ${startDay}, ${startYear} - ${endMonth} ${endDay}, ${endYear}`;
   };
 
   return (
@@ -290,13 +304,20 @@ export function FilterDropdown({ tasks, filters, onFiltersChange, hideProjects }
       {isOpen && (
         <div
           ref={dropdownRef}
-          className="fixed z-50 w-[380px] bg-white rounded-[8px]"
-          style={{
-            top: `${position.top}px`,
-            left: `${position.left}px`,
-            boxShadow: 'var(--elevation-lg)',
-            border: '1px solid var(--border)'
-          }}
+          className={`fixed z-50 ${showCalendar ? '' : 'w-[380px] bg-white rounded-[8px]'}`}
+          style={
+            showCalendar
+              ? {
+                  top: `${position.top}px`,
+                  left: `${position.left}px`,
+                }
+              : {
+                  top: `${position.top}px`,
+                  left: `${position.left}px`,
+                  boxShadow: 'var(--elevation-lg)',
+                  border: '1px solid var(--border)'
+                }
+          }
         >
           {!showCalendar ? (
             <>
