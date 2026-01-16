@@ -24,6 +24,7 @@ import { ChecklistItem } from "../../components/ChecklistItem";
 import { Switch } from "../../components/ui/switch";
 import { Button } from "../../components/Button";
 import { Tooltip } from "../../components/Tooltip";
+import { SuccessTooltip } from "../../components/SuccessTooltip";
 import { TabItem } from "../../components/TabItem";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -206,6 +207,17 @@ export default function ProjectDetailsPage() {
     [],
   );
 
+  const copyToClipboard = (text: string) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
+  };
+
   useEffect(() => {
     if (!isAddingItem) return;
 
@@ -242,52 +254,12 @@ export default function ProjectDetailsPage() {
     ? items
     : items.filter((item) => !item.checked);
 
-  const copyToClipboard = (text: string) => {
-    // Try modern Clipboard API first
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard
-        .writeText(text)
-        .then(() => {
-          setLinkCopied(true);
-          setTimeout(() => setLinkCopied(false), 2000);
-        })
-        .catch(() => {
-          // Fallback to old method
-          fallbackCopyToClipboard(text);
-        });
-    } else {
-      // Use fallback method
-      fallbackCopyToClipboard(text);
-    }
-  };
-
-  const fallbackCopyToClipboard = (text: string) => {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    textArea.style.position = "fixed";
-    textArea.style.left = "-999999px";
-    textArea.style.top = "-999999px";
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    try {
-      document.execCommand("copy");
-      setLinkCopied(true);
-      setTimeout(() => setLinkCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy text: ", err);
-    }
-    document.body.removeChild(textArea);
-  };
-
   useEffect(() => {
     const checkOverflow = () => {
       const currentRef = contentRef.current;
-      const containerRefCurrent = containerRef.current;
-      if (currentRef && containerRefCurrent) {
+      if (currentRef) {
         const isOverflow =
-          currentRef.scrollHeight >
-          containerRefCurrent.clientHeight;
+          currentRef.scrollHeight > currentRef.clientHeight;
         setIsOverflowing(isOverflow);
       }
     };
@@ -310,7 +282,7 @@ export default function ProjectDetailsPage() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div
-        className="flex flex-col h-screen bg-white overflow-hidden"
+        className="flex flex-col h-full bg-white overflow-hidden"
         style={{ fontFamily: "var(--font-family-base)" }}
       >
         {/* Header */}
@@ -516,10 +488,16 @@ export default function ProjectDetailsPage() {
             <div className="flex items-center gap-4 -mt-4">
               <Tooltip
                 content={
-                  linkCopied ? "Link copied" : "Copy link"
+                  linkCopied ? (
+                    <SuccessTooltip message="Link Copied" />
+                  ) : (
+                    "Copy link to invite"
+                  )
                 }
-                variant="bottom-center"
+                variant="bottom-right"
                 size="sm"
+                style={linkCopied ? "custom" : "default"}
+                forceShow={linkCopied}
               >
                 <Button
                   variant="ghost"
@@ -606,7 +584,7 @@ export default function ProjectDetailsPage() {
             ref={contentRef}
             className="flex-1 overflow-y-auto px-4"
             style={{
-              paddingBottom: isOverflowing ? "88px" : "16px",
+              paddingBottom: "16px",
             }}
           >
             <div className="flex flex-col gap-4">
@@ -836,7 +814,13 @@ export default function ProjectDetailsPage() {
             !showCompleted &&
             !isAnyItemEditing &&
             !isAddingItem && (
-              <div className="bg-white px-4 py-4 flex-shrink-0 shadow-[0_-2px_8px_rgba(0,0,0,0.08)]">
+              <div
+                className="bg-white px-4 py-4 flex-shrink-0"
+                style={{
+                  boxShadow: "0px -2px 8px rgba(0, 0, 0, 0.08)",
+                  zIndex: 10,
+                }}
+              >
                 <div className="flex gap-6">
                   <Button
                     onClick={() => setIsAddingItem(true)}
