@@ -16,6 +16,7 @@ interface Assignee {
   avatar: string;
   isEmailInvite?: boolean;
   email?: string;
+  avatarUrl?: string;
 }
 
 interface AssigneeButtonProps {

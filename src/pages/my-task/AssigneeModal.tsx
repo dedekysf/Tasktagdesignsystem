@@ -39,6 +39,7 @@ interface AssigneeModalProps {
   onAssign?: (assignees: User[]) => void;
   taskId?: string;
   hideInitialSelection?: boolean; // Hide selected chips at top, but still validate "already added"
+  hideToast?: boolean; // Hide success toast for inline task creation
 }
 
 // Convert ALL_USERS from userData to modal format
@@ -239,6 +240,7 @@ export function AssigneeModal({
   onAssign,
   taskId,
   hideInitialSelection = false,
+  hideToast = false,
 }: AssigneeModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -463,7 +465,7 @@ export function AssigneeModal({
   const handleAssign = () => {
     // Show toast only if there are email invites
     const emailInvites = localSelectedUsers.filter(u => u.isEmailInvite);
-    if (emailInvites.length > 0) {
+    if (emailInvites.length > 0 && !hideToast) {
       toast.custom(() => (
         <Toast 
           variant="title-only" 

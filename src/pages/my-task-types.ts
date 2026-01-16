@@ -4,6 +4,7 @@ export interface Assignee {
   email?: string; // Add email support
   isEmailInvite?: boolean;
   role?: "assignee" | "viewer";
+  avatarUrl?: string; // Add avatarUrl for consistency with AssigneeModal
 }
 
 export interface Task {

@@ -19,12 +19,7 @@ import { Button } from "../../components/Button";
 import { Calendar as CalendarPicker } from "../../components/Calendar";
 import { createPortal } from "react-dom";
 import svgPaths from "../../imports/svg-mytask";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../../components/ui/tooltip";
+import { Tooltip } from "../../components/Tooltip";
 
 interface Project {
   id: string;
@@ -306,111 +301,107 @@ export function InlineTaskCreation({
               <div className="flex items-center gap-2 shrink-0">
                 {/* Select Project Button with Warning Tooltip */}
                 {!hideProjectSelect && (
-                  <div className="h-8 w-[130px]">
-                    <TooltipProvider delayDuration={0}>
-                      <Tooltip open={showProjectWarning}>
-                        <TooltipTrigger asChild>
-                          <div>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="btn-secondary w-full"
-                              style={{
-                                height: "var(--size-sm)",
-                                minHeight: "var(--size-sm)",
-                                maxHeight: "var(--size-sm)",
-                                padding: "0 var(--spacing-12)",
-                                borderRadius:
-                                  "var(--radius-full)",
-                                borderColor: showProjectWarning
-                                  ? "var(--alert-red)"
-                                  : "var(--grey-03)",
-                              }}
-                              onClick={() => {
-                                setIsProjectModalOpen(true);
-                                setShowProjectWarning(false);
-                              }}
-                            >
-                              {selectedProject ? (
-                                <>
-                                  {selectedProject.icon ===
-                                    "helmet" && (
-                                    <HardHat
-                                      className="size-3"
-                                      style={{
-                                        color:
-                                          selectedProject.color,
-                                      }}
-                                    />
-                                  )}
-                                  {selectedProject.icon ===
-                                    "zap" && (
-                                    <Zap
-                                      className="size-3"
-                                      style={{
-                                        color:
-                                          selectedProject.color,
-                                      }}
-                                    />
-                                  )}
-                                  <span
-                                    className="text-[12px] text-[var(--text-primary)] truncate"
-                                    style={{
-                                      fontWeight:
-                                        "var(--font-weight-regular)",
-                                    }}
-                                  >
-                                    {selectedProject.name}
-                                  </span>
-                                </>
-                              ) : (
-                                <>
-                                  <Building2
-                                    className="size-3 text-[var(--text-secondary)]"
-                                    strokeWidth={2}
-                                  />
-                                  <span
-                                    className="text-[12px] text-[var(--text-primary)] truncate"
-                                    style={{
-                                      fontWeight:
-                                        "var(--font-weight-regular)",
-                                    }}
-                                  >
-                                    Select Project
-                                  </span>
-                                </>
-                              )}
-                            </Button>
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent
-                          side="bottom"
-                          align="start"
-                          sideOffset={8}
-                          className="bg-foreground text-primary-foreground border-none shadow-lg z-[100000]"
-                        >
-                          <div>
-                            <p
-                              style={{
-                                fontWeight:
-                                  "var(--font-weight-bold)",
-                              }}
-                            >
-                              No Project Selected
-                            </p>
-                            <p
-                              className="mt-1 opacity-90"
+                  <div className="h-8 w-[124px]">
+                    <Tooltip
+                      variant="bottom-left"
+                      size="md"
+                      style="default"
+                      forceShow={showProjectWarning}
+                      content={
+                        <div>
+                          <p
+                            style={{
+                              fontWeight:
+                                "var(--font-weight-bold)",
+                            }}
+                          >
+                            No Project Selected
+                          </p>
+                          <p
+                            className="mt-1 opacity-90"
+                            style={{
+                              fontWeight:
+                                "var(--font-weight-regular)",
+                            }}
+                          >
+                            Please select one to continue
+                          </p>
+                        </div>
+                      }
+                    >
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="btn-secondary w-full"
+                        style={{
+                          height: "var(--size-sm)",
+                          minHeight: "var(--size-sm)",
+                          maxHeight: "var(--size-sm)",
+                          width: "124px",
+                          maxWidth: "124px",
+                          padding: "0 var(--spacing-12)",
+                          borderRadius:
+                            "var(--radius-full)",
+                          borderColor: showProjectWarning
+                            ? "var(--alert-red)"
+                            : "var(--grey-03)",
+                        }}
+                        onClick={() => {
+                          setIsProjectModalOpen(true);
+                          setShowProjectWarning(false);
+                        }}
+                      >
+                        {selectedProject ? (
+                          <>
+                            {selectedProject.icon ===
+                              "helmet" && (
+                              <HardHat
+                                className="size-3 shrink-0"
+                                style={{
+                                  color:
+                                    selectedProject.color,
+                                }}
+                              />
+                            )}
+                            {selectedProject.icon ===
+                              "zap" && (
+                              <Zap
+                                className="size-3 shrink-0"
+                                style={{
+                                  color:
+                                    selectedProject.color,
+                                }}
+                              />
+                            )}
+                            <span
+                              className="text-[12px] text-[var(--text-primary)] truncate min-w-0"
                               style={{
                                 fontWeight:
                                   "var(--font-weight-regular)",
                               }}
                             >
-                              Please select one to continue
-                            </p>
-                          </div>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                              {selectedProject.name}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <Building2
+                              className="size-3 text-[var(--text-secondary)] shrink-0"
+                              strokeWidth={2}
+                            />
+                            <span
+                              className="text-[12px] text-[var(--text-primary)] truncate min-w-0"
+                              style={{
+                                fontWeight:
+                                  "var(--font-weight-regular)",
+                              }}
+                            >
+                              Select Project
+                            </span>
+                          </>
+                        )}
+                      </Button>
+                    </Tooltip>
                   </div>
                 )}
 
@@ -802,19 +793,22 @@ export function InlineTaskCreation({
         onClose={() => setIsAssigneeModalOpen(false)}
         selectedAssignees={assignees.map((a) => ({
           name: a.name,
-          email: a.avatar,
+          email: a.email,
           isEmailInvite: a.isEmailInvite,
+          avatarUrl: a.avatarUrl,
         }))}
         onAssign={(users) => {
           const newAssignees: Assignee[] = users.map(
             (user) => ({
               name: user.name,
-              avatar: user.email,
+              email: user.email,
               isEmailInvite: user.isEmailInvite,
+              avatarUrl: user.avatarUrl,
             }),
           );
           setAssignees(newAssignees);
         }}
+        hideToast={true}
       />
 
       {/* Discard Changes Modal */}
