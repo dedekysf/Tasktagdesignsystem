@@ -40,6 +40,7 @@ import { ChecklistItem } from './components/ChecklistItem';
 import { Toggle } from './components/Toggle';
 import { UpgradePromptModal } from './components/UpgradePromptModal';
 import { SubscriptionModal } from './components/SubscriptionModal';
+import { SuccessModal } from './components/SuccessModal';
 import { Tag } from './components/Tag';
 import { Alert } from './components/Alert';
 import { SideNav } from './components/SideNav';
@@ -61,11 +62,13 @@ import Html from './imports/Html';
 import Eps from './imports/Eps';
 import teamCollaborationImage from 'figma:asset/231f46d29d335b70c14e6a1c3a239decf66583f3.png';
 import collaborationImage from 'figma:asset/727e6b11c9799f58fcfa4a733691914bdec7af1f.png';
+import congratsImage from 'figma:asset/7cd9aa2d594bd4c7e8917b669e4dc624351b0afe.png';
 import MyTaskPage from './pages/MyTaskPage';
 import TaskPanelPage from './pages/TaskPanelPage';
 import ProjectDetailsPage from './pages/project-details/ProjectDetailsPage';
 import TeamDetailPage from './pages/team-detail/TeamDetailPage';
 import PaywallCTAPage from './pages/PaywallCTAPage';
+import PaymentPage from './pages/PaymentPage';
 
 function AppContent() {
   const location = useLocation();
@@ -75,9 +78,9 @@ function AppContent() {
   const [textareaValue2, setTextareaValue2] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
-  // Prevent window scrolling for My Task, Task Panel, Project Details, Team Detail, and Paywall CTA pages
+  // Prevent window scrolling for My Task, Task Panel, Project Details, Team Detail, Payment, and Paywall CTA pages
   useEffect(() => {
-    if (activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta') {
+    if (activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'payment') {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
     } else {
@@ -152,6 +155,7 @@ function AppContent() {
   const [modalOneActionTab, setModalOneActionTab] = useState('preview');
   const [modalUpgradePromptTab, setModalUpgradePromptTab] = useState('preview');
   const [modalSubscriptionTab, setModalSubscriptionTab] = useState('preview');
+  const [modalSuccessTab, setModalSuccessTab] = useState('preview');
   const [datepickerBasicTab, setDatepickerBasicTab] = useState('preview');
   const [datepickerLabelTab, setDatepickerLabelTab] = useState('preview');
   const [datepickerSizeTab, setDatepickerSizeTab] = useState('preview');
@@ -252,6 +256,7 @@ function AppContent() {
   const [isOneActionModalOpen, setIsOneActionModalOpen] = useState(false);
   const [isUpgradePromptModalOpen, setIsUpgradePromptModalOpen] = useState(false);
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isDiscardModalOpen, setIsDiscardModalOpen] = useState(false);
   const [isProjectSelectModalOpen, setIsProjectSelectModalOpen] = useState(false);
   const [isAssigneeModalOpen, setIsAssigneeModalOpen] = useState(false);
@@ -3242,6 +3247,75 @@ const options: DropdownOption[] = [
                   </TabPanel>
                 </TabsContainer>
               </div>
+
+              {/* Section 5: Success Modal */}
+              <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                <h3 style={{ fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-8)' }}>Success Modal</h3>
+                <TabsContainer
+                  activeTab={modalSuccessTab}
+                  onTabChange={setModalSuccessTab}
+                  tabs={[
+                    { value: 'preview', label: 'Preview' },
+                    { value: 'usage', label: 'Usage' },
+                    { value: 'github', label: 'GitHub URL' }
+                  ]}
+                >
+                  <TabPanel value="preview" activeTab={modalSuccessTab}>
+                    <div className="component-card">
+                      <Button 
+                        variant="fill" 
+                        size="md"
+                        className="btn-secondary"
+                        onClick={() => setIsSuccessModalOpen(true)}
+                        style={{ width: '200px' }}
+                      >
+                        click me!
+                      </Button>
+                      
+                      <SuccessModal
+                        variant="default"
+                        size="default"
+                        isOpen={isSuccessModalOpen}
+                        onClose={() => setIsSuccessModalOpen(false)}
+                        title="Congratulations!"
+                        message="Your subscription to TaskTag Project is valid for 1 year and will automatically renew on September, 17 2026."
+                        buttonText="Got It"
+                        showCloseButton={false}
+                      />
+                    </div>
+                  </TabPanel>
+                  <TabPanel value="usage" activeTab={modalSuccessTab}>
+                    <CodeExample
+                      title="Success Modal Usage"
+                      code={`import { SuccessModal } from './components/SuccessModal';
+
+<SuccessModal
+  variant="default"
+  size="default"
+  onClose={() => console.log('Close clicked')}
+  title="Congratulations!"
+  message="Your subscription to TaskTag Project is valid for 1 year and will automatically renew on September, 17 2026."
+  buttonText="Got It"
+/>
+
+// Props:
+// - variant: "default" (only one variant for now)
+// - size: "default" (only one size for now)
+// - onClose: () => void (optional, callback when close button or Got It button is clicked)
+// - title: string (optional, defaults to "Congratulations!")
+// - message: string (optional, custom message text)
+// - buttonText: string (optional, defaults to "Got It")
+// - className: string (optional)`}
+                    />
+                  </TabPanel>
+                  <TabPanel value="github" activeTab={modalSuccessTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/Alert.tsx`}
+                    />
+                  </TabPanel>
+                </TabsContainer>
+              </div>
             </section>
           )}
 
@@ -5024,6 +5098,20 @@ export default function Example() {
                   <img 
                     src={collaborationImage} 
                     alt="Collaboration"
+                    style={{ 
+                      width: '100%',
+                      height: 'auto',
+                      maxWidth: '300px',
+                      objectFit: 'contain'
+                    }}
+                  />
+                </LogoItem>
+
+                {/* Congrats */}
+                <LogoItem title="Congrats">
+                  <img 
+                    src={congratsImage} 
+                    alt="Congrats"
                     style={{ 
                       width: '100%',
                       height: 'auto',
@@ -6906,6 +6994,11 @@ export default function Example() {
           {/* Paywall CTA Page */}
           {activeSection === 'paywall-cta' && (
             <PaywallCTAPage />
+          )}
+
+          {/* Payment Page */}
+          {activeSection === 'payment' && (
+            <PaymentPage />
           )}
         </div>
       </main>

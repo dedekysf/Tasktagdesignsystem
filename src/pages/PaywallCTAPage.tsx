@@ -5,7 +5,7 @@ import { PaywallProvider, usePaywall } from "../contexts/PaywallContext";
 
 // PaywallCTAPage is a duplicate of ProjectDetailsPage with an alert banner
 function PaywallCTAContent() {
-  const { showSubscriptionModal } = usePaywall();
+  const { showSubscriptionModal, isSuccessModalOpen } = usePaywall();
 
   useEffect(() => {
     // We no longer need tooltip event listeners here
@@ -32,28 +32,30 @@ function PaywallCTAContent() {
       {/* Project Details Content */}
       <ProjectDetailsPage />
 
-      {/* Alert Banner - Absolute positioned at bottom */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: "16px",
-          zIndex: 50,
-          pointerEvents: "none",
-        }}
-      >
-        <div style={{ pointerEvents: "auto" }}>
-          <Alert
-            variant="warning"
-            title="Access to Team Plan for TaskTag Project has ended"
-            description="Your access ended on January 17, 2026. Upgrade to a Team plan to use advanced project features."
-            buttonText="Upgrade Now"
-            onButtonClick={showSubscriptionModal}
-          />
+      {/* Alert Banner - Hidden when Success Modal is open */}
+      {!isSuccessModalOpen && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: "16px",
+            zIndex: 50,
+            pointerEvents: "none",
+          }}
+        >
+          <div style={{ pointerEvents: "auto" }}>
+            <Alert
+              variant="warning"
+              title="Access to Team Plan for TaskTag Project has ended"
+              description="Your access ended on January 17, 2026. Upgrade to a Team plan to use advanced project features."
+              buttonText="Upgrade Now"
+              onButtonClick={showSubscriptionModal}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
