@@ -116,36 +116,14 @@ export function PaywallProvider({ children, isExpiredMode = false }: { children:
       )}
       
       {/* Subscription Modal */}
-      {isSubscriptionModalOpen && (
-        <div 
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'var(--overlay)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 9999,
-            padding: 'var(--spacing-16)'
-          }}
-          onClick={handleSubscriptionClose}
-        >
-          <div onClick={(e) => e.stopPropagation()}>
-            <SubscriptionModal 
-              variant="default"
-              size="default"
-              onClose={handleSubscriptionClose}
-              onCheckout={() => {
-                setIsSubscriptionModalOpen(false);
-                setIsPaymentPageOpen(true);
-              }}
-            />
-          </div>
-        </div>
-      )}
+      <SubscriptionModal
+        isOpen={isSubscriptionModalOpen}
+        onClose={handleSubscriptionClose}
+        onSuccess={() => {
+          setIsSubscriptionModalOpen(false);
+          setIsPaymentPageOpen(true);
+        }}
+      />
 
       {/* Confirmation Modal - Double Modal */}
       {isConfirmationModalOpen && (

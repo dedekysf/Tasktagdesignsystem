@@ -75,8 +75,10 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
   const pagesItems = [
     { id: 'my-task', label: 'My Task', path: '/my-task' },
     { id: 'task-panel', label: 'Task Panel', path: '/task-panel' },
+    { id: 'project-creation-panel', label: 'Project Creation Panel', path: '/project-creation-panel' },
     { id: 'project-details', label: 'Project Details', path: '/project-details' },
     { id: 'paywall-cta', label: 'Paywall CTA', path: '/paywall-cta' },
+    { id: 'paywall-project-creation', label: 'Paywall Project Creation', path: '/paywall-project-creation' },
     { id: 'payment', label: 'Payment', path: '/payment' },
     { id: 'team-detail', label: 'Team Detail', path: '/team-detail' }
   ];

@@ -69,6 +69,8 @@ import ProjectDetailsPage from './pages/project-details/ProjectDetailsPage';
 import TeamDetailPage from './pages/team-detail/TeamDetailPage';
 import PaywallCTAPage from './pages/PaywallCTAPage';
 import PaymentPage from './pages/PaymentPage';
+import ProjectCreationPanelPage from './pages/ProjectCreationPanelPage';
+import PaywallProjectCreationPage from './pages/PaywallProjectCreationPage';
 
 function AppContent() {
   const location = useLocation();
@@ -78,9 +80,9 @@ function AppContent() {
   const [textareaValue2, setTextareaValue2] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
-  // Prevent window scrolling for My Task, Task Panel, Project Details, Team Detail, Payment, and Paywall CTA pages
+  // Prevent window scrolling for My Task, Task Panel, Project Creation Panel, Project Details, Team Detail, Payment, Paywall CTA, and Paywall Project Creation pages
   useEffect(() => {
-    if (activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'payment') {
+    if (activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'payment') {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
     } else {
@@ -461,8 +463,8 @@ function AppContent() {
       <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       {/* Main Content */}
-      <main className={`flex-1 w-full min-[1080px]:w-auto h-screen max-[1080px]:pt-16 ${activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
-        <div className={activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' ? 'h-full' : 'p-4 md:p-8 pb-16 min-[1080px]:pt-8'}>
+      <main className={`flex-1 w-full min-[1080px]:w-auto h-screen max-[1080px]:pt-16 ${activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+        <div className={activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' ? 'h-full' : 'p-4 md:p-8 pb-16 min-[1080px]:pt-8'}>
           {/* Colors Section */}
           {activeSection === 'colors' && (
             <section>
@@ -6981,6 +6983,11 @@ export default function Example() {
             <TaskPanelPage />
           )}
 
+          {/* Project Creation Panel Page */}
+          {activeSection === 'project-creation-panel' && (
+            <ProjectCreationPanelPage />
+          )}
+
           {/* Project Details Page */}
           {activeSection === 'project-details' && (
             <ProjectDetailsPage />
@@ -6994,6 +7001,11 @@ export default function Example() {
           {/* Paywall CTA Page */}
           {activeSection === 'paywall-cta' && (
             <PaywallCTAPage />
+          )}
+
+          {/* Paywall Project Creation Page */}
+          {activeSection === 'paywall-project-creation' && (
+            <PaywallProjectCreationPage />
           )}
 
           {/* Payment Page */}
