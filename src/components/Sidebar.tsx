@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SidebarDropdown } from './SidebarDropdown';
 import { SidebarMenuItem } from './SidebarMenuItem';
+import { Tag } from './Tag';
 import TaskTagLogo from '../imports/TaskTagLogo';
 
 interface SidebarProps {
@@ -157,6 +158,11 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
                   label={item.label}
                   to={item.path}
                   onClick={handleMenuItemClick}
+                  tag={item.id === 'team-detail' ? (
+                    <Tag variant="basic" color="primary" appearance="fill">
+                      In Progress
+                    </Tag>
+                  ) : undefined}
                 />
               ))}
             </SidebarDropdown>

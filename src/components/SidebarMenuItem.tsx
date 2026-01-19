@@ -1,12 +1,14 @@
 import { Link, useLocation } from 'react-router-dom';
+import { ReactNode } from 'react';
 
 interface SidebarMenuItemProps {
   label: string;
   to: string;
   onClick?: () => void;
+  tag?: ReactNode;
 }
 
-export function SidebarMenuItem({ label, to, onClick }: SidebarMenuItemProps) {
+export function SidebarMenuItem({ label, to, onClick, tag }: SidebarMenuItemProps) {
   const location = useLocation();
   const isActive = location.pathname === to;
 
@@ -16,8 +18,10 @@ export function SidebarMenuItem({ label, to, onClick }: SidebarMenuItemProps) {
         to={to}
         onClick={onClick}
         className={`sidebar-menu-item ${isActive ? 'active' : ''}`}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
       >
         <span className="caption text-[14px]">{label}</span>
+        {tag && <span style={{ marginLeft: 'var(--spacing-8)' }}>{tag}</span>}
       </Link>
     </li>
   );
