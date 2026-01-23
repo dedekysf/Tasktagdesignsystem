@@ -81,6 +81,7 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
     { id: 'paywall-cta', label: 'Paywall CTA', path: '/paywall-cta' },
     { id: 'paywall-project-creation', label: 'Paywall Project Creation', path: '/paywall-project-creation' },
     { id: 'payment', label: 'Payment', path: '/payment' },
+    { id: 'global-search', label: 'Global Search', path: '/global-search' },
     { id: 'team-detail', label: 'Team Detail', path: '/team-detail' }
   ];
 

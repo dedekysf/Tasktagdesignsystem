@@ -60,6 +60,7 @@ import Xml from './imports/Xml';
 import Doc from './imports/Doc';
 import Html from './imports/Html';
 import Eps from './imports/Eps';
+import NoResultsIcon from './imports/NoResultsIcon';
 import teamCollaborationImage from 'figma:asset/231f46d29d335b70c14e6a1c3a239decf66583f3.png';
 import collaborationImage from 'figma:asset/727e6b11c9799f58fcfa4a733691914bdec7af1f.png';
 import congratsImage from 'figma:asset/7cd9aa2d594bd4c7e8917b669e4dc624351b0afe.png';
@@ -71,6 +72,7 @@ import PaywallCTAPage from './pages/PaywallCTAPage';
 import PaymentPage from './pages/PaymentPage';
 import ProjectCreationPanelPage from './pages/ProjectCreationPanelPage';
 import PaywallProjectCreationPage from './pages/PaywallProjectCreationPage';
+import GlobalSearchPage from './pages/GlobalSearchPage';
 
 function AppContent() {
   const location = useLocation();
@@ -80,9 +82,9 @@ function AppContent() {
   const [textareaValue2, setTextareaValue2] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
-  // Prevent window scrolling for My Task, Task Panel, Project Creation Panel, Project Details, Team Detail, Payment, Paywall CTA, and Paywall Project Creation pages
+  // Prevent window scrolling for My Task, Task Panel, Project Creation Panel, Project Details, Team Detail, Payment, Paywall CTA, Paywall Project Creation, and Global Search pages
   useEffect(() => {
-    if (activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'payment') {
+    if (activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'payment' || activeSection === 'global-search') {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
     } else {
@@ -463,8 +465,8 @@ function AppContent() {
       <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       {/* Main Content */}
-      <main className={`flex-1 w-full min-[1080px]:w-auto h-screen max-[1080px]:pt-16 ${activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
-        <div className={activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' ? 'h-full' : 'p-4 md:p-8 pb-16 min-[1080px]:pt-8'}>
+      <main className={`flex-1 w-full min-[1080px]:w-auto h-screen max-[1080px]:pt-16 ${activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'global-search' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+        <div className={activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'global-search' ? 'h-full' : 'p-4 md:p-8 pb-16 min-[1080px]:pt-8'}>
           {/* Colors Section */}
           {activeSection === 'colors' && (
             <section>
@@ -5123,6 +5125,13 @@ export default function Example() {
                   />
                 </LogoItem>
 
+                {/* No Results Icon */}
+                <LogoItem title="No Results Icon">
+                  <div style={{ width: '124px', height: '70px' }}>
+                    <NoResultsIcon />
+                  </div>
+                </LogoItem>
+
                 {/* XLS Icon */}
                 <LogoItem title="XLS Icon">
                   <div style={{ width: '56px', height: '56px' }}>
@@ -7012,6 +7021,11 @@ export default function Example() {
           {/* Payment Page */}
           {activeSection === 'payment' && (
             <PaymentPage />
+          )}
+
+          {/* Global Search Page */}
+          {activeSection === 'global-search' && (
+            <GlobalSearchPage />
           )}
         </div>
       </main>
