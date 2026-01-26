@@ -57,6 +57,7 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
     { id: 'discard-changes-modal', label: 'Discard Changes Modal', path: '/discard-changes-modal' },
     { id: 'dropdown', label: 'Dropdown', path: '/dropdown' },
     { id: 'member-row', label: 'Member Row', path: '/member-row' },
+    { id: 'message-member-dropdown', label: 'Message Member Dropdown', path: '/message-member-dropdown' },
     { id: 'modal', label: 'Modal', path: '/modal' },
     { id: 'priority-dropdown', label: 'Priority Dropdown', path: '/priority-dropdown' },
     { id: 'project-select-modal', label: 'Project Select Modal', path: '/project-select-modal' },
@@ -78,11 +79,11 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
     { id: 'task-panel', label: 'Task Panel', path: '/task-panel' },
     { id: 'project-creation-panel', label: 'Project Creation Panel', path: '/project-creation-panel' },
     { id: 'project-details', label: 'Project Details', path: '/project-details' },
+    { id: 'team-detail', label: 'Team Detail', path: '/team-detail' },
     { id: 'paywall-cta', label: 'Paywall CTA', path: '/paywall-cta' },
     { id: 'paywall-project-creation', label: 'Paywall Project Creation', path: '/paywall-project-creation' },
     { id: 'payment', label: 'Payment', path: '/payment' },
-    { id: 'global-search', label: 'Global Search', path: '/global-search' },
-    { id: 'team-detail', label: 'Team Detail', path: '/team-detail' }
+    { id: 'global-search', label: 'Global Search', path: '/global-search' }
   ];
 
   const isSectionActive = (sectionId: string, items: Array<{ id: string, path: string }>) => {
@@ -159,11 +160,6 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
                   label={item.label}
                   to={item.path}
                   onClick={handleMenuItemClick}
-                  tag={item.id === 'team-detail' ? (
-                    <Tag variant="basic" color="primary" appearance="fill">
-                      In Progress
-                    </Tag>
-                  ) : undefined}
                 />
               ))}
             </SidebarDropdown>

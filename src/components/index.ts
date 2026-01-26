@@ -31,6 +31,7 @@ export { MemberRow } from './MemberRow';
 export type { Member, MemberRowProps } from './MemberRow';
 export { ChecklistItem } from './ChecklistItem';
 export type { ChecklistItemProps } from './ChecklistItem';
+export { MessageMemberDropdown } from './MessageMemberDropdown';
 
 // TypeScript Types - Re-export all types for easy importing
 export type {

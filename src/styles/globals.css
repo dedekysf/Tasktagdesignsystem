@@ -562,7 +562,8 @@ body {
     border-radius: var(--radius-button);
     transition: all 0.2s ease;
     cursor: pointer;
-    border: none;
+    border: 1px solid transparent;
+    box-sizing: border-box;
   }
 
   /* Fill variants (default - no additional class needed) */
@@ -610,11 +611,20 @@ body {
     color: var(--white);
   }
 
-  .btn-blue:not(:disabled):hover {
+  .btn-blue:not(:disabled):active {
+    opacity: 0.5;
+  }
+
+  .btn-black {
+    background-color: var(--text-primary);
+    color: var(--white);
+  }
+
+  .btn-black:not(:disabled):hover {
     opacity: 0.7;
   }
 
-  .btn-blue:not(:disabled):active {
+  .btn-black:not(:disabled):active {
     opacity: 0.5;
   }
 
@@ -670,16 +680,40 @@ body {
     border: 1px solid var(--blue);
   }
 
-  .btn-outline.btn-blue:not(:disabled):hover {
-    background-color: var(--light-sky);
-    opacity: 1;
-  }
-
   .btn-outline.btn-blue:not(:disabled):active {
     opacity: 0.5;
   }
 
+  .btn-outline.btn-black {
+    background-color: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--text-primary);
+  }
+
+  .btn-outline.btn-black:not(:disabled):hover {
+    background-color: var(--grey-02);
+    opacity: 1;
+  }
+
+  .btn-outline.btn-black:not(:disabled):active {
+    opacity: 0.5;
+  }
+
   /* Ghost variant modifier */
+  .btn-ghost {
+    background-color: transparent;
+    color: var(--text-primary);
+  }
+
+  .btn-ghost:not(:disabled):hover {
+    background-color: var(--grey-02);
+    opacity: 1;
+  }
+
+  .btn-ghost:not(:disabled):active {
+    opacity: 0.7;
+  }
+
   .btn-ghost.btn-primary {
     background-color: transparent;
     color: var(--primary);
@@ -739,6 +773,15 @@ body {
   /* Disabled state */
   .btn:disabled {
     background-color: var(--muted);
+    color: var(--muted-foreground);
+    cursor: not-allowed;
+    opacity: 0.5;
+    border: none;
+  }
+
+  /* Ghost disabled state - override default disabled */
+  .btn-ghost:disabled {
+    background-color: transparent;
     color: var(--muted-foreground);
     cursor: not-allowed;
     opacity: 0.5;

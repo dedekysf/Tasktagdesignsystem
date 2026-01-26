@@ -37,6 +37,7 @@ import { TaskItem } from './pages/my-task/TaskItem';
 import { AssignedMembersButton } from './components/AssignedMembersButton';
 import { MemberRow } from './components/MemberRow';
 import { ChecklistItem } from './components/ChecklistItem';
+import { MessageMemberDropdown } from './components/MessageMemberDropdown';
 import { Toggle } from './components/Toggle';
 import { UpgradePromptModal } from './components/UpgradePromptModal';
 import { SubscriptionModal } from './components/SubscriptionModal';
@@ -67,7 +68,7 @@ import congratsImage from 'figma:asset/7cd9aa2d594bd4c7e8917b669e4dc624351b0afe.
 import MyTaskPage from './pages/MyTaskPage';
 import TaskPanelPage from './pages/TaskPanelPage';
 import ProjectDetailsPage from './pages/project-details/ProjectDetailsPage';
-import TeamDetailPage from './pages/team-detail/TeamDetailPage';
+import TeamDetailPage from './pages/TeamDetailPage';
 import PaywallCTAPage from './pages/PaywallCTAPage';
 import PaymentPage from './pages/PaymentPage';
 import ProjectCreationPanelPage from './pages/ProjectCreationPanelPage';
@@ -82,9 +83,11 @@ function AppContent() {
   const [textareaValue2, setTextareaValue2] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
-  // Prevent window scrolling for My Task, Task Panel, Project Creation Panel, Project Details, Team Detail, Payment, Paywall CTA, Paywall Project Creation, and Global Search pages
+  // Prevent window scrolling for specific pages
   useEffect(() => {
-    if (activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'payment' || activeSection === 'global-search') {
+    const noScrollPages = ['my-task', 'task-panel', 'project-creation-panel', 'project-details', 'team-detail', 'paywall-cta', 'paywall-project-creation', 'payment', 'global-search'];
+    
+    if (noScrollPages.includes(activeSection)) {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
     } else {
@@ -183,6 +186,7 @@ function AppContent() {
   const [memberRowTab, setMemberRowTab] = useState('preview');
   const [checklistItemTab, setChecklistItemTab] = useState('preview');
   const [toggleTab, setToggleTab] = useState('preview');
+  const [messageMemberDropdownTab, setMessageMemberDropdownTab] = useState('preview');
   const [tagBasicTab, setTagBasicTab] = useState('preview');
   const [tagWithIconTab, setTagWithIconTab] = useState('preview');
   const [alertTab, setAlertTab] = useState('preview');
@@ -204,6 +208,15 @@ function AppContent() {
     { id: '4', text: 'Test each circuit for stability', checked: false },
     { id: '5', text: 'Verify voltage performance', checked: false },
   ]);
+
+  // Mock team members for MessageMemberDropdown
+  const mockTeamMembers = [
+    { id: '1', name: 'Alice Johnson' },
+    { id: '2', name: 'Bob Smith' },
+    { id: '3', name: 'Charlie Brown' },
+    { id: '4', name: 'Diana Prince' },
+    { id: '5', name: 'Edward Norton' },
+  ];
 
   // Checklist functions
   const moveChecklistItem = (dragIndex: number, hoverIndex: number) => {
@@ -6667,6 +6680,73 @@ export default function Example() {
                       <CodeExample
                         title="GitHub URL"
                         code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/ChecklistItem.tsx`}
+                      />
+                    </TabPanel>
+                  </TabsContainer>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* Message Member Dropdown Component */}
+          {activeSection === 'message-member-dropdown' && (
+            <section>
+              <SectionHeader
+                icon={Users}
+                title="Message Member Dropdown"
+                description="Dropdown component for selecting team members to create chat"
+              />
+
+              <div>
+                <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                  <TabsContainer
+                    activeTab={messageMemberDropdownTab}
+                    onTabChange={setMessageMemberDropdownTab}
+                    tabs={[
+                      { value: 'preview', label: 'Preview' },
+                      { value: 'usage', label: 'Usage' },
+                      { value: 'github', label: 'GitHub URL' }
+                    ]}
+                  >
+                    <TabPanel value="preview" activeTab={messageMemberDropdownTab}>
+                      <div className="component-card" style={{ display: 'flex', justifyContent: 'center', padding: 'var(--spacing-32)' }}>
+                        <MessageMemberDropdown
+                          members={mockTeamMembers}
+                          onCreateChat={(selectedIds) => {
+                            console.log('Create chat with members:', selectedIds);
+                            alert(`Creating chat with ${selectedIds.length} member(s)`);
+                          }}
+                        />
+                      </div>
+                    </TabPanel>
+                    <TabPanel value="usage" activeTab={messageMemberDropdownTab}>
+                      <CodeExample
+                        title="Message Member Dropdown Usage"
+                        code={`import { MessageMemberDropdown } from './components';
+
+const members = [
+  { id: '1', name: 'Alice Johnson' },
+  { id: '2', name: 'Bob Smith' },
+  { id: '3', name: 'Charlie Brown' }
+];
+
+<MessageMemberDropdown
+  members={members}
+  onCreateChat={(selectedIds) => {
+    console.log('Create chat with members:', selectedIds);
+  }}
+/>
+
+// Props:
+// - members: Array of { id: string, name: string }
+// - onCreateChat: (selectedIds: string[]) => void
+// - className?: string (optional)`}
+                      />
+                    </TabPanel>
+                    <TabPanel value="github" activeTab={messageMemberDropdownTab}>
+                      <CodeExample
+                        title="GitHub URL"
+                        code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/MessageMemberDropdown.tsx`}
                       />
                     </TabPanel>
                   </TabsContainer>

@@ -1275,19 +1275,8 @@ export default function ProjectDetailsPage() {
 
             {/* Right: Actions */}
             <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                style={{
-                  aspectRatio: "1",
-                  padding: "var(--spacing-8)",
-                  minWidth: "var(--size-sm)",
-                }}
-              >
-                <Search
-                  className="w-6 h-6"
-                  style={{ color: "var(--text-primary)" }}
-                />
+              <Button variant="ghost" size="sm">
+                <Search className="w-5 h-5" />
               </Button>
               {isExpiredMode ? (
                 <Tooltip
@@ -1298,14 +1287,9 @@ export default function ProjectDetailsPage() {
                   <Button
                     variant="fill"
                     size="sm"
+                    className="btn-black"
                     onClick={showUpgradeModal}
-                    style={{
-                      borderRadius: "var(--radius-full)",
-                      width: "120px",
-                      backgroundColor: "var(--text-primary)",
-                      color: "var(--white)",
-                      border: "none",
-                    }}
+                    style={{ width: "120px", borderRadius: "var(--radius-full)" }}
                   >
                     <Plus className="w-4 h-4" />
                     <span>New Task</span>
@@ -1315,13 +1299,8 @@ export default function ProjectDetailsPage() {
                 <Button
                   variant="fill"
                   size="sm"
-                  style={{
-                    borderRadius: "var(--radius-full)",
-                    width: "120px",
-                    backgroundColor: "var(--text-primary)",
-                    color: "var(--white)",
-                    border: "none",
-                  }}
+                  className="btn-black"
+                  style={{ width: "120px", borderRadius: "var(--radius-full)" }}
                 >
                   <Plus className="w-4 h-4" />
                   <span>New Task</span>

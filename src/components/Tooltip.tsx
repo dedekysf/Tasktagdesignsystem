@@ -24,11 +24,14 @@ interface TooltipProps {
   forceHide?: boolean;
   /** Make wrapper take full width (useful for buttons in flex containers) */
   fullWidth?: boolean;
+  /** Only show tooltip if content is truncated */
+  showOnTruncateOnly?: boolean;
 }
 
-export function Tooltip({ variant = 'top-center', size = 'md', style: tooltipStyle = 'default', className = '', content, children, forceShow, forceHide, fullWidth }: TooltipProps) {
+export function Tooltip({ variant = 'top-center', size = 'md', style: tooltipStyle = 'default', className = '', content, children, forceShow, forceHide, fullWidth, showOnTruncateOnly = false }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [isTruncated, setIsTruncated] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
@@ -97,6 +100,36 @@ export function Tooltip({ variant = 'top-center', size = 'md', style: tooltipSty
     }
   }, [isVisible, forceShow, forceHide, variant]);
 
+  // Check for truncation
+  useEffect(() => {
+    const checkTruncation = () => {
+      if (triggerRef.current && showOnTruncateOnly) {
+        // Find first child element with truncate class or text content
+        const findTruncatedElement = (element: HTMLElement): boolean => {
+          // Check if current element is truncated
+          if (element.scrollWidth > element.clientWidth || element.scrollHeight > element.clientHeight) {
+            return true;
+          }
+          // Check children recursively
+          for (let child of Array.from(element.children) as HTMLElement[]) {
+            if (findTruncatedElement(child)) {
+              return true;
+            }
+          }
+          return false;
+        };
+        
+        setIsTruncated(findTruncatedElement(triggerRef.current));
+      }
+    };
+
+    checkTruncation();
+    
+    // Recheck on window resize
+    window.addEventListener('resize', checkTruncation);
+    return () => window.removeEventListener('resize', checkTruncation);
+  }, [showOnTruncateOnly]);
+
   return (
     <>
       <div
@@ -108,7 +141,7 @@ export function Tooltip({ variant = 'top-center', size = 'md', style: tooltipSty
         {children}
       </div>
       
-      {(isVisible || forceShow) && !forceHide && (
+      {(isVisible || forceShow) && !forceHide && (showOnTruncateOnly ? isTruncated : true) && (
         createPortal(
           <div
             ref={tooltipRef}

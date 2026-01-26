@@ -1,4 +1,4 @@
-import { ReactNode, ButtonHTMLAttributes } from 'react';
+import { ReactNode, ButtonHTMLAttributes, forwardRef } from 'react';
 
 export type ButtonVariant = 'fill' | 'outline' | 'ghost';
 export type ButtonSize = 'xl' | 'lg' | 'md' | 'sm' | 'xs';
@@ -16,7 +16,7 @@ interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'siz
   style?: React.CSSProperties;
 }
 
-export function Button({
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   variant = 'fill',
   size = 'md',
   className = '',
@@ -24,7 +24,7 @@ export function Button({
   disabled = false,
   style: customStyle,
   ...props
-}: ButtonProps) {
+}, ref) => {
   // Size configurations using CSS variables
   const sizeStyles = {
     xl: {
@@ -89,8 +89,11 @@ export function Button({
         ...customStyle // Custom styles override everything
       }}
       {...props}
+      ref={ref}
     >
       {children}
     </button>
   );
-}
+});
+
+Button.displayName = 'Button';
