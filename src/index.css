@@ -62,7 +62,6 @@
     --color-black: #000;
     --color-white: #fff;
     --spacing: .25rem;
-    --container-md: 28rem;
     --container-lg: 32rem;
     --text-xs: .75rem;
     --text-xs--line-height: calc(1 / .75);
@@ -1418,10 +1417,6 @@
     max-width: 100%;
   }
 
-  .max-w-md {
-    max-width: var(--container-md);
-  }
-
   .max-w-none {
     max-width: none;
   }
@@ -1931,10 +1926,6 @@
     border-color: var(--border);
   }
 
-  .border-foreground {
-    border-color: var(--foreground);
-  }
-
   .border-primary {
     border-color: var(--primary);
   }
@@ -2015,10 +2006,6 @@
 
   .bg-destructive {
     background-color: var(--destructive);
-  }
-
-  .bg-foreground {
-    background-color: var(--foreground);
   }
 
   .bg-gray-100 {
@@ -2904,10 +2891,6 @@
     color: var(--grey-05);
   }
 
-  .placeholder\:text-muted-foreground::placeholder {
-    color: var(--muted-foreground);
-  }
-
   @media (hover: hover) {
     .hover\:bg-\[\#FAFBFC\]:hover {
       background-color: #fafbfc;
@@ -3062,21 +3045,6 @@
     .hover\:opacity-75:hover {
       opacity: .75;
     }
-  }
-
-  @media (hover: hover) {
-    .hover\:opacity-90:hover {
-      opacity: .9;
-    }
-  }
-
-  .focus\:border-foreground:focus {
-    border-color: var(--foreground);
-  }
-
-  .focus\:outline-none:focus {
-    --tw-outline-style: none;
-    outline-style: none;
   }
 
   .focus-visible\:border-ring:focus-visible {

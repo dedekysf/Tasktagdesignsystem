@@ -53,6 +53,7 @@ import { Modal } from "../../components/Modal";
 import { usePaywall } from "../../contexts/PaywallContext";
 import svgPaths from "../../imports/svg-mytask";
 import { ALL_USERS } from "../../data/userData";
+import { AssigneeModal } from "../my-task/AssigneeModal";
 
 interface ChecklistItemData {
   id: string;
@@ -125,6 +126,7 @@ export default function ProjectDetailsPage() {
   const [isMultiline, setIsMultiline] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
   const [activeTab, setActiveTab] = useState("tasks");
+  const [isInviteMemberModalOpen, setIsInviteMemberModalOpen] = useState(false);
   const addItemContainerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -1461,6 +1463,7 @@ export default function ProjectDetailsPage() {
                   variant="outline"
                   size="sm"
                   className="btn-secondary"
+                  onClick={() => setIsInviteMemberModalOpen(true)}
                   style={{
                     borderRadius: "var(--radius-full)",
                     width: "120px",
@@ -2411,6 +2414,26 @@ export default function ProjectDetailsPage() {
               </div>
             );
           })()}
+
+        {/* Invite Member Modal */}
+        <AssigneeModal
+          isOpen={isInviteMemberModalOpen}
+          onClose={() => setIsInviteMemberModalOpen(false)}
+          modalTitle="Invite or add member"
+          modalDescription="Add existing member or invite new ones to collaborate on this project."
+          searchPlaceholder="Add member by email, name or group"
+          submitButtonText="Send invite"
+          roles={[
+            { value: 'Admin', label: 'Admin' },
+            { value: 'Editor', label: 'Editor' },
+            { value: 'Viewer', label: 'Viewer' },
+          ]}
+          defaultRole="Editor"
+          onAssign={(members) => {
+            console.log('Invited members:', members);
+            setIsInviteMemberModalOpen(false);
+          }}
+        />
       </div>
     </DndProvider>
   );

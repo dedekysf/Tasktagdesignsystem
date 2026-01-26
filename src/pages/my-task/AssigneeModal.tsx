@@ -33,13 +33,20 @@ interface AssigneeModalProps {
     name: string;
     email: string;
     isEmailInvite?: boolean;
-    role?: "assignee" | "viewer";
+    role?: "assignee" | "viewer" | string;
     avatarUrl?: string; // Add avatarUrl for consistency
   }>;
   onAssign?: (assignees: User[]) => void;
   taskId?: string;
   hideInitialSelection?: boolean; // Hide selected chips at top, but still validate "already added"
   hideToast?: boolean; // Hide success toast for inline task creation
+  // Customization props
+  modalTitle?: string;
+  modalDescription?: string;
+  searchPlaceholder?: string;
+  submitButtonText?: string;
+  roles?: Array<{ value: string; label: string }>;
+  defaultRole?: string; // Default role for newly added members
 }
 
 // Convert ALL_USERS from userData to modal format
@@ -241,6 +248,16 @@ export function AssigneeModal({
   taskId,
   hideInitialSelection = false,
   hideToast = false,
+  // Customization props
+  modalTitle = "Invite or Add Assignee",
+  modalDescription = "Add existing assignee or invite new ones to collaborate on this task.",
+  searchPlaceholder = "Add assignee by email, name or group",
+  submitButtonText = "Assign",
+  roles = [
+    { value: "assignee", label: "Assignee" },
+    { value: "viewer", label: "Viewer" },
+  ],
+  defaultRole = "assignee", // Default role for newly added members
 }: AssigneeModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -295,11 +312,14 @@ export function AssigneeModal({
       setLocalSelectedUsers([
         ...membersToAdd.map((m) => ({
           ...m,
-          role: "assignee" as const,
+          role: defaultRole as const,
         })),
         ...localSelectedUsers,
       ]);
     }
+    
+    // Close autocomplete dropdown by clearing search
+    setSearchQuery("");
   };
 
   const handleCopyLink = () => {
@@ -408,7 +428,7 @@ export function AssigneeModal({
 
     if (!existingUser) {
       setLocalSelectedUsers([
-        { ...user, role: "assignee" },
+        { ...user, role: defaultRole },
         ...localSelectedUsers,
       ]);
       setSearchQuery("");
@@ -437,7 +457,7 @@ export function AssigneeModal({
         id: `invite-${Date.now()}`,
         name: email,
         email: email,
-        role: "assignee",
+        role: defaultRole,
         isEmailInvite: true,
       };
       setLocalSelectedUsers([newUser, ...localSelectedUsers]);
@@ -565,7 +585,7 @@ export function AssigneeModal({
                           "var(--font-weight-semibold)",
                       }}
                     >
-                      Invite or Add Assignee
+                      {modalTitle}
                     </p>
                   </div>
 
@@ -621,7 +641,7 @@ export function AssigneeModal({
                         <input
                           ref={inputRef}
                           type="text"
-                          placeholder="Add assignee by email or name"
+                          placeholder={searchPlaceholder}
                           value={searchQuery}
                           onChange={(e) =>
                             setSearchQuery(e.target.value)
@@ -759,16 +779,7 @@ export function AssigneeModal({
                                 <Dropdown
                                   variant="borderless"
                                   size="sm"
-                                  options={[
-                                    {
-                                      value: "assignee",
-                                      label: "Assignee",
-                                    },
-                                    {
-                                      value: "viewer",
-                                      label: "Viewer",
-                                    },
-                                  ]}
+                                  options={roles}
                                   value={
                                     user.role || "assignee"
                                   }
@@ -834,8 +845,7 @@ export function AssigneeModal({
                         Assign teammates to this task
                       </p>
                       <p className="text-[var(--grey-05)] min-w-full relative shrink-0 text-center w-[min-content]">
-                        Add existing assignee or invite new ones
-                        to collaborate on this task.
+                        {modalDescription}
                       </p>
                     </div>
                   )}
@@ -857,7 +867,7 @@ export function AssigneeModal({
                   }}
                   disabled={localSelectedUsers.length === 0}
                 >
-                  Assign
+                  {submitButtonText}
                 </Button>
               </div>
             </div>

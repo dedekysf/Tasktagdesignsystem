@@ -31,7 +31,7 @@ import { RoleDropdown } from "../components/team-detail/RoleDropdown";
 import { SkillsCell } from "../components/team-detail/SkillsCell";
 import { Modal } from "../components/Modal";
 import { Toast } from "../components/Toast";
-import { InviteModal } from "../components/team-detail/InviteModal";
+import { AssigneeModal } from "./my-task/AssigneeModal";
 import { RadioButton } from "../components/RadioButton";
 import { Tag } from "../components/Tag";
 import { MessageMemberDropdown } from "../components/MessageMemberDropdown";
@@ -2048,10 +2048,24 @@ export default function TeamDetailPage() {
             document.body,
           )}
 
-        <InviteModal
-          open={inviteModalOpen}
+        <AssigneeModal
+          isOpen={inviteModalOpen}
           onClose={() => setInviteModalOpen(false)}
-          onSend={handleInviteSend}
+          modalTitle="Invite or add member"
+          modalDescription="Add existing member or invite new ones to collaborate on this team."
+          searchPlaceholder="Add member by email, name or group"
+          submitButtonText="Send invite"
+          roles={[
+            { value: 'Admin', label: 'Admin' },
+            { value: 'Member', label: 'Member' },
+          ]}
+          defaultRole="Member"
+          onAssign={(members) => {
+            console.log('Invited members:', members);
+            setToastMessage(`${members.length} member${members.length > 1 ? 's' : ''} invited`);
+            setToastVisible(true);
+            setInviteModalOpen(false);
+          }}
         />
 
         {/* Message Member Dropdown */}
