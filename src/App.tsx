@@ -74,6 +74,7 @@ import PaymentPage from './pages/PaymentPage';
 import ProjectCreationPanelPage from './pages/ProjectCreationPanelPage';
 import PaywallProjectCreationPage from './pages/PaywallProjectCreationPage';
 import GlobalSearchPage from './pages/GlobalSearchPage';
+import GlobalActivityPage from './pages/GlobalActivityPage';
 
 function AppContent() {
   const location = useLocation();
@@ -85,7 +86,7 @@ function AppContent() {
   
   // Prevent window scrolling for specific pages
   useEffect(() => {
-    const noScrollPages = ['my-task', 'task-panel', 'project-creation-panel', 'project-details', 'team-detail', 'paywall-cta', 'paywall-project-creation', 'payment', 'global-search'];
+    const noScrollPages = ['my-task', 'task-panel', 'project-creation-panel', 'project-details', 'team-detail', 'paywall-cta', 'paywall-project-creation', 'payment', 'global-search', 'global-activity'];
     
     if (noScrollPages.includes(activeSection)) {
       document.body.style.overflow = 'hidden';
@@ -478,8 +479,8 @@ function AppContent() {
       <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       {/* Main Content */}
-      <main className={`flex-1 w-full min-[1080px]:w-auto h-screen max-[1080px]:pt-16 ${activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'global-search' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
-        <div className={activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'global-search' ? 'h-full' : 'p-4 md:p-8 pb-16 min-[1080px]:pt-8'}>
+      <main className={`flex-1 w-full min-[1080px]:w-auto h-screen max-[1080px]:pt-16 ${activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'global-search' || activeSection === 'global-activity' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+        <div className={activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'global-search' || activeSection === 'global-activity' ? 'h-full' : 'p-4 md:p-8 pb-16 min-[1080px]:pt-8'}>
           {/* Colors Section */}
           {activeSection === 'colors' && (
             <section>
@@ -7106,6 +7107,11 @@ export default function Example() {
           {/* Global Search Page */}
           {activeSection === 'global-search' && (
             <GlobalSearchPage />
+          )}
+
+          {/* Global Activity Page */}
+          {activeSection === 'global-activity' && (
+            <GlobalActivityPage />
           )}
         </div>
       </main>
