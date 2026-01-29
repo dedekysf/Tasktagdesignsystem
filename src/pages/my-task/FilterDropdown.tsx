@@ -642,7 +642,8 @@ export function FilterDropdown({ tasks, filters, onFiltersChange, hideProjects }
               startDate={filters.customDateRange?.start || null}
               endDate={filters.customDateRange?.end || null}
               onDatesChange={(start, end) => {
-                onFiltersChange({ ...filters, dueDates: [], customDateRange: { start, end } });
+                const newCustomDateRange = (start || end) ? { start, end } : null;
+                onFiltersChange({ ...filters, dueDates: [], customDateRange: newCustomDateRange });
                 setShowCalendar(false);
               }}
               onClose={() => setShowCalendar(false)}

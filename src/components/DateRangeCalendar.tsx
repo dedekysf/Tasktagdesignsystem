@@ -620,34 +620,20 @@ export function DateRangeCalendar({
         </button>
         <button
           onClick={handleConfirm}
-          disabled={!tempStartDate && !tempEndDate}
           className="px-4 py-2 text-[14px] rounded-lg transition-colors"
           style={{
             fontWeight: "var(--font-weight-semibold)",
-            backgroundColor:
-              tempStartDate || tempEndDate
-                ? "var(--black)"
-                : "var(--grey-03)",
-            color:
-              tempStartDate || tempEndDate
-                ? "var(--white)"
-                : "var(--grey-04)",
-            cursor:
-              tempStartDate || tempEndDate
-                ? "pointer"
-                : "not-allowed",
+            backgroundColor: "var(--black)",
+            color: "var(--white)",
+            cursor: "pointer",
           }}
           onMouseEnter={(e) => {
-            if (tempStartDate || tempEndDate) {
-              e.currentTarget.style.backgroundColor =
-                "var(--text-secondary)";
-            }
+            e.currentTarget.style.backgroundColor =
+              "var(--text-secondary)";
           }}
           onMouseLeave={(e) => {
-            if (tempStartDate || tempEndDate) {
-              e.currentTarget.style.backgroundColor =
-                "var(--black)";
-            }
+            e.currentTarget.style.backgroundColor =
+              "var(--black)";
           }}
         >
           Confirm

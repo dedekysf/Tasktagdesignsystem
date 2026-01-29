@@ -58,6 +58,7 @@
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --color-red-500: oklch(.637 .237 25.331);
+    --color-yellow-200: oklch(.945 .129 101.54);
     --color-gray-100: oklch(.967 .003 264.542);
     --color-black: #000;
     --color-white: #fff;
@@ -844,10 +845,6 @@
     margin-top: -16px;
   }
 
-  .mr-2 {
-    margin-right: calc(var(--spacing) * 2);
-  }
-
   .mr-\[0px\] {
     margin-right: 0;
   }
@@ -929,6 +926,10 @@
 
   .table {
     display: table;
+  }
+
+  .aspect-\[2\/1\] {
+    aspect-ratio: 2;
   }
 
   .aspect-square {
@@ -2150,6 +2151,10 @@
     background-color: var(--color-white);
   }
 
+  .bg-yellow-200 {
+    background-color: var(--color-yellow-200);
+  }
+
   .object-contain {
     object-fit: contain;
   }
@@ -2250,10 +2255,6 @@
     padding-inline: calc(var(--spacing) * 6);
   }
 
-  .px-8 {
-    padding-inline: calc(var(--spacing) * 8);
-  }
-
   .px-\[8px\] {
     padding-inline: 8px;
   }
@@ -2324,6 +2325,10 @@
 
   .py-8 {
     padding-block: calc(var(--spacing) * 8);
+  }
+
+  .py-12 {
+    padding-block: calc(var(--spacing) * 12);
   }
 
   .py-16 {
@@ -3086,18 +3091,6 @@
   }
 
   @media (hover: hover) {
-    .hover\:bg-black\/80:hover {
-      background-color: #000c;
-    }
-
-    @supports (color: color-mix(in lab, red, red)) {
-      .hover\:bg-black\/80:hover {
-        background-color: color-mix(in oklab, var(--color-black) 80%, transparent);
-      }
-    }
-  }
-
-  @media (hover: hover) {
     .hover\:bg-black\/90:hover {
       background-color: #000000e6;
     }
@@ -3214,6 +3207,12 @@
   @media (hover: hover) {
     .hover\:opacity-75:hover {
       opacity: .75;
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:opacity-90:hover {
+      opacity: .9;
     }
   }
 

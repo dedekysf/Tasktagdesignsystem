@@ -5,7 +5,7 @@ import { TaskSection } from "./my-task/TaskSection";
 import { CustomDragLayer } from "./my-task/CustomDragLayer";
 import { FilterDropdown } from "./my-task/FilterDropdown";
 import { SortDropdown } from "./my-task/SortDropdown";
-import { Search } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import { Toaster, toast } from "sonner@2.0.3";
 import { Toast } from "../components/Toast";
 import svgPaths from "../imports/svg-mytask";
@@ -1037,25 +1037,15 @@ export default function MyTaskPage() {
               </Button>
               <Button
                 variant="fill"
-                className="btn-secondary"
+                className="btn-black"
                 size="sm"
                 style={{
+                  width: "120px",
                   borderRadius: "var(--radius-full)",
                 }}
               >
-                <svg
-                  className="size-4"
-                  fill="none"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    clipRule="evenodd"
-                    d={svgPaths.plusIcon}
-                    fill="white"
-                    fillRule="evenodd"
-                  />
-                </svg>
-                <span className="text-[14px]">New Task</span>
+                <Plus className="w-4 h-4" />
+                <span>New Task</span>
               </Button>
             </div>
           </div>
