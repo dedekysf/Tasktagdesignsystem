@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { SidebarDropdown } from './SidebarDropdown';
 import { SidebarMenuItem } from './SidebarMenuItem';
 import { Tag } from './Tag';
@@ -87,6 +87,10 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
     { id: 'global-activity', label: 'Global Activity', path: '/global-activity' }
   ];
 
+  const mobilePageItems = [
+    { id: 'mobile-my-task', label: 'My Task', path: '/mobile-my-task' }
+  ];
+
   const isSectionActive = (sectionId: string, items: Array<{ id: string, path: string }>) => {
     return items.some(item => location.pathname === item.path);
   };
@@ -150,12 +154,28 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
             </SidebarDropdown>
 
             <SidebarDropdown
-              label="Pages"
-              isOpen={openSections.includes('pages')}
-              isActive={isSectionActive('pages', pagesItems)}
-              onToggle={() => toggleSection('pages')}
+              label="Web Page"
+              isOpen={openSections.includes('web-page')}
+              isActive={isSectionActive('web-page', pagesItems)}
+              onToggle={() => toggleSection('web-page')}
             >
               {pagesItems.map((item) => (
+                <SidebarMenuItem
+                  key={item.id}
+                  label={item.label}
+                  to={item.path}
+                  onClick={handleMenuItemClick}
+                />
+              ))}
+            </SidebarDropdown>
+
+            <SidebarDropdown
+              label="Mobile Page"
+              isOpen={openSections.includes('mobile-page')}
+              isActive={isSectionActive('mobile-page', mobilePageItems)}
+              onToggle={() => toggleSection('mobile-page')}
+            >
+              {mobilePageItems.map((item) => (
                 <SidebarMenuItem
                   key={item.id}
                   label={item.label}

@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
 import { ReactNode } from 'react';
 
 interface SidebarMenuItemProps {
@@ -20,7 +20,7 @@ export function SidebarMenuItem({ label, to, onClick, tag }: SidebarMenuItemProp
         className={`sidebar-menu-item ${isActive ? 'active' : ''}`}
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
       >
-        <span className="caption text-[14px]">{label}</span>
+        <span className="text-web-label">{label}</span>
         {tag && <span style={{ marginLeft: 'var(--spacing-8)' }}>{tag}</span>}
       </Link>
     </li>

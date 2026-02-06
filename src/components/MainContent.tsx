@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router';
 import { SectionHeader } from './SectionHeader';
 import { ColorItem } from './ColorItem';
 import { TypographyItem } from './TypographyItem';

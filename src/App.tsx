@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router';
 import { Sidebar } from './components/Sidebar';
 import { SectionHeader } from './components/SectionHeader';
 import { ColorItem } from './components/ColorItem';
@@ -75,6 +75,7 @@ import ProjectCreationPanelPage from './pages/ProjectCreationPanelPage';
 import PaywallProjectCreationPage from './pages/PaywallProjectCreationPage';
 import GlobalSearchPage from './pages/GlobalSearchPage';
 import GlobalActivityPage from './pages/GlobalActivityPage';
+import { MobileMyTaskPage } from './components/mobile/MobileMyTaskPage';
 
 function AppContent() {
   const location = useLocation();
@@ -86,7 +87,7 @@ function AppContent() {
   
   // Prevent window scrolling for specific pages
   useEffect(() => {
-    const noScrollPages = ['my-task', 'task-panel', 'project-creation-panel', 'project-details', 'team-detail', 'paywall-cta', 'paywall-project-creation', 'payment', 'global-search', 'global-activity'];
+    const noScrollPages = ['my-task', 'task-panel', 'project-creation-panel', 'project-details', 'team-detail', 'paywall-cta', 'paywall-project-creation', 'payment', 'global-search', 'global-activity', 'mobile-my-task'];
     
     if (noScrollPages.includes(activeSection)) {
       document.body.style.overflow = 'hidden';
@@ -479,8 +480,8 @@ function AppContent() {
       <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       {/* Main Content */}
-      <main className={`flex-1 w-full min-[1080px]:w-auto h-screen max-[1080px]:pt-16 ${activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'global-search' || activeSection === 'global-activity' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
-        <div className={activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'global-search' || activeSection === 'global-activity' ? 'h-full' : 'p-4 md:p-8 pb-16 min-[1080px]:pt-8'}>
+      <main className={`flex-1 w-full min-[1080px]:w-auto h-screen max-[1080px]:pt-16 ${activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'global-search' || activeSection === 'global-activity' || activeSection === 'mobile-my-task' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+        <div className={activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'global-search' || activeSection === 'global-activity' || activeSection === 'mobile-my-task' ? 'h-full' : 'p-4 md:p-8 pb-16 min-[1080px]:pt-8'}>
           {/* Colors Section */}
           {activeSection === 'colors' && (
             <section>
@@ -7112,6 +7113,13 @@ export default function Example() {
           {/* Global Activity Page */}
           {activeSection === 'global-activity' && (
             <GlobalActivityPage />
+          )}
+
+          {/* Mobile My Task Page */}
+          {activeSection === 'mobile-my-task' && (
+            <div className="h-full bg-white">
+              <MobileMyTaskPage />
+            </div>
           )}
         </div>
       </main>
