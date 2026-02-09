@@ -98,7 +98,7 @@ export function Banner({
             size="lg"
             className="flex-1 bg-[var(--primary)] text-white hover:opacity-90 active:opacity-80 border-none"
           >
-            Create Project
+            Invite Member
           </Button>
         </div>
       ) : (
