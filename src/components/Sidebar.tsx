@@ -44,9 +44,11 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
 
   const componentItems = [
     { id: 'alert', label: 'Alert', path: '/alert' },
-    { id: 'assignee-modal', label: 'Assignee Modal', path: '/assignee-modal' },
     { id: 'assigned-members-button', label: 'Assigned Members Button', path: '/assigned-members-button' },
+    { id: 'assignee-modal', label: 'Assignee Modal', path: '/assignee-modal' },
     { id: 'avatars', label: 'Avatars', path: '/avatars' },
+    { id: 'banner', label: 'Banner', path: '/banner' },
+    { id: 'bottom-navigation-menu', label: 'Bottom Navigation Menu', path: '/bottom-navigation-menu' },
     { id: 'buttons', label: 'Buttons', path: '/buttons' },
     { id: 'calendar', label: 'Calendar', path: '/calendar' },
     { id: 'cards', label: 'Cards', path: '/cards' },
@@ -56,6 +58,9 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
     { id: 'datepicker', label: 'Datepicker', path: '/datepicker' },
     { id: 'discard-changes-modal', label: 'Discard Changes Modal', path: '/discard-changes-modal' },
     { id: 'dropdown', label: 'Dropdown', path: '/dropdown' },
+    { id: 'fab', label: 'FAB', path: '/fab' },
+    { id: 'frame-mobile', label: 'Frame Mobile', path: '/frame-mobile' },
+    { id: 'homebar', label: 'Home Bar', path: '/homebar' },
     { id: 'member-row', label: 'Member Row', path: '/member-row' },
     { id: 'message-member-dropdown', label: 'Message Member Dropdown', path: '/message-member-dropdown' },
     { id: 'modal', label: 'Modal', path: '/modal' },
@@ -63,6 +68,7 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
     { id: 'project-select-modal', label: 'Project Select Modal', path: '/project-select-modal' },
     { id: 'radio-button', label: 'Radio Button', path: '/radio-button' },
     { id: 'side-nav', label: 'Side Nav', path: '/side-nav' },
+    { id: 'status-bar', label: 'Status Bar', path: '/status-bar' },
     { id: 'tabs-item', label: 'Tabs', path: '/tabs-item' },
     { id: 'tag', label: 'Tag', path: '/tag' },
     { id: 'task-item', label: 'Task Item', path: '/task-item' },
@@ -88,7 +94,9 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) {
   ];
 
   const mobilePageItems = [
-    { id: 'mobile-my-task', label: 'My Task', path: '/mobile-my-task' }
+    { id: 'mobile-my-task', label: 'My Task', path: '/mobile-my-task' },
+    { id: 'mobile-project-details', label: 'Project Detail', path: '/mobile-project-details' },
+    { id: 'mobile-nudge', label: 'Nudge', path: '/mobile-nudge' }
   ];
 
   const isSectionActive = (sectionId: string, items: Array<{ id: string, path: string }>) => {

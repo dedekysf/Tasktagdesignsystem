@@ -17,6 +17,7 @@ import { Textarea } from './components/Textarea';
 import { Checkbox } from './components/Checkbox';
 import { RadioButton } from './components/RadioButton';
 import { Dropdown, type DropdownOption } from './components/Dropdown';
+import { FAB } from './components/mobile/FAB';
 import { Datepicker } from './components/Datepicker';
 import { CodeExample } from './components/CodeExample';
 import { TabsContainer, TabPanel } from './components/TabsContainer';
@@ -47,7 +48,7 @@ import { Alert } from './components/Alert';
 import { SideNav } from './components/SideNav';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Palette, Type, Square, Box, MousePointerClick, TextCursor, LayoutGrid, User, Users, Image, Menu, X, Check, CheckSquare, Circle, Sparkles, ExternalLink, ChevronDown, ChevronLeft, ChevronRight, Trash2, Info, Home, Settings, Search, CircleCheckBig, Bell, CalendarDays, CalendarRange, AlertTriangle, ChevronUp as ChevronUpIcon, FolderOpen, UserPlus, List, Plus } from 'lucide-react';
+import { Palette, Type, Square, Box, MousePointerClick, TextCursor, LayoutGrid, User, Users, Image, Menu, X, Check, CheckSquare, Circle, Sparkles, ExternalLink, ChevronDown, ChevronLeft, ChevronRight, Trash2, Info, Home, Settings, Search, CircleCheckBig, Bell, CalendarDays, CalendarRange, AlertTriangle, ChevronUp as ChevronUpIcon, FolderOpen, UserPlus, List, Plus, Signal } from 'lucide-react';
 import svgPaths from './imports/svg-92e1ovrkrf';
 import AppIconAndroid from './imports/AppIconAndroid-43-971';
 import AppIconIOs from './imports/AppIconIOs-43-942';
@@ -75,7 +76,14 @@ import ProjectCreationPanelPage from './pages/ProjectCreationPanelPage';
 import PaywallProjectCreationPage from './pages/PaywallProjectCreationPage';
 import GlobalSearchPage from './pages/GlobalSearchPage';
 import GlobalActivityPage from './pages/GlobalActivityPage';
+import { BannerComponentPage } from './components/pages/BannerComponentPage';
 import { MobileMyTaskPage } from './components/mobile/MobileMyTaskPage';
+import MobileProjectDetailsPage from './components/mobile/MobileProjectDetailsPage';
+import NudgePage from './components/mobile/NudgePage';
+import { MobileFrame } from './components/mobile/MobileFrame';
+import { BottomNav } from './components/mobile/BottomNav';
+import { StatusBar } from './components/mobile/StatusBar';
+import { HomeBar } from './components/mobile/HomeBar';
 
 function AppContent() {
   const location = useLocation();
@@ -87,7 +95,7 @@ function AppContent() {
   
   // Prevent window scrolling for specific pages
   useEffect(() => {
-    const noScrollPages = ['my-task', 'task-panel', 'project-creation-panel', 'project-details', 'team-detail', 'paywall-cta', 'paywall-project-creation', 'payment', 'global-search', 'global-activity', 'mobile-my-task'];
+    const noScrollPages = ['my-task', 'task-panel', 'project-creation-panel', 'project-details', 'team-detail', 'paywall-cta', 'paywall-project-creation', 'payment', 'global-search', 'global-activity', 'mobile-my-task', 'mobile-project-details', 'mobile-nudge'];
     
     if (noScrollPages.includes(activeSection)) {
       document.body.style.overflow = 'hidden';
@@ -123,6 +131,7 @@ function AppContent() {
   const [radioSizeTab, setRadioSizeTab] = useState('preview');
   const [radioStatesTab, setRadioStatesTab] = useState('preview');
   const [dropdownTab, setDropdownTab] = useState('preview');
+  const [fabTab, setFabTab] = useState('preview');
   const [dropdownBasicTab, setDropdownBasicTab] = useState('preview');
   const [dropdownLabelTab, setDropdownLabelTab] = useState('preview');
   const [dropdownSizeTab, setDropdownSizeTab] = useState('preview');
@@ -193,6 +202,7 @@ function AppContent() {
   const [tagWithIconTab, setTagWithIconTab] = useState('preview');
   const [alertTab, setAlertTab] = useState('preview');
   const [sideNavExpandedTab, setSideNavExpandedTab] = useState('preview');
+  const [bottomNavTab, setBottomNavTab] = useState('tasks');
   
   // Toggle states
   const [toggleBasic, setToggleBasic] = useState(false);
@@ -480,8 +490,8 @@ function AppContent() {
       <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       {/* Main Content */}
-      <main className={`flex-1 w-full min-[1080px]:w-auto h-screen max-[1080px]:pt-16 ${activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'global-search' || activeSection === 'global-activity' || activeSection === 'mobile-my-task' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
-        <div className={activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'global-search' || activeSection === 'global-activity' || activeSection === 'mobile-my-task' ? 'h-full' : 'p-4 md:p-8 pb-16 min-[1080px]:pt-8'}>
+      <main className={`flex-1 w-full min-[1080px]:w-auto h-screen max-[1080px]:pt-16 ${activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'global-search' || activeSection === 'global-activity' || activeSection === 'mobile-my-task' || activeSection === 'mobile-project-details' || activeSection === 'mobile-nudge' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+        <div className={activeSection === 'my-task' || activeSection === 'task-panel' || activeSection === 'project-creation-panel' || activeSection === 'project-details' || activeSection === 'team-detail' || activeSection === 'paywall-cta' || activeSection === 'paywall-project-creation' || activeSection === 'global-search' || activeSection === 'global-activity' || activeSection === 'mobile-my-task' || activeSection === 'mobile-project-details' || activeSection === 'mobile-nudge' ? 'h-full' : 'p-4 md:p-8 pb-16 min-[1080px]:pt-8'}>
           {/* Colors Section */}
           {activeSection === 'colors' && (
             <section>
@@ -7115,10 +7125,165 @@ export default function Example() {
             <GlobalActivityPage />
           )}
 
+          {/* FAB Component */}
+          {activeSection === 'fab' && (
+            <section>
+              <SectionHeader
+                icon={Plus}
+                title="Floating Action Button (FAB)"
+                description="A floating action button represents the primary action in an application."
+              />
+
+              <div style={{ marginBottom: 'var(--spacing-56)' }}>
+                <h3 style={{ fontWeight: 'var(--font-weight-semibold)', marginBottom: 'var(--spacing-8)' }}>FAB Variants</h3>
+                <TabsContainer
+                  activeTab={fabTab}
+                  onTabChange={setFabTab}
+                  tabs={[
+                    { value: 'preview', label: 'Preview' },
+                    { value: 'usage', label: 'Usage' },
+                    { value: 'github', label: 'GitHub' }
+                  ]}
+                >
+                  <TabPanel value="preview" activeTab={fabTab}>
+                    <div className="component-card min-h-[200px] relative">
+                      <div className="space-y-6">
+                        <p className="text-web-metadata-primary text-metadata mb-3">DEFAULT & EXTENDED</p>
+                        <div className="flex flex-wrap gap-6 items-center">
+                          {/* Default/Icon only */}
+                          <div className="relative w-12 h-12">
+                            <FAB showLabel={false} absolute={false} />
+                          </div>
+                          
+                          {/* Extended */}
+                          <div className="relative w-32 h-12">
+                            <FAB label="New Task" absolute={false} />
+                          </div>
+                          
+                          {/* Custom Color */}
+                          <div className="relative w-32 h-12">
+                            <FAB label="New Update" className="bg-[var(--black)]" absolute={false} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </TabPanel>
+                  <TabPanel value="usage" activeTab={fabTab}>
+                    <CodeExample
+                      title="Usage Example"
+                      code={`import { FAB } from './components/mobile/FAB';
+
+// Default (Extended)
+<FAB label="New Task" />
+
+// Icon Only
+<FAB showLabel={false} />
+
+// Custom Label & Color
+<FAB label="New Update" className="bg-[var(--black)]" />`}
+                    />
+                  </TabPanel>
+                  <TabPanel value="github" activeTab={fabTab}>
+                    <CodeExample
+                      title="GitHub URL"
+                      code={`https://github.com/dedekysf/Tasktagdesignsystem/blob/main/src/components/mobile/FAB.tsx`}
+                    />
+                  </TabPanel>
+                </TabsContainer>
+              </div>
+            </section>
+          )}
+
+          {/* Frame Mobile */}
+          {activeSection === 'frame-mobile' && (
+            <section>
+              <SectionHeader
+                icon={LayoutGrid}
+                title="Frame Mobile"
+                description="A wrapper component that simulates a mobile device frame (375px x 812px)."
+              />
+              <div className="flex justify-center bg-secondary p-8 h-[900px]">
+                <MobileFrame>
+                   <div className="flex-1 flex items-center justify-center text-muted-foreground">
+                      Content goes here
+                   </div>
+                </MobileFrame>
+              </div>
+            </section>
+          )}
+
+          {/* Banner Component */}
+          {activeSection === 'banner' && (
+             <BannerComponentPage />
+          )}
+
+          {/* Bottom Navigation Menu */}
+          {activeSection === 'bottom-navigation-menu' && (
+             <section>
+              <SectionHeader
+                icon={Menu}
+                title="Bottom Navigation Menu"
+                description="Mobile bottom navigation with 4 tabs."
+              />
+              <div className="flex justify-center bg-secondary p-8 h-[900px]">
+                <MobileFrame>
+                   <div className="flex-1 bg-secondary/10" />
+                   <BottomNav activeTab={bottomNavTab} onTabChange={setBottomNavTab} />
+                </MobileFrame>
+              </div>
+            </section>
+          )}
+
+          {/* Status Bar */}
+          {activeSection === 'status-bar' && (
+            <section>
+              <SectionHeader
+                icon={Signal}
+                title="Status Bar"
+                description="Mobile status bar showing time, signal, wifi, and battery."
+              />
+              <div className="flex justify-center bg-secondary p-8 h-[900px]">
+                <MobileFrame>
+                   <StatusBar />
+                   <div className="flex-1 bg-secondary/10" />
+                </MobileFrame>
+              </div>
+            </section>
+          )}
+
+          {/* Home Bar */}
+          {activeSection === 'homebar' && (
+            <section>
+              <SectionHeader
+                icon={MousePointerClick}
+                title="Home Bar"
+                description="Mobile home indicator bar."
+              />
+              <div className="flex justify-center bg-secondary p-8 h-[900px]">
+                <MobileFrame>
+                   <div className="flex-1 bg-secondary/10" />
+                   <HomeBar />
+                </MobileFrame>
+              </div>
+            </section>
+          )}
+
           {/* Mobile My Task Page */}
           {activeSection === 'mobile-my-task' && (
             <div className="h-full bg-white">
               <MobileMyTaskPage />
+            </div>
+          )}
+
+          {activeSection === 'mobile-project-details' && (
+            <div className="h-full bg-white">
+              <MobileProjectDetailsPage />
+            </div>
+          )}
+
+          {activeSection === 'mobile-nudge' && (
+            <div className="h-full bg-white">
+              <NudgePage />
             </div>
           )}
         </div>

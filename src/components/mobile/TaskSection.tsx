@@ -46,16 +46,16 @@ export function TaskSection({
         onClick={onToggle}
       >
         <div className="flex-1 flex items-center gap-2">
-          <h4 className="text-sm font-semibold text-muted-foreground group-hover:text-foreground transition-colors">{title}</h4>
+          <h4 className="text-mobile-label-emphasized text-muted-foreground transition-colors">{title}</h4>
           {count !== undefined && (
             <div className="min-w-[1.25rem] h-5 px-1.5 flex items-center justify-center rounded-full bg-secondary border border-border">
-              <span className="text-[10px] font-medium text-muted-foreground">
+              <span className="text-mobile-metadata-secondary text-muted-foreground">
                 {count}
               </span>
             </div>
           )}
         </div>
-        <div className="p-1 rounded-md hover:bg-secondary transition-colors">
+        <div className="p-1 rounded-md active:bg-secondary transition-colors">
           {expanded ? (
             <ChevronUp className="w-4 h-4 text-muted-foreground" strokeWidth={2.5} />
           ) : (
@@ -81,7 +81,7 @@ export function TaskSection({
             />
           ))}
           {tasks.length === 0 && (
-            <div className="px-4 py-8 text-center text-sm text-muted-foreground">
+            <div className="px-4 py-8 text-center text-mobile-secondary-body text-muted-foreground">
               No {title.toLowerCase()} tasks
             </div>
           )}

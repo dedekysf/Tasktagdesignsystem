@@ -287,7 +287,7 @@ export function FilterSheet({ isOpen, onClose, onReopen, projects, onApplyFilter
                     <button
                       key={index}
                       onClick={() => toggleProjectFilter(index)}
-                      className="w-full"
+                      className="w-full transition-colors active:bg-secondary"
                     >
                       <div className="flex items-center gap-2 px-4 py-2 h-[45px]">
                         {/* Project Icon */}
@@ -322,7 +322,7 @@ export function FilterSheet({ isOpen, onClose, onReopen, projects, onApplyFilter
                     <button
                       key={index}
                       onClick={() => toggleAssigneeFilter(index)}
-                      className="w-full"
+                      className="w-full transition-colors active:bg-secondary"
                     >
                       <div className="flex items-center gap-2 px-4 py-2 h-[56px]">
                         {/* Avatar */}
@@ -362,7 +362,7 @@ export function FilterSheet({ isOpen, onClose, onReopen, projects, onApplyFilter
                       <button
                         key={index}
                         onClick={() => toggleDueDateFilter(index)}
-                        className="w-full"
+                        className="w-full transition-colors active:bg-secondary"
                       >
                         <div className="flex items-center px-4 py-2 h-[45px] gap-2">
                           {/* Icon only for Select Dates */}
@@ -399,7 +399,7 @@ export function FilterSheet({ isOpen, onClose, onReopen, projects, onApplyFilter
                     <button
                       key={index}
                       onClick={() => togglePriorityFilter(index)}
-                      className="w-full"
+                      className="w-full transition-colors active:bg-secondary"
                     >
                       <div className="flex items-center gap-2 px-4 py-2 h-[45px]">
                         <p className="flex-1 body text-foreground text-left">

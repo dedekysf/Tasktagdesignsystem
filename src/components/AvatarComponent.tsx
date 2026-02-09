@@ -8,6 +8,8 @@ interface AvatarProps {
   size?: AvatarSize;
   /** Avatar variant: icon, image, initials */
   variant?: AvatarVariant;
+  /** Custom icon component (for icon variant) */
+  icon?: React.ElementType;
   /** Custom className for additional styling */
   className?: string;
   /** Initials text (for initials variant) */
@@ -24,7 +26,7 @@ interface AvatarProps {
   backgroundColor?: string;
 }
 
-export function Avatar({ size = 'md', variant = 'icon', className = '', initials = "AZ", imageUrl = "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NjY0MDYyMjZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", style = {}, disabled = false, iconColor = 'var(--text-secondary)', backgroundColor }: AvatarProps) {
+export function Avatar({ size = 'md', variant = 'icon', className = '', initials = "AZ", imageUrl = "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NjY0MDYyMjZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", style = {}, disabled = false, iconColor = 'var(--text-secondary)', backgroundColor, icon: Icon = User }: AvatarProps) {
   // Map size to CSS variables and proportional font/icon sizes
   const sizeMap = {
     'xs': { containerVar: '--size-xs', text: '10px', iconScale: 0.5 },
@@ -105,7 +107,7 @@ export function Avatar({ size = 'md', variant = 'icon', className = '', initials
       )}
       
       {effectiveVariant === 'icon' && (
-        <User 
+        <Icon 
           style={{ color: effectiveIconColor }}
           size={iconSize}
         />

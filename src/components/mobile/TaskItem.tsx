@@ -160,7 +160,7 @@ export function TaskItem({
       ref={ref}
       className={`flex items-center gap-3 py-3 px-4 transition-all duration-200 relative group
         ${isAnimating ? 'opacity-50' : 'opacity-100'} 
-        ${isLongPressing && !isDragging ? 'scale-[0.98] bg-secondary/50' : 'scale-100 hover:bg-secondary/20'}
+        ${isLongPressing && !isDragging ? 'scale-[0.98] bg-secondary/50' : 'scale-100 active:bg-secondary/20'}
       `}
       style={{ 
         backgroundColor: isDragging ? 'var(--secondary)' : undefined,
@@ -178,7 +178,7 @@ export function TaskItem({
       )}
       
       {!isLastItem && (
-        <div className="absolute bottom-0 left-[52px] right-4 h-px bg-border group-hover:bg-transparent" />
+        <div className="absolute bottom-0 left-[52px] right-4 h-px bg-border" />
       )}
       
       {/* Checkbox */}
@@ -204,17 +204,17 @@ export function TaskItem({
         onClick={handleTaskContentClick}
       >
         <div className="flex-1 flex flex-col gap-0.5 min-w-0">
-          <p className={`text-sm truncate transition-colors ${isCompleted ? 'text-muted-foreground line-through decoration-muted-foreground/50' : 'text-foreground font-medium'}`}>
+          <p className={`text-mobile-label-small truncate transition-colors ${isCompleted ? 'text-muted-foreground' : 'text-foreground font-medium'}`}>
             <HighlightedText text={task.title} query={searchQuery} />
           </p>
           
-          <div className="flex items-center gap-1.5 min-w-0 text-muted-foreground">
+          <div className="flex items-center gap-1.5 min-w-0 text-[var(--grey-05)]">
             {task.projectIcon === 'zap' ? (
               <Zap className="w-3 h-3 shrink-0" fill={task.projectColor} strokeWidth={0} />
             ) : (
               <HardHat className="w-3 h-3 shrink-0" fill={task.projectColor} strokeWidth={0} />
             )}
-            <span className="text-[10px] leading-tight truncate">
+            <span className="text-mobile-metadata-secondary leading-tight truncate">
               {truncateProject(task.project)}
             </span>
           </div>
@@ -224,10 +224,10 @@ export function TaskItem({
         <div className="shrink-0">
           <button 
             className={`
-              px-2 py-1 rounded-md border flex items-center gap-1 transition-colors
+              px-2 py-1 rounded-full border flex items-center gap-1 transition-colors
               ${isOverdue 
                 ? 'bg-destructive/10 border-destructive/20 text-destructive' 
-                : 'bg-background border-border text-muted-foreground hover:border-primary/50 hover:text-primary'
+                : 'bg-background border-border text-muted-foreground active:border-primary/50 active:text-primary'
               }
             `}
             onClick={(e) => {
@@ -238,7 +238,7 @@ export function TaskItem({
             {displayDate === 'Due Date' && (
               <Calendar className="w-3 h-3 opacity-70" strokeWidth={2} />
             )}
-            <span className="text-[10px] font-medium whitespace-nowrap">
+            <span className="text-mobile-metadata-secondary whitespace-nowrap">
               {displayDate}
             </span>
           </button>

@@ -31,7 +31,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                 strokeWidth={2}
               />
               <span 
-                className={`text-[10px] font-medium transition-colors ${isActive ? 'text-primary' : 'text-muted-foreground'}`}
+                className={`text-mobile-metadata-secondary transition-colors ${isActive ? 'text-primary' : 'text-muted-foreground'}`}
               >
                 {tab.label}
               </span>

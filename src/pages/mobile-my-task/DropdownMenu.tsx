@@ -23,7 +23,7 @@ export function DropdownMenu({ isOpen, onClose, onFilterClick, onSortClick, hasA
       {/* Dropdown - positioned above/in front of more actions icon */}
       <div className="absolute right-4 top-2 z-[110] bg-card rounded-lg py-2 w-[108px]" style={{ boxShadow: 'var(--elevation-sm)' }}>
         <button 
-          className="w-full flex items-center gap-2 px-4 py-[9px] hover:bg-secondary transition-colors"
+          className="w-full flex items-center gap-2 px-4 py-[9px] active:bg-secondary transition-colors"
           onClick={() => {
             onSortClick();
             onClose();
@@ -34,7 +34,7 @@ export function DropdownMenu({ isOpen, onClose, onFilterClick, onSortClick, hasA
         </button>
         
         <button 
-          className="w-full flex items-center gap-2 px-4 py-[9px] hover:bg-secondary transition-colors"
+          className="w-full flex items-center gap-2 px-4 py-[9px] active:bg-secondary transition-colors"
           onClick={() => {
             onFilterClick();
             onClose();

@@ -7,7 +7,7 @@ interface HeaderProps {
 export function Header({ avatarSrc }: HeaderProps) {
   return (
     <div className="px-4 py-2 flex items-center justify-between bg-background">
-      <h2 className="text-2xl font-semibold text-foreground">My Tasks</h2>
+      <h2 className="text-mobile-heading-28 text-foreground">My Tasks</h2>
       <Avatar 
         size="md" 
         variant="image" 

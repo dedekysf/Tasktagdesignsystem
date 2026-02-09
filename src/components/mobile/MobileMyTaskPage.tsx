@@ -9,6 +9,7 @@ import { HomeBar } from './HomeBar';
 import { FAB } from './FAB';
 import { LoadMoreSpinner } from './LoadMoreSpinner';
 import { SearchLoadingSpinner } from './SearchLoadingSpinner';
+import { MobileFrame } from './MobileFrame';
 import { toast, Toaster } from 'sonner';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -201,73 +202,68 @@ export function MobileMyTaskPage() {
           border-radius: 4px;
         }
       `}</style>
-      <div className="h-full flex items-center justify-center bg-secondary">
-        {/* Mobile View - Max height 812px, fixed width 375px */}
-        <div 
-          className="relative bg-white overflow-hidden flex flex-col w-full max-w-[375px] h-full max-h-[812px] rounded-[24px] shadow-[0px_5px_25px_0px_rgba(0,0,0,0.05)]"
-        >
-          <StatusBar />
-          {!isSearching && <Header avatarSrc={avatarSrc} />}
-          <SearchBar 
-            value={searchQuery} 
-            onChange={setSearchQuery} 
-            onFilterClick={() => toast.info("Filters")}
-            onSortClick={() => toast.info("Sort")}
-            hasActiveFilters={false}
-            hasActiveSorts={false}
-          />
-          
-          {isSearching && <SearchTabs activeTab={searchTab} onTabChange={setSearchTab} />}
-          
-          <div className="h-px bg-border w-full" />
-          
-          <div ref={scrollContainerRef} className="flex-1 overflow-y-auto mobile-scrollbar">
-            {isSearchLoading ? (
-              <SearchLoadingSpinner />
-            ) : (
-              <div className="pb-24">
-                <div id="current-section">
-                  <TaskSection
-                    title="Current"
-                    count={filteredCurrentCount}
-                    tasks={filteredCurrentTasks}
-                    expanded={currentExpanded}
-                    onToggle={() => setCurrentExpanded(!currentExpanded)}
-                    onTaskToggle={handleToggleTask}
-                    animatingTaskId={animatingTaskId}
-                    searchQuery={searchQuery}
-                    onDueDateClick={handleDueDateClick}
-                    onTaskClick={handleTaskClick}
-                    onMoveTask={handleMoveCurrentTask}
-                  />
-                  {isLoadingMore && <LoadMoreSpinner />}
-                </div>
-                
-                <div id="completed-section">
-                  <TaskSection
-                    title="Completed"
-                    tasks={filteredCompletedTasks}
-                    expanded={completedExpanded}
-                    onToggle={() => setCompletedExpanded(!completedExpanded)}
-                    onTaskToggle={handleToggleTask}
-                    animatingTaskId={animatingTaskId}
-                    searchQuery={searchQuery}
-                    onDueDateClick={handleDueDateClick}
-                    onTaskClick={handleTaskClick}
-                    onMoveTask={handleMoveCompletedTask}
-                  />
-                </div>
+      <MobileFrame>
+        <StatusBar />
+        {!isSearching && <Header avatarSrc={avatarSrc} />}
+        <SearchBar 
+          value={searchQuery} 
+          onChange={setSearchQuery} 
+          onFilterClick={() => toast.info("Filters")}
+          onSortClick={() => toast.info("Sort")}
+          hasActiveFilters={false}
+          hasActiveSorts={false}
+        />
+        
+        {isSearching && <SearchTabs activeTab={searchTab} onTabChange={setSearchTab} />}
+        
+        <div className="h-px bg-border w-full" />
+        
+        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto mobile-scrollbar">
+          {isSearchLoading ? (
+            <SearchLoadingSpinner />
+          ) : (
+            <div className="pb-24">
+              <div id="current-section">
+                <TaskSection
+                  title="Current"
+                  count={filteredCurrentCount}
+                  tasks={filteredCurrentTasks}
+                  expanded={currentExpanded}
+                  onToggle={() => setCurrentExpanded(!currentExpanded)}
+                  onTaskToggle={handleToggleTask}
+                  animatingTaskId={animatingTaskId}
+                  searchQuery={searchQuery}
+                  onDueDateClick={handleDueDateClick}
+                  onTaskClick={handleTaskClick}
+                  onMoveTask={handleMoveCurrentTask}
+                />
+                {isLoadingMore && <LoadMoreSpinner />}
               </div>
-            )}
-          </div>
-
-          {!isSearching && <FAB />}
-          {!isSearching && <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />}
-          <HomeBar />
-          
-          <Toaster position="bottom-center" />
+              
+              <div id="completed-section">
+                <TaskSection
+                  title="Completed"
+                  tasks={filteredCompletedTasks}
+                  expanded={completedExpanded}
+                  onToggle={() => setCompletedExpanded(!completedExpanded)}
+                  onTaskToggle={handleToggleTask}
+                  animatingTaskId={animatingTaskId}
+                  searchQuery={searchQuery}
+                  onDueDateClick={handleDueDateClick}
+                  onTaskClick={handleTaskClick}
+                  onMoveTask={handleMoveCompletedTask}
+                />
+              </div>
+            </div>
+          )}
         </div>
-      </div>
+
+        {!isSearching && <FAB />}
+        {!isSearching && <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />}
+        <HomeBar />
+        
+        <Toaster position="bottom-center" />
+      </MobileFrame>
     </DndProvider>
   );
 }

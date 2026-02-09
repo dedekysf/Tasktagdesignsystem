@@ -166,7 +166,7 @@ interface SortOptionItemProps {
 function SortOptionItem({ label, selected, onClick }: SortOptionItemProps) {
   return (
     <button
-      className="h-[45px] w-full text-left transition-colors"
+      className="h-[45px] w-full text-left transition-colors active:bg-secondary"
       onClick={onClick}
     >
       <div className="flex items-center gap-2 px-4 py-2 h-full">
