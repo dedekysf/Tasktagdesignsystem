@@ -26,8 +26,8 @@ export function Banner({
 }: BannerProps) {
   // Common content for both variants
   const content = {
-    title: "Don’t Build Alone",
-    description: "Projects work better with others. Invite someone to collaborate on this project.",
+    title: "Don't Work Alone",
+    description: "Projects run better with others. Invite someone to collaborate on this project.",
     icon: UserPlus,
   };
 
